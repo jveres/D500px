@@ -1,0 +1,12 @@
+<Panel ux:Class="Toast" ux:Name="toast" Alignment="BottomCenter" Margin="0,0,0,30" Padding="20,10,20,10" Opacity="0">
+	<Text Value="{errorMessage}" TextColor="#fff" Font="Light" FontSize="18"/>
+	<Rectangle Layer="Background" Fill="#4f0000" CornerRadius="12" />
+	<Scaling ux:Name="scaleAnimation" Factor="1.5" />
+	<WhileTrue ux:Name="showToast">
+		<Change toast.Opacity="0.8" Easing="CircularInOut" Duration="0.5" DelayBack="2.5"/>
+		<Change scaleAnimation.Factor="1" Easing="CircularInOut" Duration="0.5" DelayBack="2.5"/>
+	</WhileTrue>
+	<WhileTrue Value="{error}">
+		<Pulse Target="showToast" />
+	</WhileTrue>
+</Panel>

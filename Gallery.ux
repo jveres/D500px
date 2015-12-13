@@ -1,0 +1,26 @@
+<!-- Scrollable picture gallery -->
+<Panel ux:Class="Gallery">
+	<!-- Placeholder for empty list -->
+	<Panel>
+		<Image ux:Name="placeholderImage" File="Assets/Icons/Gallery.png" Alignment="Center" Width="20%" Color="#eee" />
+		<WhileCount GreaterThan="0" Items="{feed.photos}">
+			<Change placeholderImage.Opacity="0" Duration="0.3" Easing="CircularInOut"/>
+			<Change galleryItems.Opacity="1" Duration="0.3" Delay="0.2" Easing="CircularInOut"/>
+		</WhileCount>
+	</Panel>
+		
+	<!-- Thumbnails list -->
+	<ScrollView ux:Name="galleryItems" Opacity="0">
+		<StackPanel>
+			<!-- Scrollview inset -->
+			<Panel Height="50" />
+			<!-- Pictures -->
+			<Panel Margin="5,0,0,0">
+				<ColumnLayout ColumnCount="2" />
+				<Each Items="{feed.photos}">
+					<Picture />
+				</Each>
+			</Panel>		
+		</StackPanel>
+	</ScrollView>
+</Panel>
