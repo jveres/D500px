@@ -28,11 +28,14 @@ var selectedFeatureName = Observable('');
 var goHome = Observable(false);
 
 function pulse(arg) {
-	arg.value = true;
-	arg.value = false;
+	if (arg instanceof Observable) {
+		arg.value = true;
+		arg.value = false;
+	}
 }
 
 function selectFeature(feature) {
+	if (loading === true) return;
 	if (selectedFeature) selectedFeature.selected.value = false;
 	selectedFeature = (feature.data ? feature.data : feature);
 	selectedFeature.selected.value = true;
@@ -43,7 +46,7 @@ function selectFeature(feature) {
 selectFeature(features.value);
 
 function reload() {
-	if (loading.value === true) return;
+	if (loading === true) return;
 	loading.value = true;
 	pulse(goHome);
 	new Promise(function(resolve, reject) {

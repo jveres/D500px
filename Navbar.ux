@@ -4,7 +4,6 @@
 		<GradientStop Offset="1" Color="#00000000" />
 	</LinearGradient>
 	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8">
-		<Rectangle ux:Name="buttonHighlight" Layer="Background" Fill="#444" CornerRadius="5" Opacity="0" />
 		<Image File="Assets/Icons/Reload.png" Height="22" Opacity="1" Color="#eee">
 			<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 			<WhileTrue ux:Name="loadingTrigger">
@@ -16,9 +15,6 @@
 			<Seconds Stopwatch="Stopwatch">
 				<Pulse Target="loadingTrigger"/>
 			</Seconds>
-			<WhilePressed>
-				<Change buttonHighlight.Opacity="0.6" />
-			</WhilePressed>
 		</Image>
 	</Panel>
 	<Text Value="{selectedFeatureName}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">

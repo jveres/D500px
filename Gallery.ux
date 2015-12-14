@@ -1,5 +1,5 @@
 <!-- Scrollable picture gallery -->
-<Panel ux:Class="Gallery">
+<Panel ux:Class="Gallery" Background="#000">
 	<!-- Placeholder for empty list -->
 	<Panel>
 		<Image ux:Name="placeholderImage" File="Assets/Icons/Gallery.png" Alignment="Center" Width="20%" Color="#eee" />
