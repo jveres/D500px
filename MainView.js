@@ -27,23 +27,27 @@ var selectedFeature = undefined;
 var selectedFeatureName = Observable('');
 var goHome = Observable(false);
 
+function pulse(arg) {
+	arg.value = true;
+	arg.value = false;
+}
+
 function selectFeature(feature) {
 	if (selectedFeature) selectedFeature.selected.value = false;
 	selectedFeature = (feature.data ? feature.data : feature);
 	selectedFeature.selected.value = true;
 	selectedFeatureName.value = selectedFeature.name;
-	reload();
+	reload(true);
 }
 
 selectFeature(features.value);
 
 function reload() {
 	if (loading.value === true) return;
-	goHome.value = true;
-	goHome.value = false;
+	loading.value = true;
+	pulse(goHome);
 	new Promise(function(resolve, reject) {
 		Stopwatch.Start();
-		loading.value = true;
 		error.value = false;
 		errorMessage.value = "";
 		var timeout = setTimeout(function() {

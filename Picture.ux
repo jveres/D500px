@@ -2,7 +2,8 @@
 	<LayoutAnimation>
 		<Move RelativeTo="PositionChange" X="1" Y="1" Duration="0.2" Easing="CircularInOut" />
 	</LayoutAnimation>
-	<Image Url="{image_url}" StretchMode="UniformToFill" MemoryPolicy="QuickUnload" />
+	<!--Image Url="{image_url}" StretchMode="UniformToFill" MemoryPolicy="QuickUnload" /-->
+	<Image Url="{image_url}" StretchMode="UniformToFill" />
 	<LongPressed>
 		<Change photo.Opacity="0.5" Duration="0.2" />
 		<Callback Handler="{longPressed}" Delay="0.4"/>
