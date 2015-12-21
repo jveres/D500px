@@ -1,6 +1,6 @@
 <App Theme="Basic" ClearColor="#000">
 	<!-- Globals -->
-	<MemoryPolicy ux:Global="QuickUnload" UnloadInBackground="true" UnusedTimeout="60" UnpinInvisible="true" />
+	<!--MemoryPolicy ux:Global="UnloadPolicy" UnloadInBackground="true" UnpinInvisible="true" /-->
 	<Stopwatch ux:Global="Stopwatch" />
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
@@ -9,7 +9,6 @@
 		<DockPanel ux:Name="mainView">
 			<!-- Navigation and bars -->
 			<Translation ux:Name="mainViewTranslation" />
-			<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /-->
 			<Panel Dock="Top">
 				<iOS.StatusBarConfig Style="Light" />
 				<StatusBarBackground />
@@ -34,12 +33,13 @@
 						</Rectangle>
 						<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 					</Panel>
-					<BackButton>
+					<OnBackButton>
 						<Set navigator.Active="mainView" />
- 					</BackButton>
+ 					</OnBackButton>
 				</Navbar>
 				<Toast />
 				<Gallery />
+				<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /--> <!-- This maked the whole UI slooow -->
 			</Panel>
 		</DockPanel>
 		<Sidebar Width="180" ux:Name="sidebar" EdgeNavigation.Edge="Left">

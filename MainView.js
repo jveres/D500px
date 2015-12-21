@@ -36,11 +36,14 @@ function pulse(arg) {
 
 function selectFeature(feature) {
 	if (loading === true) return;
-	if (selectedFeature) selectedFeature.selected.value = false;
-	selectedFeature = (feature.data ? feature.data : feature);
-	selectedFeature.selected.value = true;
-	selectedFeatureName.value = selectedFeature.name;
-	reload(true);
+	pulse(goHome);
+	setTimeout(function() {
+		if (selectedFeature) selectedFeature.selected.value = false;
+		selectedFeature = (feature.data ? feature.data : feature);
+		selectedFeature.selected.value = true;
+		selectedFeatureName.value = selectedFeature.name;
+		reload();
+	}, 400);
 }
 
 selectFeature(features.value);
@@ -48,7 +51,6 @@ selectFeature(features.value);
 function reload() {
 	if (loading === true) return;
 	loading.value = true;
-	pulse(goHome);
 	new Promise(function(resolve, reject) {
 		Stopwatch.Start();
 		error.value = false;
@@ -56,7 +58,7 @@ function reload() {
 		var timeout = setTimeout(function() {
 			reject(new Error('Request timed out'));
 		}, FETCH_TIMEOUT);
-		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&sort=created_at&image_size=30&exclude=Nude&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
+		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&sort=created_at&image_size=30&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
 		.then(function(response) {
 			clearTimeout(timeout);
 			if (response && response.status == 200) return response.json();
@@ -64,6 +66,23 @@ function reload() {
 		})
 		.then(function(responseObject) {
 			feed.value = responseObject;
+			for (var i=0; i<responseObject.photos.length; i++) {
+				var photo = responseObject.photos[i];
+				var w = photo.width;
+				var h = photo.height;
+				var r = w/h;
+				var m = 256.0;
+				if (w > h) {
+		    		w = m;
+		    		h = w / r;
+		    	} else {
+		    		h = m;
+		    		w = h * r;
+		    	}
+		    	photo.image_width = Math.round(w);
+		    	photo.image_height = Math.round(h);
+			}
+			//debug_log(JSON.stringify(responseObject.photos[0]));
 			resolve();
 		})
 		.catch(function(err) {

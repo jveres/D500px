@@ -11,16 +11,16 @@
 		
 	<!-- Thumbnails list -->
 	<ScrollView ux:Name="galleryItems" Opacity="0">
-		<StackPanel>
 			<!-- Scrollview inset -->
-			<Panel Height="50" />
+			<Panel Height="50" Visibility="Hidden"/>
 			<!-- Pictures -->
-			<Panel Margin="5,0,0,0">
+			<Panel Y="50" Margin="5,0,0,0">
 				<ColumnLayout ColumnCount="2" />
-				<Each Items="{feed.photos}">
-					<Picture />
-				</Each>
+				<!--GalleryPanel-->
+					<Each Items="{feed.photos}">
+						<Picture />
+					</Each>
+				<!--/GalleryPanel-->
 			</Panel>		
-		</StackPanel>
 	</ScrollView>
 </Panel>
