@@ -24,6 +24,7 @@
         "Fuse.Scripting",
         "Uno.Collections",
         "Uno.Geometry",
+        "Uno.Threading",
         "Android"
   ],
   "Includes": [

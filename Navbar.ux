@@ -10,11 +10,11 @@
 				<Rotate Degrees="360" Easing="CircularInOut" Duration="0.9" DurationBack="0" />
 			</WhileTrue>
 			<WhileTrue Value="{loading}">
-				<Change reloadButton.Opacity="0.5" Duration="0.3" Easing="CircularInOut"/>
+				<Change reloadButton.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
 			</WhileTrue>
-			<Seconds Stopwatch="Stopwatch">
+			<WhileTrue Value="{spinning}">
 				<Pulse Target="loadingTrigger"/>
-			</Seconds>
+			</WhileTrue>
 		</Image>
 	</Panel>
 	<Text Value="{selectedFeatureName}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">

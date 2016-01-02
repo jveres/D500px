@@ -1,18 +1,6 @@
-<Rectangle ux:Class="Picture" ux:Name="photo" Margin="0,0,5,5" Background="#222">
-	<!--Image ux:Name="previewImage" Layer="Background" Url="{image_url}" MemoryPolicy="QuickUnload" Opacity="0">
-		<WhileImageLoaded>
-			<Change previewImage.Opacity="1" Duration="0.2" />
-		</WhileImageLoaded>
-	</Image-->
-	<!--Image Layer="Background" Url="{image_url}" MemoryPolicy="UnloadPolicy" /-->
-	
-	<ImageFill Url="{image_url}" />
-	<Image Visibility="Hidden">
-		<FakeImageSource ImageWidth="{image_width}" ImageHeight="{image_height}" />
-	</Image>
-	
+<ImagePanel ux:Class="Picture" ux:Name="photo" ImageWidth="{image_width}" ImageHeight="{image_height}" ImageUrl="{image_url}" Margin="0,0,5,5" Background="#222">
 	<LongPressed>
 		<Change photo.Opacity="0.5" Duration="0.2" />
 		<Callback Handler="{longPressed}" Delay="0.4" />
 	</LongPressed>
-</Rectangle>
+</ImagePanel>

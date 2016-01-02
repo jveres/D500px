@@ -1,10 +1,12 @@
 var Observable = require('FuseJS/Observable');
 var interApp = require('FuseJS/InterApp');
-var Stopwatch = require("Stopwatch");
 var vibration = require('FuseJS/Vibration');
+
+var DEBUG = false;
 
 var feed = Observable();
 var loading = Observable(false);
+var spinning = Observable(false);
 var error = Observable(false);
 var errorMessage = Observable('');
 var FETCH_TIMEOUT = 15*1000;
@@ -35,24 +37,62 @@ function pulse(arg) {
 }
 
 function selectFeature(feature) {
-	if (loading === true) return;
 	pulse(goHome);
-	setTimeout(function() {
-		if (selectedFeature) selectedFeature.selected.value = false;
-		selectedFeature = (feature.data ? feature.data : feature);
-		selectedFeature.selected.value = true;
-		selectedFeatureName.value = selectedFeature.name;
-		reload();
-	}, 400);
+	if (loading.value === true) return;
+	var featureName = (feature.data ? feature.data.name : feature.name);
+	if (!selectedFeature || (featureName !== selectedFeature.name)) {
+		setTimeout(function() {
+			if (selectedFeature) selectedFeature.selected.value = false;
+			selectedFeature = (feature.data ? feature.data : feature);
+			selectedFeature.selected.value = true;
+			selectedFeatureName.value = featureName;
+			feed.value = {photos: []};
+			reload();
+		}, 500);
+	}
 }
 
 selectFeature(features.value);
 
+var _spinner = null;
+function startSpinning() {
+	if (_spinner !== null) clearInterval(_spinner);
+	_spinner = setInterval(function() {
+		spinning.value = true;
+		spinning.value = false;
+	}, 1000);
+}
+
+function stopSpinning() {
+	if (_spinner !== null) {
+		clearInterval(_spinner);
+		_spinner = null;
+		spinning.value = false;
+	}
+}
+
+function GalleryPhoto(url, image_url, image_width, image_height)
+{
+	this.url = url;
+	this.image_url = image_url;
+	this.image_width = image_width;
+	this.image_height = image_height;
+}
+
+var _urls = [];
+
+function IsPhoto(photo)
+{
+	for (var i=0; i<feed.value.photos.length; i++)
+		if (photo.url === feed.value.photos[i].url) return true;
+	return false;
+}
+
 function reload() {
-	if (loading === true) return;
+	if (loading.value === true) return;
 	loading.value = true;
+	startSpinning();
 	new Promise(function(resolve, reject) {
-		Stopwatch.Start();
 		error.value = false;
 		errorMessage.value = "";
 		var timeout = setTimeout(function() {
@@ -65,12 +105,12 @@ function reload() {
 			else reject(new Error('Response error'));
 		})
 		.then(function(responseObject) {
-			feed.value = responseObject;
+			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
 			for (var i=0; i<responseObject.photos.length; i++) {
 				var photo = responseObject.photos[i];
 				var w = photo.width;
 				var h = photo.height;
-				var r = w/h;
+				var r = w / h;
 				var m = 256.0;
 				if (w > h) {
 		    		w = m;
@@ -79,10 +119,12 @@ function reload() {
 		    		h = m;
 		    		w = h * r;
 		    	}
-		    	photo.image_width = Math.round(w);
-		    	photo.image_height = Math.round(h);
+		    	photo.image_width = Math.ceil(w);
+		    	photo.image_height = Math.ceil(h);
+		    	var galleryPhoto = new GalleryPhoto(photo.url, photo.image_url, photo.image_width, photo.image_height);
+		    	if (!IsPhoto(galleryPhoto)) feed.value.photos.splice(0, 0, galleryPhoto);
 			}
-			//debug_log(JSON.stringify(responseObject.photos[0]));
+			feed.value = feed.value; // hmm
 			resolve();
 		})
 		.catch(function(err) {
@@ -90,12 +132,12 @@ function reload() {
 		});
 	})
 	.then(function() {
-		Stopwatch.Pause();
+		stopSpinning();
 		loading.value = false;
 	})
 	.catch(function(err) {
+		stopSpinning();
 		loading.value = false;
-		Stopwatch.Pause();
 		errorMessage.value = err.message + ", try again...";
 		error.value = true;
 	});
@@ -111,6 +153,7 @@ module.exports = {
 	reload: reload,
 	longPressed: longPressed,
 	loading: loading,
+	spinning: spinning,
 	error: error,
 	errorMessage: errorMessage,
 	features: features,
