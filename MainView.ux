@@ -38,7 +38,7 @@
 				</Navbar>
 				<Toast />
 				<Gallery />
-				<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /--> <!-- This maked the whole UI slooow -->
+				<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /--> <!-- This makes the whole UI slooow -->
 			</Panel>
 		</DockPanel>
 		<Sidebar Width="180" ux:Name="sidebar" EdgeNavigation.Edge="Left">
