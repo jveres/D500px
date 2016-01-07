@@ -1,26 +1,21 @@
 <!-- Scrollable picture gallery -->
 <Panel ux:Class="Gallery" Background="#000">
-	<!-- Placeholder for empty list -->
-	<Panel>
-		<Image ux:Name="placeholderImage" File="Assets/Icons/Gallery.png" Alignment="Center" Width="20%" Color="#eee" />
-		<WhileCount GreaterThan="0" Items="{feed.photos}">
-			<Change placeholderImage.Opacity="0" Duration="0.3" Easing="CircularInOut"/>
-			<Change galleryItems.Opacity="1" Duration="0.3" Delay="0.2" Easing="CircularInOut"/>
-		</WhileCount>
-	</Panel>
-		
 	<!-- Thumbnails list -->
-	<ScrollView ux:Name="galleryItems" Opacity="0">
+	<ScrollView ux:Name="galleryItems">
 			<!-- Scrollview inset -->
-			<Panel Height="50" Visibility="Hidden"/>
-			<!-- Pictures -->
-			<Panel Y="50" Margin="5,0,0,0">
+			<Placeholder Height="50" Visibility="Hidden" HitTestMode="None"/>
+			<Panel Margin="5,0,0,0" Offset="0,50">
 				<ColumnLayout ColumnCount="2" />
-				<!--GalleryPanel-->
-					<Each Items="{feed.photos}">
-						<Picture />
-					</Each>
-				<!--/GalleryPanel-->
+				<Each Items="{feed.photos}">
+					<!-- Pictures -->
+					<Placeholder ux:Name="photo" Margin="0,0,5,5" Background="#222">
+						<ImageView ImageWidth="{image_width}" ImageHeight="{image_height}" ImageUrl="{image_url}" />
+						<LongPressed>
+							<Change photo.Opacity="0.5" Duration="0.2" />
+							<Callback Handler="{longPressed}" Delay="0.4" />
+						</LongPressed>
+					</Placeholder>
+				</Each>
 			</Panel>		
 	</ScrollView>
 </Panel>

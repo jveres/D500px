@@ -4,13 +4,16 @@ var vibration = require('FuseJS/Vibration');
 
 var DEBUG = false;
 
-var feed = Observable();
+var feed = Observable({photos: []});
 var loading = Observable(false);
 var spinning = Observable(false);
-var error = Observable(false);
 var errorMessage = Observable('');
+var goHome = Observable(false);
 var FETCH_TIMEOUT = 15*1000;
 var MAX_PHOTOS = 40;
+var ERROR_DISMISS_TIMEOUT = 5*1000;
+
+var navbarVisible = Observable(true);
 
 function Feature(name, query, selected) {
 	this.name =  name;
@@ -19,15 +22,11 @@ function Feature(name, query, selected) {
 };
 
 var features = Observable();
-features.add(new Feature('Most Popular','popular'));
+features.add(new Feature('Most Popular','popular', true));
 features.add(new Feature('Highest Rated', 'highest_rated'));
 features.add(new Feature('Upcoming', 'upcoming'));
 features.add(new Feature('Editor\'s Pick', 'editors'));
 features.add(new Feature('Fresh Today', 'fresh_today'));
-
-var selectedFeature = undefined;
-var selectedFeatureName = Observable('');
-var goHome = Observable(false);
 
 function pulse(arg) {
 	if (arg instanceof Observable) {
@@ -35,6 +34,9 @@ function pulse(arg) {
 		arg.value = false;
 	}
 }
+
+var selectedFeature = features.value;
+var selectedFeatureName = Observable(selectedFeature.name);
 
 function selectFeature(feature) {
 	pulse(goHome);
@@ -51,8 +53,6 @@ function selectFeature(feature) {
 		}, 500);
 	}
 }
-
-selectFeature(features.value);
 
 var _spinner = null;
 function startSpinning() {
@@ -71,21 +71,44 @@ function stopSpinning() {
 	}
 }
 
-function GalleryPhoto(url, image_url, image_width, image_height)
+function GalleryPhoto(url, image_url, image_width, image_height, photo_url, photo_width, photo_height)
 {
 	this.url = url;
 	this.image_url = image_url;
 	this.image_width = image_width;
 	this.image_height = image_height;
+	this.photo_url = photo_url;
+	this.photo_width = photo_width;
+	this.photo_height = photo_height;
 }
 
-var _urls = [];
-
-function IsPhoto(photo)
+function isPhoto(photo)
 {
 	for (var i=0; i<feed.value.photos.length; i++)
 		if (photo.url === feed.value.photos[i].url) return true;
 	return false;
+}
+
+function placeholderSize(width, height, max_edge)
+{
+	var ratio = width / height;
+	if (width > height) {
+		width = max_edge;
+		height = width / ratio;
+	} else {
+		height = max_edge;
+		width = height * ratio;
+	}
+	return {width: Math.ceil(width), height: Math.ceil(height)};
+}
+
+var _errorTimeout;
+function displayError(err) {
+	errorMessage.value = (err.message || err) + ", try again...";
+	clearTimeout(_errorTimeout);
+	_errorTimeout = setTimeout(function() {
+		errorMessage.value = "";
+	}, ERROR_DISMISS_TIMEOUT);
 }
 
 function reload() {
@@ -93,12 +116,10 @@ function reload() {
 	loading.value = true;
 	startSpinning();
 	new Promise(function(resolve, reject) {
-		error.value = false;
-		errorMessage.value = "";
 		var timeout = setTimeout(function() {
 			reject(new Error('Request timed out'));
 		}, FETCH_TIMEOUT);
-		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&sort=created_at&image_size=30&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
+		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&sort=created_at&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
 		.then(function(response) {
 			clearTimeout(timeout);
 			if (response && response.status == 200) return response.json();
@@ -107,22 +128,18 @@ function reload() {
 		.then(function(responseObject) {
 			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
 			for (var i=0; i<responseObject.photos.length; i++) {
-				var photo = responseObject.photos[i];
-				var w = photo.width;
-				var h = photo.height;
-				var r = w / h;
-				var m = 256.0;
-				if (w > h) {
-		    		w = m;
-		    		h = w / r;
-		    	} else {
-		    		h = m;
-		    		w = h * r;
+				var responsePhoto = responseObject.photos[i];
+				var image_url, photo_url;
+		    	for (var j=0; j<responsePhoto.images.length; j++) {
+		    		if (responsePhoto.images[j].size === 30) image_url = responsePhoto.images[j].https_url;
+		    		else if (responsePhoto.images[j].size === 1080) photo_url = responsePhoto.images[j].https_url;
 		    	}
-		    	photo.image_width = Math.ceil(w);
-		    	photo.image_height = Math.ceil(h);
-		    	var galleryPhoto = new GalleryPhoto(photo.url, photo.image_url, photo.image_width, photo.image_height);
-		    	if (!IsPhoto(galleryPhoto)) feed.value.photos.splice(0, 0, galleryPhoto);
+		    	if (image_url && photo_url) {
+			    	var image_size = placeholderSize(responsePhoto.width, responsePhoto.height, 256);
+					var photo_size = placeholderSize(responsePhoto.width, responsePhoto.height, 1080);
+			    	var galleryPhoto = new GalleryPhoto(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height);
+			    	if (!isPhoto(galleryPhoto)) feed.value.photos.splice(0, 0, galleryPhoto);
+			    }
 			}
 			feed.value = feed.value; // hmm
 			resolve();
@@ -138,15 +155,26 @@ function reload() {
 	.catch(function(err) {
 		stopSpinning();
 		loading.value = false;
-		errorMessage.value = err.message + ", try again...";
-		error.value = true;
+		displayError(err);
+		if (DEBUG) debug_log(JSON.stringify(err));
 	});
 }
 
 function longPressed(args) {
-	vibration.vibrate(0.03);
-	interApp.launchUri('http://500px.com/' + args.data.url);
+	vibration.vibrate(0.02);
+	interApp.launchUri('https://500px.com' + args.data.url);
 }
+
+function hideNavbar() {
+	navbarVisible.value = false;
+}
+
+function showNavbar() {
+	navbarVisible.value = true;
+}
+
+// main
+reload();
 
 module.exports = {
 	feed: feed,
@@ -154,10 +182,12 @@ module.exports = {
 	longPressed: longPressed,
 	loading: loading,
 	spinning: spinning,
-	error: error,
 	errorMessage: errorMessage,
 	features: features,
 	selectFeature: selectFeature,
 	selectedFeatureName: selectedFeatureName,
-	goHome: goHome
+	goHome: goHome,
+	navbarVisible: navbarVisible,
+	hideNavbar: hideNavbar,
+	showNavbar: showNavbar
 };

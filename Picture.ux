@@ -1,6 +1,0 @@
-<ImagePanel ux:Class="Picture" ux:Name="photo" ImageWidth="{image_width}" ImageHeight="{image_height}" ImageUrl="{image_url}" Margin="0,0,5,5" Background="#222">
-	<LongPressed>
-		<Change photo.Opacity="0.5" Duration="0.2" />
-		<Callback Handler="{longPressed}" Delay="0.4" />
-	</LongPressed>
-</ImagePanel>

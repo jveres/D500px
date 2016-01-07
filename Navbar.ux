@@ -1,13 +1,11 @@
-<Panel ux:Class="Navbar" Alignment="Top" Height="50" Padding="10,10,5,10">
-	<LinearGradient StartPoint="0,0" EndPoint="0,1">
-		<GradientStop Offset="0" Color="#000000f0" />
-		<GradientStop Offset="1" Color="#00000000" />
-	</LinearGradient>
+<!-- Navigation bar -->
+<Panel ux:Class="Navbar" ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10">
 	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8">
 		<Image File="Assets/Icons/Reload.png" Height="22" Opacity="1" Color="#eee">
+			<Rotation ux:Name="reloadRotation" Degrees="0" />
 			<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 			<WhileTrue ux:Name="loadingTrigger">
-				<Rotate Degrees="360" Easing="CircularInOut" Duration="0.9" DurationBack="0" />
+				<Change Target="reloadRotation.Degrees" Value="359" Duration="0.9" DurationBack="0" DelayBack="0" Easing="CircularInOut" />
 			</WhileTrue>
 			<WhileTrue Value="{loading}">
 				<Change reloadButton.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
@@ -20,4 +18,7 @@
 	<Text Value="{selectedFeatureName}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 	</Text>
+	<WhileFalse Value="{navbarVisible}">
+		<Change navbar.Opacity="0" Easing="CircularInOut" Duration="0.2" />
+	</WhileFalse>
 </Panel>
