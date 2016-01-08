@@ -124,7 +124,7 @@ function reload() {
 		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&sort=created_at&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
 		.then(function(response) {
 			clearTimeout(timeout);
-			if (isTimedout) reject(new Error('Request timed out'));
+			if (isTimedout) return reject(new Error('Request timed out'));
 			if (response && response.status == 200) return response.json();
 			else reject(new Error('Response error'));
 		})
