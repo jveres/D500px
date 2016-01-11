@@ -1,6 +1,6 @@
 <App Theme="Basic" ClearColor="#000">
 	<!-- Globals -->
-	<MemoryPolicy ux:Global="UnloadPolicy" UnloadInBackground="true" UnpinInvisible="true" UnusedTimeout="60" />
+	<MemoryPolicy ux:Global="UnloadInvisible" UnloadInBackground="true" UnpinInvisible="true" UnusedTimeout="1" />
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />

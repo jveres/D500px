@@ -14,6 +14,8 @@ var MAX_PHOTOS = 40;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
+var emptyPhoto = {photo_url: ""};
+var currentImage = Observable(emptyPhoto);
 
 function Feature(name, query, selected) {
 	this.name =  name;
@@ -176,6 +178,14 @@ function showNavbar() {
 	navbarVisible.value = true;
 }
 
+function selectImage(args) {
+	currentImage.value = args.data;
+}
+
+function deselectImage(args) {
+	currentImage.value = emptyPhoto;
+}
+
 // main
 reload();
 
@@ -192,5 +202,8 @@ module.exports = {
 	goHome: goHome,
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
-	showNavbar: showNavbar
+	showNavbar: showNavbar,
+	selectImage: selectImage,
+	deselectImage: deselectImage,
+	currentImage: currentImage
 };

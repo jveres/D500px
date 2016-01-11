@@ -3,17 +3,24 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Resources;
 using Fuse.Elements;
+using Fuse.Controls;
+using Fuse.Triggers;
+using WhileLoaded;
 
 public class ImageView: Element
 {
         HttpImageSource _source = new HttpImageSource();
 
-        public float ImageWidth { get; set; }
-        public float ImageHeight { get; set; }
         public String ImageUrl
         {
                 get { return _source.Url; }
-                set { _source.Url = value; }
+                set { if (_source.Url != value) _source.Url = value; }
+        }
+
+        public MemoryPolicy ImageMemoryPolicy
+        {
+                get { return _source.Policy; }
+                set { if (_source.Policy != value) _source.Policy = value; }
         }
 
         public ImageView()
@@ -33,19 +40,12 @@ public class ImageView: Element
                 base.OnUnrooted();
         }
 
-        protected override float2 GetContentSize(float2 fillSize, SizeFlags fillSet)
-        {
-                return float2(ImageWidth, ImageHeight);
-        }
-
-        public override float2 GetMarginSize(float2 fillSize, SizeFlags fillSet)
-        {
-                return float2(fillSize.X, ImageHeight * (fillSize.X / ImageWidth));
-        }
-
         void OnSourceChanged(object Source, object Args)
         {
                 if (_source.State == ImageSourceState.Ready) UpdateManager.AddDeferredAction(InvalidateVisual);
+                WhileLoaded.SetState(this, _source.State == ImageSourceState.Ready);
+                WhileFailed.SetState(this, _source.State == ImageSourceState.Failed, "Image loading error");
+                WhileLoading.SetState(this, _source.State == ImageSourceState.Loading);
         }
 
         protected override void OnDraw(DrawContext dc)

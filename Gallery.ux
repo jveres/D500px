@@ -1,21 +1,61 @@
 <!-- Scrollable picture gallery -->
-<Panel ux:Class="Gallery" Background="#000">
-	<!-- Thumbnails list -->
-	<ScrollView ux:Name="galleryItems">
-			<!-- Scrollview inset -->
-			<Placeholder Height="50" Visibility="Hidden" HitTestMode="None"/>
-			<Panel Margin="5,0,0,0" Offset="0,50">
-				<ColumnLayout ColumnCount="2" />
-				<Each Items="{feed.photos}">
-					<!-- Pictures -->
-					<Placeholder ux:Name="photo" Margin="0,0,5,5" Background="#222">
-						<ImageView ImageWidth="{image_width}" ImageHeight="{image_height}" ImageUrl="{image_url}" />
-						<LongPressed>
-							<Change photo.Opacity="0.5" Duration="0.2" />
-							<Callback Handler="{longPressed}" Delay="0.4" />
-						</LongPressed>
-					</Placeholder>
-				</Each>
-			</Panel>		
-	</ScrollView>
+<Panel ux:Class="Gallery" ux:Name="galleryPanel">
+	<MultiLayoutPanel ux:Name="multiLayoutPanel" LayoutElement="galleryItems">
+		<!--Detail view -->
+		<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed">
+			<ScrollView>
+				<Panel Alignment="Center" Width="100%">
+					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{image_width}" ImageHeight="{image_height}" />
+					<ImageView ux:Name="photo" HitTestMode="None" Layer="Overlay" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadInvisible" Visibility="Collapsed" />
+				</Panel>
+			</ScrollView>
+			<Clicked>
+				<Callback Handler="{deselectImage}" />
+				<Set photo.Visibility="Collapsed" />
+				<Set detailsView.HitTestMode="None" />
+				<Set detailsMode.Value="false"/>
+				<Set multiLayoutPanel.LayoutElement="galleryItems" Delay="0.2"/>
+				<Set detailsView.Visibility="Collapsed" Delay="0.3"/>
+				<Callback Handler="{showNavbar}" />
+			</Clicked>
+		</Panel>
+		<!-- Background divider -->
+		<WhileTrue ux:Name="detailsMode">
+			<Change backgroundPanel.Opacity="0.9" Duration="0.2" Easing="CircularInOut"/>
+		</WhileTrue>
+		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" />
+		<!-- Thumbnails list -->
+		<ScrollView ux:Name="galleryItems">
+				<!-- Scrollview inset -->
+				<Placeholder Height="50" Visibility="Hidden" HitTestMode="None"/>
+				<Panel Margin="5,0,0,0" Offset="0,50">
+					<ColumnLayout ColumnCount="2" />
+					<Each Items="{feed.photos}">
+						<!-- Pictures -->
+						<PlaceholderView Margin="0,0,5,5" Background="#222" ImageWidth="{image_width}" ImageHeight="{image_height}" Clicked="{selectImage}">
+							<ImageView ux:Name="image" ImageUrl="{image_url}">
+								<LayoutAnimation>
+									<Move X="1" Y="1" Duration="0.3" DurationBack="0.3" RelativeTo="LayoutChange" Easing="CircularInOut" />
+									<Resize X="1" Y="1" Duration="0.3" DurationBack="0.3" RelativeTo="LayoutChange" Easing="CircularInOut" />
+								</LayoutAnimation>
+							</ImageView>
+							<LongPressed>
+								<Change image.Opacity="0.5" Duration="0.2" />
+								<Callback Handler="{longPressed}" Delay="0.4" />
+							</LongPressed>
+							<Clicked>
+								<Callback Handler="{hideNavbar}" />
+								<Set detailsView.HitTestMode="LocalBounds" />
+								<Set detailsView.Visibility="Visible" />
+								<Set detailsPlaceholder.Target="image" />
+								<Set detailsMode.Value="true" />
+								<Set multiLayoutPanel.LayoutElement="detailsView" />
+								<Set photo.Visibility="Visible" Delay="0.3" />
+								<BringToFront/>
+							</Clicked>
+						</PlaceholderView>
+					</Each>
+				</Panel>		
+		</ScrollView>
+	</MultiLayoutPanel>
 </Panel>
