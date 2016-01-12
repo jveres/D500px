@@ -35,8 +35,8 @@
 						<PlaceholderView Margin="0,0,5,5" Background="#222" ImageWidth="{image_width}" ImageHeight="{image_height}" Clicked="{selectImage}">
 							<ImageView ux:Name="image" ImageUrl="{image_url}">
 								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.3" DurationBack="0.3" RelativeTo="LayoutChange" Easing="CircularInOut" />
-									<Resize X="1" Y="1" Duration="0.3" DurationBack="0.3" RelativeTo="LayoutChange" Easing="CircularInOut" />
+									<Move X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
+									<Resize X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
 								</LayoutAnimation>
 							</ImageView>
 							<LongPressed>
@@ -45,7 +45,7 @@
 							</LongPressed>
 							<Clicked>
 								<Callback Handler="{hideNavbar}" />
-								<Set detailsView.HitTestMode="LocalBounds" />
+								<Set detailsView.HitTestMode="LocalBoundsAndChildren" />
 								<Set detailsView.Visibility="Visible" />
 								<Set detailsPlaceholder.Target="image" />
 								<Set detailsMode.Value="true" />
