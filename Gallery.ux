@@ -6,7 +6,11 @@
 			<ScrollView>
 				<Panel Alignment="Center" Width="100%">
 					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{image_width}" ImageHeight="{image_height}" />
-					<ImageView ux:Name="photo" HitTestMode="None" Layer="Overlay" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadInvisible" Visibility="Collapsed" />
+					<ImageView ux:Name="photo" HitTestMode="None" Layer="Overlay" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadInvisible" Visibility="Collapsed">
+						<WhileFailed>
+							<Callback Handler="{showImageLoadingError}" />
+						</WhileFailed>
+					</ImageView>
 				</Panel>
 			</ScrollView>
 			<Clicked>
@@ -17,6 +21,7 @@
 				<Set multiLayoutPanel.LayoutElement="galleryItems" Delay="0.2"/>
 				<Set detailsView.Visibility="Collapsed" Delay="0.3"/>
 				<Callback Handler="{showNavbar}" />
+				<Callback Handler="{enableNavigation}" />
 			</Clicked>
 		</Panel>
 		<!-- Background divider -->
@@ -44,6 +49,8 @@
 								<Callback Handler="{longPressed}" Delay="0.4" />
 							</LongPressed>
 							<Clicked>
+								<Callback Handler="{disableNavigation}" />
+								<Set detailsView.IsEnabled="true" Delay="0.3" />
 								<Callback Handler="{hideNavbar}" />
 								<Set detailsView.HitTestMode="LocalBoundsAndChildren" />
 								<Set detailsView.Visibility="Visible" />

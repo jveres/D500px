@@ -14,8 +14,8 @@ var MAX_PHOTOS = 40;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
-var emptyPhoto = {photo_url: ""};
-var currentImage = Observable(emptyPhoto);
+var EMPTY_PHOTO = {photo_url: ""};
+var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, query, selected) {
 	this.name =  name;
@@ -106,7 +106,7 @@ function placeholderSize(width, height, max_edge)
 
 var _errorTimeout;
 function displayError(err) {
-	errorMessage.value = (err.message || err) + ", try again...";
+	errorMessage.value = (err.message || err);
 	clearTimeout(_errorTimeout);
 	_errorTimeout = setTimeout(function() {
 		errorMessage.value = "";
@@ -178,12 +178,28 @@ function showNavbar() {
 	navbarVisible.value = true;
 }
 
+var navigationEnabled = Observable(true);
+var navigationEdge = Observable("Left");
+
+function enableNavigation() {
+	navigationEnabled.value = true;
+}
+
+function disableNavigation() {
+	navigationEnabled.value = false;
+}
+
 function selectImage(args) {
 	currentImage.value = args.data;
 }
 
 function deselectImage(args) {
-	currentImage.value = emptyPhoto;
+	currentImage.value = EMPTY_PHOTO;
+}
+
+function showImageLoadingError()
+{
+	displayError("Image loading error");
 }
 
 // main
@@ -203,7 +219,12 @@ module.exports = {
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,
+	disableNavigation: disableNavigation,
+	enableNavigation: enableNavigation,
+	navigationEnabled: navigationEnabled,
+	navigationEdge: navigationEdge,
 	selectImage: selectImage,
 	deselectImage: deselectImage,
-	currentImage: currentImage
+	currentImage: currentImage,
+	showImageLoadingError: showImageLoadingError
 };

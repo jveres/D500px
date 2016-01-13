@@ -1,6 +1,6 @@
 <App Theme="Basic" ClearColor="#000">
 	<!-- Globals -->
-	<MemoryPolicy ux:Global="UnloadInvisible" UnloadInBackground="true" UnpinInvisible="true" UnusedTimeout="1" />
+	<MemoryPolicy ux:Global="UnloadInvisible" UnloadInBackground="true" UnpinInvisible="true" UnusedTimeout="60" />
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
@@ -15,7 +15,7 @@
 			<BottomBarBackground Dock="Bottom" />
 			<!-- Main -->
 			<Panel Dock="Fill" Background="#000">
-				<Navbar>
+				<Navbar IsEnabled="{navigationEnabled}">
 					<Panel ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
 						<!--Translation ux:Name="hamburgerIconTranslation" /-->
 						<Clicked>
@@ -41,7 +41,7 @@
 				<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /--> <!-- This makes the whole UI slooow -->
 			</Panel>
 		</DockPanel>
-		<Sidebar Width="180" ux:Name="sidebar" EdgeNavigation.Edge="Left">
+		<Sidebar Width="180" ux:Name="sidebar" Edge="Left">
 			<ActivatingAnimation>
 				<Change mainViewTranslation.X="180" />
 				<!-- Change to cross out -->
