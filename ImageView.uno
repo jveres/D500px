@@ -40,12 +40,15 @@ public class ImageView: Element
                 base.OnUnrooted();
         }
 
+        ImageSourceState _state;
         void OnSourceChanged(object Source, object Args)
         {
-                if (_source.State == ImageSourceState.Ready) UpdateManager.AddDeferredAction(InvalidateVisual);
-                WhileLoaded.SetState(this, _source.State == ImageSourceState.Ready);
-                WhileFailed.SetState(this, _source.State == ImageSourceState.Failed, "Image loading error");
-                WhileLoading.SetState(this, _source.State == ImageSourceState.Loading);
+                if (_state == _source.State) return; // circumvent Fuse bug here
+                _state = _source.State;
+                if (_state == ImageSourceState.Ready) UpdateManager.AddDeferredAction(InvalidateVisual);
+                WhileLoaded.SetState(this, _state == ImageSourceState.Ready);
+                WhileFailed.SetState(this, _state == ImageSourceState.Failed, "Image loading error");
+                WhileLoading.SetState(this, _state == ImageSourceState.Loading);
         }
 
         protected override void OnDraw(DrawContext dc)

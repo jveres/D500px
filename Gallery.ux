@@ -30,20 +30,28 @@
 		</WhileTrue>
 		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" />
 		<!-- Thumbnails list -->
-		<ScrollView ux:Name="galleryItems">
+		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 				<!-- Scrollview inset -->
-				<Placeholder Height="50" Visibility="Hidden" HitTestMode="None"/>
+				<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
+				<!-- Image layout -->
 				<Panel Margin="5,0,0,0" Offset="0,50">
 					<ColumnLayout ColumnCount="2" />
-					<Each Items="{feed.photos}">
+					<Each Items="{feed}">
 						<!-- Pictures -->
-						<PlaceholderView Margin="0,0,5,5" Background="#222" ImageWidth="{image_width}" ImageHeight="{image_height}" Clicked="{selectImage}">
+						<PlaceholderView Margin="0,0,5,5" ImageWidth="{image_width}" ImageHeight="{image_height}" Clicked="{selectImage}">
+							<SolidColor ux:Name="backgroundColor" Color="#222" />
 							<ImageView ux:Name="image" ImageUrl="{image_url}">
 								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
-									<Resize X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
+									<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
+									<Resize X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
 								</LayoutAnimation>
+								<WhileFailed>
+									<Set backgroundColor.Color="#110000" />
+								</WhileFailed>
 							</ImageView>
+							<LayoutAnimation>
+								<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
+							</LayoutAnimation>
 							<LongPressed>
 								<Change image.Opacity="0.5" Duration="0.2" />
 								<Callback Handler="{longPressed}" Delay="0.4" />
@@ -63,6 +71,6 @@
 						</PlaceholderView>
 					</Each>
 				</Panel>		
-		</ScrollView>
+		</ScrollingView>
 	</MultiLayoutPanel>
 </Panel>

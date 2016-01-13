@@ -4,11 +4,13 @@ var vibration = require('FuseJS/Vibration');
 
 var DEBUG = false;
 
-var feed = Observable({photos: []});
+var feed = Observable();
 var loading = Observable(false);
 var spinning = Observable(false);
 var errorMessage = Observable('');
 var goHome = Observable(false);
+var scrollToUrl = Observable("");
+
 var FETCH_TIMEOUT = 15*1000;
 var MAX_PHOTOS = 40;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
@@ -50,8 +52,8 @@ function selectFeature(feature) {
 			selectedFeature = (feature.data ? feature.data : feature);
 			selectedFeature.selected.value = true;
 			selectedFeatureName.value = featureName;
-			feed.value = {photos: []};
-			reload();
+			feed.clear();
+			reload({scrollToUrl: ""}); // reset scroll position
 		}, 500);
 	}
 }
@@ -60,8 +62,7 @@ var _spinner = null;
 function startSpinning() {
 	if (_spinner !== null) clearInterval(_spinner);
 	_spinner = setInterval(function() {
-		spinning.value = true;
-		spinning.value = false;
+		pulse(spinning);
 	}, 1000);
 }
 
@@ -86,8 +87,8 @@ function GalleryPhoto(url, image_url, image_width, image_height, photo_url, phot
 
 function isPhoto(photo)
 {
-	for (var i=0; i<feed.value.photos.length; i++)
-		if (photo.url === feed.value.photos[i].url) return true;
+	for (var i=0; i<feed.length; i++)
+		if (photo.url === feed.getAt(i).url) return true;
 	return false;
 }
 
@@ -113,8 +114,9 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-function reload() {
+function reload(opts) {
 	if (loading.value === true) return;
+	opts = opts || {};
 	loading.value = true;
 	startSpinning();
 	new Promise(function(resolve, reject) {
@@ -132,7 +134,8 @@ function reload() {
 		})
 		.then(function(responseObject) {
 			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
-			for (var i=0; i<responseObject.photos.length; i++) {
+			var new_items = 0;
+			for (var i=responseObject.photos.length-1; i>=0; i--) {
 				var responsePhoto = responseObject.photos[i];
 				var image_url, photo_url;
 		    	for (var j=0; j<responsePhoto.images.length; j++) {
@@ -143,10 +146,12 @@ function reload() {
 			    	var image_size = placeholderSize(responsePhoto.width, responsePhoto.height, 256);
 					var photo_size = placeholderSize(responsePhoto.width, responsePhoto.height, 1080);
 			    	var galleryPhoto = new GalleryPhoto(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height);
-			    	if (!isPhoto(galleryPhoto)) feed.value.photos.splice(0, 0, galleryPhoto);
+			    	if (!isPhoto(galleryPhoto)) {
+			    		new_items++;
+			    		feed.insertAt(0, galleryPhoto);
+			    	}
 			    }
 			}
-			feed.value = feed.value; // hmm
 			resolve();
 		})
 		.catch(function(err) {
@@ -156,6 +161,7 @@ function reload() {
 	.then(function() {
 		stopSpinning();
 		loading.value = false;
+		if (typeof opts.scrollToUrl == "string") scrollToUrl.value = opts.scrollToUrl;
 	})
 	.catch(function(err) {
 		stopSpinning();
@@ -226,5 +232,6 @@ module.exports = {
 	selectImage: selectImage,
 	deselectImage: deselectImage,
 	currentImage: currentImage,
-	showImageLoadingError: showImageLoadingError
+	showImageLoadingError: showImageLoadingError,
+	scrollToUrl: scrollToUrl
 };
