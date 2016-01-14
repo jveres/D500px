@@ -7,7 +7,7 @@ using Fuse.Controls;
 using Fuse.Triggers;
 using WhileLoaded;
 
-public class ImageView: Element
+public class ImageView: Control
 {
         HttpImageSource _source = new HttpImageSource();
 
@@ -55,7 +55,10 @@ public class ImageView: Element
         protected override void OnDraw(DrawContext dc)
         {
                 texture2D tex = _source.GetTexture();
-                if (tex == null) return;
+                if (tex == null) {
+                        DrawBackground(dc, 1f);
+                        return;
+                }
                 draw
                 {
                         apply Fuse.Drawing.Planar.Image;
