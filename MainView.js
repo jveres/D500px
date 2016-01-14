@@ -16,8 +16,7 @@ var MAX_PHOTOS = 40;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
-var EMPTY_PHOTO = {photo_url: ""};
-var currentImage = Observable(EMPTY_PHOTO);
+var currentImage = Observable({photo_url: "", photo_width: 0, photo_height: 0});
 
 function Feature(name, query, selected) {
 	this.name =  name;
@@ -200,7 +199,7 @@ function selectImage(args) {
 }
 
 function deselectImage(args) {
-	currentImage.value = EMPTY_PHOTO;
+	currentImage.value = {photo_url: ""}; // aborts current download
 }
 
 function showImageLoadingError()

@@ -5,7 +5,8 @@
 		<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed">
 			<ScrollView>
 				<Panel Alignment="Center" Width="100%">
-					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{image_width}" ImageHeight="{image_height}" />
+					<!-- Hi-res image -->
+					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{photo_width}" ImageHeight="{photo_height}" />
 					<ImageView ux:Name="photo" HitTestMode="None" Layer="Overlay" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadInvisible" Visibility="Collapsed">
 						<WhileFailed>
 							<Callback Handler="{showImageLoadingError}" />
@@ -14,14 +15,14 @@
 				</Panel>
 			</ScrollView>
 			<Clicked>
-				<Callback Handler="{deselectImage}" />
-				<Set photo.Visibility="Collapsed" />
 				<Set detailsView.HitTestMode="None" />
 				<Set detailsMode.Value="false"/>
 				<Set multiLayoutPanel.LayoutElement="galleryItems" Delay="0.2"/>
 				<Set detailsView.Visibility="Collapsed" Delay="0.3"/>
+				<Set photo.Visibility="Collapsed" Delay="0.3" />
 				<Callback Handler="{showNavbar}" />
 				<Callback Handler="{enableNavigation}" />
+				<Callback Handler="{deselectImage}" />
 			</Clicked>
 		</Panel>
 		<!-- Background divider -->
@@ -31,46 +32,47 @@
 		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" />
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
-				<!-- Scrollview inset -->
-				<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
-				<!-- Image layout -->
-				<Panel Margin="5,0,0,0" Offset="0,50">
-					<ColumnLayout ColumnCount="2" />
-					<Each Items="{feed}">
-						<!-- Pictures -->
-						<PlaceholderView Margin="0,0,5,5" ImageWidth="{image_width}" ImageHeight="{image_height}" Clicked="{selectImage}">
-							<SolidColor ux:Name="backgroundColor" Color="#222" />
-							<ImageView ux:Name="image" ImageUrl="{image_url}">
-								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
-									<Resize X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="LayoutChange" Easing="CircularInOut" />
-								</LayoutAnimation>
-								<WhileFailed>
-									<Set backgroundColor.Color="#110000" />
-								</WhileFailed>
-							</ImageView>
+			<!-- Scrollview inset -->
+			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
+			<!-- Image layout -->
+			<Panel Margin="5,0,0,0" Offset="0,50">
+				<ColumnLayout ColumnCount="2" />
+				<Each Items="{feed}">
+					<!-- Lo-res images -->
+					<PlaceholderView ux:Name="placeholderView" Margin="0,0,5,5" ImageWidth="{image_width}" ImageHeight="{image_height}">
+						<SolidColor ux:Name="backgroundColor" Color="#222" />
+						<ImageView ux:Name="image" ImageUrl="{image_url}">
 							<LayoutAnimation>
-								<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
+								<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+								<Resize X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
 							</LayoutAnimation>
-							<LongPressed>
-								<Change image.Opacity="0.5" Duration="0.2" />
-								<Callback Handler="{longPressed}" Delay="0.4" />
-							</LongPressed>
-							<Clicked>
-								<Callback Handler="{disableNavigation}" />
-								<Set detailsView.IsEnabled="true" Delay="0.3" />
-								<Callback Handler="{hideNavbar}" />
-								<Set detailsView.HitTestMode="LocalBoundsAndChildren" />
-								<Set detailsView.Visibility="Visible" />
-								<Set detailsPlaceholder.Target="image" />
-								<Set detailsMode.Value="true" />
-								<Set multiLayoutPanel.LayoutElement="detailsView" />
-								<Set photo.Visibility="Visible" Delay="0.3" />
-								<BringToFront/>
-							</Clicked>
-						</PlaceholderView>
-					</Each>
-				</Panel>		
+							<WhileFailed>
+								<Set backgroundColor.Color="#110000" />
+							</WhileFailed>
+						</ImageView>
+						<LayoutAnimation>
+							<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
+						</LayoutAnimation>
+						<LongPressed>
+							<Change image.Opacity="0.5" Duration="0.2" />
+							<Callback Handler="{longPressed}" Delay="0.4" />
+						</LongPressed>
+						<Clicked>
+							<Callback Handler="{selectImage}" />
+							<Callback Handler="{disableNavigation}" />
+							<Callback Handler="{hideNavbar}" />
+							<Set detailsView.IsEnabled="true" Delay="0.3" />
+							<Set detailsView.HitTestMode="LocalBoundsAndChildren" />
+							<Set detailsView.Visibility="Visible" />
+							<Set detailsPlaceholder.Target="image" />
+							<Set detailsMode.Value="true" />
+							<Set multiLayoutPanel.LayoutElement="detailsView" />
+							<Set photo.Visibility="Visible" Delay="0.3" />
+							<BringToFront/>
+						</Clicked>
+					</PlaceholderView>
+				</Each>
+			</Panel>
 		</ScrollingView>
 	</MultiLayoutPanel>
 </Panel>

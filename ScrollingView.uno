@@ -30,7 +30,7 @@ public class ScrollingView : ScrollView
                 if (n is ImageView)
                 {
                         var imageView = n as ImageView;
-                        if (imageView.ImageUrl == _url || _url == "")
+                        if (imageView.ImageUrl == _url || _url == "") // empty Url means the first ImageView
                         {
                                 imageView.BringIntoView();
                                 _done = true;

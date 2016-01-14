@@ -37,6 +37,7 @@ public class ImageView: Element
         protected override void OnUnrooted()
         {
                 _source.Changed -= OnSourceChanged;
+                _source.Url = null;
                 base.OnUnrooted();
         }
 
