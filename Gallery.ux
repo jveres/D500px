@@ -35,21 +35,23 @@
 			<!-- Scrollview inset -->
 			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
-			<Panel Padding="5,0,0,0" Y="50">
+			<Panel Y="50" Padding="0,0,5,5">
 				<ColumnLayout ColumnCount="2" />
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
-					<PlaceholderView ux:Name="placeholderView" Padding="0,0,5,5" Background="#000" ImageWidth="{image_width}" ImageHeight="{image_height}">
-						<ImageView ux:Name="image" ImageUrl="{image_url}">
+					<Panel Padding="5,5,0,0" Background="#000">
+						<PlaceholderView ux:Name="placeholderView" ImageWidth="{image_width}" ImageHeight="{image_height}">
 							<SolidColor ux:Name="backgroundColor" Color="#222"/>
-							<LayoutAnimation>
-								<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
-								<Resize X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
-							</LayoutAnimation>
-							<WhileFailed>
-								<Change backgroundColor.Color="#110000" Duration="0.2" Easing="CircularInOut" />
-							</WhileFailed>
-						</ImageView>
+							<ImageView ux:Name="image" ImageUrl="{image_url}">
+								<LayoutAnimation>
+									<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+									<Resize X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
+								</LayoutAnimation>
+								<WhileFailed>
+									<Set backgroundColor.Color="#1f0000" />
+								</WhileFailed>
+							</ImageView>
+						</PlaceholderView>
 						<LayoutAnimation>
 							<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
 						</LayoutAnimation>
@@ -70,7 +72,7 @@
 							<Set photo.Visibility="Visible" Delay="0.3" />
 							<BringToFront/>
 						</Clicked>
-					</PlaceholderView>
+					</Panel>
 				</Each>
 			</Panel>
 		</ScrollingView>
