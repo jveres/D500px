@@ -5,14 +5,35 @@ using Fuse.Controls;
 
 public class PlaceholderView: Placeholder
 {
-	public float ImageWidth { get; set; }
-    public float ImageHeight { get; set; }
+	float _imageWidth, _imageHeight;
+
+	public float ImageWidth
+	{
+		get {
+			return _imageWidth;
+		}
+
+		set {
+			_imageWidth = value;
+			InvalidateLayout();
+		}
+	}
+
+	public float ImageHeight
+	{
+		get {
+			return _imageHeight;
+		}
+
+		set {
+			_imageHeight = value;
+			InvalidateLayout();
+		}
+	}
     
     public override float2 GetMarginSize(float2 fillSize, SizeFlags fillSet)
     {
-        if (ImageWidth == 0 || ImageHeight == 0 || !fillSet.HasFlag(SizeFlags.X)) return float2(0);
-        return float2(fillSize.X, ImageHeight * (fillSize.X / ImageWidth));
+    	if (_imageWidth == 0 || _imageHeight == 0) return float2(0);
+        return float2(fillSize.X, _imageHeight * (fillSize.X / _imageWidth));
     }
-
-    // FIXME: layout engine perhaps has a bug: sometimes orphaned views can be seen without content (but margins, paddings are visible -- taking place)
 }

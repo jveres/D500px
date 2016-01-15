@@ -1,5 +1,9 @@
 <!-- Navigation bar -->
 <Panel ux:Class="Navbar" ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10">
+	<LinearGradient StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Offset="0" Color="#000000f0" />
+		<GradientStop Offset="1" Color="#00000000" />
+	</LinearGradient>
 	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
 		<Image File="Assets/Icons/Reload.png" Height="22" Opacity="1" Color="#eee">
 			<Rotation ux:Name="reloadRotation" Degrees="0" />

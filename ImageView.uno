@@ -22,10 +22,10 @@ public class ImageView: Element
                 set { if (_source.Policy != value) _source.Policy = value; }
         }
 
-        /*public ImageView()
+        public ImageView()
         {
                 CachingMode = CachingMode.Optimized;
-        }*/
+        }
 
         protected override void OnRooted()
         {
@@ -36,7 +36,7 @@ public class ImageView: Element
         protected override void OnUnrooted()
         {
                 _source.Changed -= OnSourceChanged;
-                _source.Url = null;
+                _source.Url = null; // abort pending Http request
                 base.OnUnrooted();
         }
 
