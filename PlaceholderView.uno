@@ -9,26 +9,32 @@ public class PlaceholderView: Placeholder
 
 	public float ImageWidth
 	{
-		get {
-			return _imageWidth;
-		}
-
-		set {
-			_imageWidth = value;
-			InvalidateLayout();
+		get { return _imageWidth; }
+		set 
+		{
+			if (_imageWidth != value)
+			{
+				_imageWidth = value;
+				_invalidateLayout();
+			}
 		}
 	}
 
 	public float ImageHeight
 	{
-		get {
-			return _imageHeight;
-		}
-
+		get { return _imageHeight; }
 		set {
-			_imageHeight = value;
-			InvalidateLayout();
+			if (_imageHeight != value)
+			{
+				_imageHeight = value;
+				_invalidateLayout();
+			}
 		}
+	}
+
+	internal void _invalidateLayout()
+	{
+		if (_imageWidth > 0 && _imageHeight > 0) InvalidateLayout();
 	}
     
     public override float2 GetMarginSize(float2 fillSize, SizeFlags fillSet)
