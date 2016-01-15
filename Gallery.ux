@@ -54,7 +54,7 @@
 							</ImageView>
 						</PlaceholderView>
 						<LayoutAnimation>
-							<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
+							<Move X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
 						</LayoutAnimation>
 						<LongPressed>
 							<Change image.Opacity="0.5" Duration="0.2" />

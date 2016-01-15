@@ -41,7 +41,7 @@ var selectedFeature = features.value;
 var selectedFeatureName = Observable(selectedFeature.name);
 
 function selectFeature(feature) {
-	hideSidebar();
+	pulse(toggleSidebar);
 	if (loading.value === true) return;
 	var featureName = (feature.data ? feature.data.name : feature.name);
 	if (!selectedFeature || (featureName !== selectedFeature.name)) {
@@ -175,6 +175,8 @@ function longPressed(args) {
 }
 
 var sidebarVisible = Observable(false);
+var toggleSidebar = Observable(false);
+
 
 function showSidebar() {
 	sidebarVisible.value = true;
@@ -236,6 +238,7 @@ module.exports = {
 	sidebarVisible: sidebarVisible,
 	showSidebar: showSidebar,
 	hideSidebar: hideSidebar,
+	toggleSidebar: toggleSidebar,
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,

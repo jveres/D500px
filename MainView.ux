@@ -6,17 +6,21 @@
 	<JavaScript File="MainView.js" />
 	<EdgeNavigator ux:Name="navigator">
 		<WhileTrue Value="{sidebarVisible}">
-			<DebugAction Message="whiletrue" />
 			<Set coverPanel.IsEnabled="true" />
 		</WhileTrue>
 		<WhileFalse Value="{sidebarVisible}">
-			<DebugAction Message="whilefalse" />
 			<Set coverPanel.IsEnabled="false" />
 		</WhileFalse>
+		<WhileTrue ux:Name="toggleSidebarTrigger">
+			<NavigateToggle Target="sidebar" />
+		</WhileTrue>
+		<WhileTrue Value="{toggleSidebar}">
+			<Pulse Target="toggleSidebarTrigger" />
+		</WhileTrue>
 		<DockPanel ux:Name="mainView">
 			<Panel ux:Name="coverPanel" IsEnabled="false" Opacity="0" HitTestMode="LocalBounds">
 				<Clicked>
-					<NavigateToggle Target="sidebar" />
+					<Pulse Target="toggleSidebarTrigger" />
 				</Clicked>
 			</Panel>
 			<!-- Navigation and bars -->
