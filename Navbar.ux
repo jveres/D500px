@@ -21,6 +21,9 @@
 	</Panel>
 	<Text Value="{selectedFeatureName}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
+		<Clicked>
+			<Callback Handler="{scrollToTop}" />
+		</Clicked>
 	</Text>
 	<WhileFalse Value="{navbarVisible}">
 		<Change navbar.Opacity="0" Easing="CircularInOut" Duration="0.2" />

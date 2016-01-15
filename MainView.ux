@@ -5,7 +5,20 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
 	<EdgeNavigator ux:Name="navigator">
+		<WhileTrue Value="{sidebarVisible}">
+			<DebugAction Message="whiletrue" />
+			<Set coverPanel.IsEnabled="true" />
+		</WhileTrue>
+		<WhileFalse Value="{sidebarVisible}">
+			<DebugAction Message="whilefalse" />
+			<Set coverPanel.IsEnabled="false" />
+		</WhileFalse>
 		<DockPanel ux:Name="mainView">
+			<Panel ux:Name="coverPanel" IsEnabled="false" Opacity="0" HitTestMode="LocalBounds">
+				<Clicked>
+					<NavigateToggle Target="sidebar" />
+				</Clicked>
+			</Panel>
 			<!-- Navigation and bars -->
 			<Translation ux:Name="mainViewTranslation" />
 			<Panel Dock="Top">
@@ -17,9 +30,9 @@
 			<Panel Dock="Fill" Background="#000">
 				<Navbar IsEnabled="{navigationEnabled}">
 					<Panel ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
-						<!--Translation ux:Name="hamburgerIconTranslation" /-->
+						<Translation ux:Name="hamburgerIconTranslation" />
 						<Clicked>
-							<Set navigator.Active="sidebar" />
+							<NavigateToggle Target="sidebar" />
 						</Clicked>
 						<Rectangle ux:Name="topRectangle" Height="2" Width="20" Fill="#eee">
 							<Translation Y="-9" ux:Name="topMenuTranslation" />
@@ -32,18 +45,18 @@
 						</Rectangle>
 						<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 					</Panel>
-					<OnBackButton>
-						<Set navigator.Active="mainView" />
- 					</OnBackButton>
 				</Navbar>
 				<Toast />
 				<Gallery />
 				<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /--> <!-- This makes the whole UI slooow -->
 			</Panel>
+			<Panel ux:Name="dummyPanel" />
 		</DockPanel>
 		<Sidebar Width="180" ux:Name="sidebar" Edge="Left">
 			<ActivatingAnimation>
+				<Callback Handler="{showSidebar}" AtProgress="1" />
 				<Change mainViewTranslation.X="180" />
+				<Change hamburgerIconTranslation.X="-180" />
 				<!-- Change to cross out -->
 				<Change topMenuTranslation.Y="0" />
 				<Change bottomMenuTranslation.Y="0" />
@@ -53,12 +66,12 @@
 				<Change topRectangle.Width="24" />
 				<Change bottomRectangle.Width="24" />
 			</ActivatingAnimation>
+			<DeactivatingAnimation>
+				<Callback Handler="{hideSidebar}" AtProgress="1" />
+			</DeactivatingAnimation>
+			<OnBackButton>
+				<Callback Handler="{hideSidebar}" />
+ 			</OnBackButton>
 		</Sidebar>
-		<WhileTrue ux:Name="activateHome">
-			<Set navigator.Active="mainView" />
-		</WhileTrue>
-		<WhileTrue Value="{goHome}">
-			<Pulse Target="activateHome" />
-		</WhileTrue>
 	</EdgeNavigator>
 </App>

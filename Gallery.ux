@@ -6,7 +6,8 @@
 			<ScrollView>
 				<Panel Alignment="Center" Width="100%">
 					<!-- Hi-res image -->
-					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{photo_width}" ImageHeight="{photo_height}" />
+					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{photo_width}" ImageHeight="{photo_height}">
+					</PlaceholderView>
 					<ImageView ux:Name="photo" HitTestMode="None" Layer="Overlay" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadInvisible" Visibility="Collapsed">
 						<WhileFailed>
 							<Callback Handler="{showImageLoadingError}" />
@@ -16,9 +17,9 @@
 			</ScrollView>
 			<Clicked>
 				<Set detailsView.HitTestMode="None" />
-				<Set detailsMode.Value="false"/>
-				<Set multiLayoutPanel.LayoutElement="galleryItems" Delay="0.2"/>
-				<Set detailsView.Visibility="Collapsed" Delay="0.3"/>
+				<Set detailsMode.Value="false" />
+				<Set multiLayoutPanel.LayoutElement="galleryItems" Delay="0.2" />
+				<Set detailsView.Visibility="Collapsed" Delay="0.3" />
 				<Set photo.Visibility="Collapsed" Delay="0.3" />
 				<Callback Handler="{showNavbar}" />
 				<Callback Handler="{enableNavigation}" />
@@ -27,7 +28,7 @@
 		</Panel>
 		<!-- Background divider -->
 		<WhileTrue ux:Name="detailsMode">
-			<Change backgroundPanel.Opacity="0.9" Duration="0.2" Easing="CircularInOut"/>
+			<Change backgroundPanel.Opacity="0.9" Duration="0.2" Easing="CircularInOut" />
 		</WhileTrue>
 		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" />
 		<!-- Thumbnails list -->
@@ -41,7 +42,7 @@
 					<!-- Lo-res images -->
 					<Panel Padding="5,5,0,0" Background="#000">
 						<PlaceholderView ux:Name="placeholderView" ImageWidth="{image_width}" ImageHeight="{image_height}">
-							<SolidColor ux:Name="backgroundColor" Color="#222"/>
+							<SolidColor ux:Name="backgroundColor" Color="#222" />
 							<ImageView ux:Name="image" ImageUrl="{image_url}">
 								<LayoutAnimation>
 									<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
@@ -70,7 +71,7 @@
 							<Set detailsMode.Value="true" />
 							<Set multiLayoutPanel.LayoutElement="detailsView" />
 							<Set photo.Visibility="Visible" Delay="0.3" />
-							<BringToFront/>
+							<BringToFront />
 						</Clicked>
 					</Panel>
 				</Each>

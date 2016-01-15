@@ -1,6 +1,7 @@
 <DockPanel ux:Class="Sidebar" ux:Name="sidebar" Background="#000">
+	<Panel ux:Class="PlaceholderPanel" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 	<Grid Dock="Fill" Rows="1*,auto,1*">
-		<Panel Visibility="Hidden" />
+		<PlaceholderPanel />
 		<ScrollView ClipToBounds="false">
 			<StackPanel>
 				<Each Items="{features}">
@@ -10,7 +11,7 @@
 				</Each>
 			</StackPanel>
 		</ScrollView>
-		<Panel Visibility="Hidden" />
+		<PlaceholderPanel />
 		<LinearGradient StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Offset="0" Color="#000" />
 			<GradientStop Offset="0.3" Color="#212831" />

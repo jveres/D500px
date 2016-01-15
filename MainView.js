@@ -8,7 +8,6 @@ var feed = Observable();
 var loading = Observable(false);
 var spinning = Observable(false);
 var errorMessage = Observable('');
-var goHome = Observable(false);
 var scrollToUrl = Observable("");
 
 var FETCH_TIMEOUT = 15*1000;
@@ -42,7 +41,7 @@ var selectedFeature = features.value;
 var selectedFeatureName = Observable(selectedFeature.name);
 
 function selectFeature(feature) {
-	pulse(goHome);
+	hideSidebar();
 	if (loading.value === true) return;
 	var featureName = (feature.data ? feature.data.name : feature.name);
 	if (!selectedFeature || (featureName !== selectedFeature.name)) {
@@ -175,6 +174,16 @@ function longPressed(args) {
 	interApp.launchUri('https://500px.com' + args.data.url);
 }
 
+var sidebarVisible = Observable(false);
+
+function showSidebar() {
+	sidebarVisible.value = true;
+}
+
+function hideSidebar() {
+	sidebarVisible.value = false;
+}
+
 function hideNavbar() {
 	navbarVisible.value = false;
 }
@@ -184,7 +193,6 @@ function showNavbar() {
 }
 
 var navigationEnabled = Observable(true);
-var navigationEdge = Observable("Left");
 
 function enableNavigation() {
 	navigationEnabled.value = true;
@@ -207,6 +215,11 @@ function showImageLoadingError()
 	displayError("Image loading error");
 }
 
+function scrollToTop()
+{
+	scrollToUrl.value = "";
+}
+
 // main
 reload();
 
@@ -220,17 +233,19 @@ module.exports = {
 	features: features,
 	selectFeature: selectFeature,
 	selectedFeatureName: selectedFeatureName,
-	goHome: goHome,
+	sidebarVisible: sidebarVisible,
+	showSidebar: showSidebar,
+	hideSidebar: hideSidebar,
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,
 	disableNavigation: disableNavigation,
 	enableNavigation: enableNavigation,
 	navigationEnabled: navigationEnabled,
-	navigationEdge: navigationEdge,
 	selectImage: selectImage,
 	deselectImage: deselectImage,
 	currentImage: currentImage,
 	showImageLoadingError: showImageLoadingError,
-	scrollToUrl: scrollToUrl
+	scrollToUrl: scrollToUrl,
+	scrollToTop: scrollToTop
 };
