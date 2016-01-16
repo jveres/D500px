@@ -73,9 +73,12 @@
 			<DeactivatingAnimation>
 				<Callback Handler="{hideSidebar}" AtProgress="1" />
 			</DeactivatingAnimation>
-			<OnBackButton>
-				<Set navigator.Active="mainView" />
- 			</OnBackButton>
 		</Sidebar>
+		<OnKeyPress Key="BackButton">
+			<Set navigator.Active="mainView" />
+ 		</OnKeyPress>
+ 		<OnKeyPress Key="MenuButton">
+ 			<NavigateToggle Target="sidebar" />
+ 		</OnKeyPress>
 	</EdgeNavigator>
 </App>

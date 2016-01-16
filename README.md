@@ -23,13 +23,14 @@
 - ~~fast image draw/background placeholders~~
 - ~~image triggers: WhileLoaded, WhileFailed, WhileLoading~~
 - ~~Http request error handling~~
+- custom gallery layout
 - D500px account login
 - display photo details
 - interactions (likes, commenting, etc)
 
 *Note1: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
 
-*Note2: Due to a bug in Fuse the app currently has performance glitches/issues. Fix coming soon.*
+*Note2: Currently there are some known performance issues, especially on iOS. Fix coming soon.*
 
 *Note3: This is still a work in progress.*
 
