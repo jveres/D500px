@@ -20,7 +20,7 @@
 		<DockPanel ux:Name="mainView">
 			<Panel ux:Name="coverPanel" IsEnabled="false" Opacity="0" HitTestMode="LocalBounds">
 				<Clicked>
-					<Pulse Target="toggleSidebarTrigger" />
+					<Set navigator.Active="mainView" />
 				</Clicked>
 			</Panel>
 			<!-- Navigation and bars -->
@@ -74,7 +74,7 @@
 				<Callback Handler="{hideSidebar}" AtProgress="1" />
 			</DeactivatingAnimation>
 			<OnBackButton>
-				<Callback Handler="{hideSidebar}" />
+				<Set navigator.Active="mainView" />
  			</OnBackButton>
 		</Sidebar>
 	</EdgeNavigator>

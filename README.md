@@ -1,12 +1,29 @@
 # 500px gallery demo
 
-## Screenshot
+## Screenshots
 <img src="https://github.com/jveres/D500px/blob/master/Screenshot1.png?raw=true" width="250">
 <img src="https://github.com/jveres/D500px/blob/master/Screenshot2.png?raw=true" width="250">
 <img src="https://github.com/jveres/D500px/blob/master/Screenshot3.png?raw=true" width="250">
 
 #### Nifty gallery app built with [Fusetools](https://www.fusetools.com/)
 
-*Note 1: By long pressing an image opens the browser.*
+[APK DOWNLOAD](https://github.com/jveres/D500px/blob/master/D500px-debug.apk)
 
-*Note 2: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
+## Features
+
+* Gallery thumbnails are downloaded as they reveal in the scrollview
+* Click on an thumbnail to view hi-res photo
+* Long pressing an image opens its 500px page in the browser
+* Automatic top scrolling between feature changes
+* Clicking on the title scrolls the gallery view to the top
+
+## Todo
+
+- ~~fast image draw/background placeholders~~
+- ~~image triggers: WhileLoaded, WhileFailed, WhileLoading~~
+- ~~Http request error handling~~
+- D500px accunt login
+- display photo details
+- interactions (likes, commenting, etc)
+
+*Note: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*

@@ -45,8 +45,8 @@
 							<SolidColor ux:Name="backgroundColor" Color="#222" />
 							<ImageView ux:Name="image" ImageUrl="{image_url}">
 								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
-									<Resize X="1" Y="1" Duration="0.3" DurationBack="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
+									<Move X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+									<Resize X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
 								</LayoutAnimation>
 								<WhileFailed>
 									<Set backgroundColor.Color="#1f0000" />
