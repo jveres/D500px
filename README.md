@@ -28,5 +28,8 @@
 - interactions (likes, commenting, etc)
 
 *Note1: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
+
 *Note2: Due to a bug in Fuse the app currently has performance glitches/issues. Fix coming soon.*
+
 *Note3: This is still a work in progress.*
+
