@@ -7,7 +7,7 @@
 
 #### Nifty gallery app built with [Fusetools](https://www.fusetools.com/)
 
-<a href="https://github.com/jveres/D500px/blob/master/D500px-debug.apk?dl=0">APK Download</a>
+<a href="https://github.com/jveres/D500px/blob/master/D500px-debug.apk?raw=true">APK Download</a>
 
 ## Features
 
