@@ -163,7 +163,7 @@ function reload(opts) {
 	})
 	.catch(function(err) {
 		stopSpinning();
-		loading.value = false;
+		loading.value = false;	
 		displayError(err);
 		if (DEBUG) debug_log(JSON.stringify(err));
 	});

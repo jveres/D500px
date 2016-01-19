@@ -39,7 +39,7 @@ public class PlaceholderView: Placeholder
     
     public override float2 GetMarginSize(float2 fillSize, SizeFlags fillSet)
     {
-    	if (_imageWidth == 0 || _imageHeight == 0) return float2(0);
+    	if (_imageWidth == 0 || _imageHeight == 0) return fillSize;
         return float2(fillSize.X, _imageHeight * (fillSize.X / _imageWidth));
     }
 }
