@@ -12,6 +12,7 @@ var scrollToUrl = Observable("");
 
 var FETCH_TIMEOUT = 15*1000;
 var MAX_PHOTOS = 40;
+var MAX_FEED_LENGHT = 120;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
@@ -128,7 +129,7 @@ function reload(opts) {
 			clearTimeout(timeout);
 			if (isTimedout) return reject(new Error('Request timed out'));
 			if (response && response.status == 200) return response.json();
-			else reject(new Error('Response error'));
+			else reject(new Error(response ? 'Response error (' + response.status + ')' : 'No response from server'));
 		})
 		.then(function(responseObject) {
 			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
@@ -150,6 +151,7 @@ function reload(opts) {
 			    	}
 			    }
 			}
+			while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
 			resolve();
 		})
 		.catch(function(err) {
