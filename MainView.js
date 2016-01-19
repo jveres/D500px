@@ -123,7 +123,7 @@ function reload(opts) {
 			isTimedout = true;
 			reject(new Error('Request timed out'));
 		}, FETCH_TIMEOUT);
-		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&sort=created_at&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
+		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
 		.then(function(response) {
 			clearTimeout(timeout);
 			if (isTimedout) return reject(new Error('Request timed out'));
