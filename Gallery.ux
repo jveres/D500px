@@ -6,31 +6,32 @@
 			<ScrollView>
 				<Panel Alignment="Center" Width="100%">
 					<!-- Hi-res image -->
-					<PlaceholderView ux:Name="detailsPlaceholder" ImageWidth="{photo_width}" ImageHeight="{photo_height}">
-					</PlaceholderView>
-					<ImageView ux:Name="photo" HitTestMode="None" Layer="Overlay" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused" Visibility="Collapsed">
+					<ImageView ux:Name="photo" HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused" Visibility="Collapsed">
 						<WhileFailed>
 							<Callback Handler="{showImageLoadingError}" />
 						</WhileFailed>
 					</ImageView>
+					<AspectPlaceholder ux:Name="detailsPlaceholder" AspectRatio="{currentImage.image_ratio}" />
 				</Panel>
 			</ScrollView>
 			<Clicked>
-				<Set detailsView.HitTestMode="None" />
 				<Set detailsMode.Value="false" />
-				<Set multiLayoutPanel.LayoutElement="galleryItems" Delay="0.2" />
-				<Set detailsView.Visibility="Collapsed" Delay="0.3" />
-				<Set photo.Visibility="Collapsed" Delay="0.3" />
 				<Callback Handler="{showNavbar}" />
 				<Callback Handler="{enableNavigation}" />
 				<Callback Handler="{deselectImage}" />
 			</Clicked>
 		</Panel>
-		<!-- Background divider -->
+		<!-- Details mode trigger -->
 		<WhileTrue ux:Name="detailsMode">
 			<Change backgroundPanel.Opacity="0.9" Duration="0.2" Easing="CircularInOut" />
+			<Change detailsView.Visibility="Visible" />
+			<Change detailsView.IsEnabled="true" Delay="0.3" />
+			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3"/>
+			<Change photo.Visibility="Visible" Delay="0.3" />
+			<Change multiLayoutPanel.LayoutElement="detailsView" />
 		</WhileTrue>
-		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" />
+		<!-- Background divider -->
+		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" IsEnabled="false"/>
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->
@@ -41,40 +42,32 @@
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
 					<Panel Padding="5,5,0,0" Background="#000">
-						<PlaceholderView ux:Name="placeholderView" ImageWidth="{image_width}" ImageHeight="{image_height}">
+						<AspectPlaceholder AspectRatio="{image_ratio}">
 							<SolidColor ux:Name="backgroundColor" Color="#222" />
 							<ImageView ux:Name="image" LayoutRole="Independent" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
 								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
-									<Resize X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
+									<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+									<Resize X="1" Y="1" Duration="0.2" RelativeTo="SizeChange" Easing="CircularInOut" />
 								</LayoutAnimation>
 								<WhileFailed>
 									<Set backgroundColor.Color="#1f0000" />
 								</WhileFailed>
 							</ImageView>
-						</PlaceholderView>
-						<AddingAnimation>
-							<Move X="1" Y="1" Duration="0" DurationBack="0" />
-						</AddingAnimation>
+						</AspectPlaceholder>
 						<LayoutAnimation>
-							<Move X="1" Y="1" Duration="0.2" DurationBack="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+							<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
 						</LayoutAnimation>
 						<LongPressed>
 							<Change image.Opacity="0.5" Duration="0.2" />
 							<Callback Handler="{longPressed}" Delay="0.4" />
 						</LongPressed>
 						<Clicked>
+							<BringToFront />
 							<Callback Handler="{selectImage}" />
 							<Callback Handler="{disableNavigation}" />
 							<Callback Handler="{hideNavbar}" />
-							<Set detailsView.IsEnabled="true" Delay="0.3" />
-							<Set detailsView.HitTestMode="LocalBoundsAndChildren" />
-							<Set detailsView.Visibility="Visible" />
 							<Set detailsPlaceholder.Target="image" />
 							<Set detailsMode.Value="true" />
-							<Set multiLayoutPanel.LayoutElement="detailsView" />
-							<Set photo.Visibility="Visible" Delay="0.3" />
-							<BringToFront />
 						</Clicked>
 					</Panel>
 				</Each>

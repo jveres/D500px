@@ -16,7 +16,8 @@ var MAX_FEED_LENGHT = 120;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
-var currentImage = Observable({photo_url: "", photo_width: 0, photo_height: 0});
+var EMPTY_PHOTO = {photo_url: "", image_ratio: 0}
+var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, query, selected) {
 	this.name =  name;
@@ -79,6 +80,7 @@ function GalleryPhoto(url, image_url, image_width, image_height, photo_url, phot
 	this.image_url = image_url;
 	this.image_width = image_width;
 	this.image_height = image_height;
+	this.image_ratio = image_height / image_width;
 	this.photo_url = photo_url;
 	this.photo_width = photo_width;
 	this.photo_height = photo_height;
