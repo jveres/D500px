@@ -56,9 +56,9 @@
 						<LayoutAnimation>
 							<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
 						</LayoutAnimation>
-						<Pressed>
+						<WhilePressed>
                 			<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut"/>
-            			</Pressed>
+            			</WhilePressed>
 						<LongPressed>
 							<Change image.Opacity="0.5" Duration="0.2" />
 							<Callback Handler="{longPressed}" Delay="0.4" />
