@@ -11,7 +11,7 @@
 							<Callback Handler="{showImageLoadingError}" />
 						</WhileFailed>
 					</ImageView>
-					<AspectPlaceholder ux:Name="detailsPlaceholder" AspectRatio="{currentImage.image_ratio}" />
+					<AspectPlaceholder ux:Name="detailsPlaceholder" AspectRatio="{image_ratio}" />
 				</Panel>
 			</ScrollView>
 			<Clicked>
@@ -24,8 +24,7 @@
 		<!-- Details mode trigger -->
 		<WhileTrue ux:Name="detailsMode">
 			<Change backgroundPanel.Opacity="0.9" Duration="0.2" Easing="CircularInOut" />
-			<Change detailsView.Visibility="Visible" />
-			<Change detailsView.IsEnabled="true" Delay="0.3" />
+			<Change detailsView.Visibility="Visible"/>
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3"/>
 			<Change photo.Visibility="Visible" Delay="0.3" />
 			<Change multiLayoutPanel.LayoutElement="detailsView" />
@@ -57,6 +56,9 @@
 						<LayoutAnimation>
 							<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
 						</LayoutAnimation>
+						<Pressed>
+                			<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut"/>
+            			</Pressed>
 						<LongPressed>
 							<Change image.Opacity="0.5" Duration="0.2" />
 							<Callback Handler="{longPressed}" Delay="0.4" />
@@ -67,7 +69,7 @@
 							<Callback Handler="{disableNavigation}" />
 							<Callback Handler="{hideNavbar}" />
 							<Set detailsPlaceholder.Target="image" />
-							<Set detailsMode.Value="true" />
+							<Set detailsMode.Value="true" Delay="0.1" />
 						</Clicked>
 					</Panel>
 				</Each>
