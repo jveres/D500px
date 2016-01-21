@@ -6,7 +6,20 @@
 			<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
 				<Panel>
 					<!-- Hi-res image -->
+					
+						<Circle ux:Name="loadingSpinner" Width="50" Height="50" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
+							<Stroke Width="2" Brush="#eee" />
+						</Circle>
+					
+					<WhileTrue ux:Name="showSpinner">
+						<Change loadingSpinner.Opacity="1" Duration="0.1" Delay="0.1" DelayBack="0" DurationBack="0"/>
+						<Spin Target="loadingSpinner" Frequency="2"/>
+						<Cycle Target="loadingSpinner.LengthAngleDegrees" Low="30" High="300" Frequency="0.7" />
+					</WhileTrue>
 					<ImageView ux:Name="photo" HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused" Visibility="Collapsed">
+						<WhileLoading>
+							<Change showSpinner.Value="true" DelayBack="0" DurationBack="0" />
+						</WhileLoading>
 						<WhileFailed>
 							<Callback Handler="{showImageLoadingError}" />
 						</WhileFailed>
@@ -37,7 +50,7 @@
 			<Change backgroundPanel.Opacity="1" Duration="0.2" />
 			<Change detailsView.Visibility="Visible"/>
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3"/>
-			<Change photo.Visibility="Visible" Delay="0.3" />
+			<Change photo.Visibility="Visible" Delay="0.4" />
 			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 		</WhileTrue>
 		<!-- Background divider -->
@@ -56,8 +69,8 @@
 							<SolidColor ux:Name="backgroundColor" Color="#222" />
 							<ImageView ux:Name="image" LayoutRole="Independent" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
 								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="BackIn" />
-									<Resize X="1" Y="1" Duration="0.2" RelativeTo="SizeChange" Easing="BackIn" />
+									<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="BackIn" />
+									<Resize X="1" Y="1" Duration="0.3" RelativeTo="SizeChange" Easing="BackIn" />
 								</LayoutAnimation>
 								<WhileFailed>
 									<Set backgroundColor.Color="#1f0000" />
@@ -80,7 +93,7 @@
 							<Callback Handler="{disableNavigation}" />
 							<Callback Handler="{hideNavbar}" />
 							<Set detailsPlaceholder.Target="image" />
-							<Set detailsMode.Value="true" Delay="0.1" />
+							<Set detailsMode.Value="true" />
 						</Clicked>
 					</Panel>
 				</Each>

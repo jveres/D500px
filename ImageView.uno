@@ -63,6 +63,7 @@ public class ImageView: Element
                         Size: ActualSize;
                         Texture: tex;
                         BlendEnabled: false;
+                        DepthTestEnabled: false;
                 };
         }
 }

@@ -14,6 +14,7 @@
 * Gallery thumbnails are downloaded as they reveal in the scrollview
 * Click on a thumbnail to view hi-res photo
 * Swipe down the photo to dismiss details
+* Loading spinner for hi-res images
 * Long pressing an image opens its 500px page in the browser
 * Automatic top scrolling between feature changes
 * Clicking on the title scrolls the gallery view to the top
