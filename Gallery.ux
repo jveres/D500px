@@ -3,8 +3,8 @@
 	<MultiLayoutPanel ux:Name="multiLayoutPanel" LayoutElement="galleryItems">
 		<!--Detail view -->
 		<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed">
-			<ScrollView>
-				<Panel Alignment="Center" Width="100%">
+			<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
+				<Panel>
 					<!-- Hi-res image -->
 					<ImageView ux:Name="photo" HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused" Visibility="Collapsed">
 						<WhileFailed>
@@ -13,24 +13,35 @@
 					</ImageView>
 					<AspectPlaceholder ux:Name="detailsPlaceholder" AspectRatio="{image_ratio}" />
 				</Panel>
+				<ScrollingAnimation From="0" To="-150">
+					<Scale Target="detailsView" Factor="0.8" />
+					<Change detailsView.Opacity="0.85" />
+				</ScrollingAnimation>
+				<ScrollingAnimation From="-110" To="-111">
+					<Pulse Target="closeDetails" />
+				</ScrollingAnimation>
 			</ScrollView>
 			<Clicked>
+				<Pulse Target="closeDetails" />
+			</Clicked>
+			<!-- Closing trugger -->
+			<WhileTrue ux:Name="closeDetails">
 				<Set detailsMode.Value="false" />
 				<Callback Handler="{showNavbar}" />
 				<Callback Handler="{enableNavigation}" />
 				<Callback Handler="{deselectImage}" />
-			</Clicked>
+			</WhileTrue>
 		</Panel>
 		<!-- Details mode trigger -->
 		<WhileTrue ux:Name="detailsMode">
-			<Change backgroundPanel.Opacity="0.9" Duration="0.2" Easing="CircularInOut" />
+			<Change backgroundPanel.Opacity="1" Duration="0.2" />
 			<Change detailsView.Visibility="Visible"/>
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3"/>
 			<Change photo.Visibility="Visible" Delay="0.3" />
-			<Change multiLayoutPanel.LayoutElement="detailsView" />
+			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 		</WhileTrue>
 		<!-- Background divider -->
-		<Panel Background="#111" ux:Name="backgroundPanel" Opacity="0" HitTestMode="None" IsEnabled="false"/>
+		<Panel ux:Name="backgroundPanel" Opacity="0" Background="#000000a0" HitTestMode="None" IsEnabled="false" />
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->
