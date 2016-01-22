@@ -56,6 +56,21 @@
 		</WhileTrue>
 		<!-- Background divider -->
 		<Panel ux:Name="backgroundPanel" Opacity="0" Background="#000000a0" HitTestMode="None" IsEnabled="false" />
+		<!-- Feature description -->
+		<StackPanel ux:Name="descriptionPanel" Opacity="0" HitTestMode="None" IsEnabled="false" Alignment="Center">
+			<Text Alignment="Center" Value="Loading Feature:" TextColor="#212831" FontSize="20" Font="Light">
+				<Translation ux:Name="descriptionTranslation1" X="-20" />
+			</Text>
+			<Text Alignment="Center" Value="{selectedFeature.desc}" TextColor="#444" FontSize="20" Font="Regular">
+				<Translation ux:Name="descriptionTranslation2" X="20" />
+			</Text>
+		</StackPanel>
+		<WhileEmpty Items="{feed}">
+			<Change descriptionPanel.Opacity="1" Duration="0.1" DurationBack="0" />
+			<Change descriptionTranslation1.X="0" Duration="0.3" Easing="QuadraticInOut" />
+			<Change descriptionTranslation2.X="0" Duration="0.5" Easing="QuadraticInOut" />
+			<Change galleryItems.Opacity="0" Duration="0.2" DelayBack="0.2"/>
+		</WhileEmpty>
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->

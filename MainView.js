@@ -19,18 +19,19 @@ var navbarVisible = Observable(true);
 var EMPTY_PHOTO = {photo_url: ""}
 var currentImage = Observable(EMPTY_PHOTO);
 
-function Feature(name, query, selected) {
+function Feature(name, desc, query, selected) {
 	this.name =  name;
+	this.desc =  desc;
 	this.query = query;
 	this.selected = Observable(selected || false);
 };
 
 var features = Observable();
-features.add(new Feature('Most Popular','popular', true));
-features.add(new Feature('Highest Rated', 'highest_rated'));
-features.add(new Feature('Upcoming', 'upcoming'));
-features.add(new Feature('Editor\'s Pick', 'editors'));
-features.add(new Feature('Fresh Today', 'fresh_today'));
+features.add(new Feature('Most Popular', 'Trending Right Now', 'popular', true));
+features.add(new Feature('Highest Rated', 'Photos that Have Been Popular', 'highest_rated'));
+features.add(new Feature('Editor\'s Choice', 'Picked by Top Photographers', 'editors'));
+features.add(new Feature('Upcoming', 'Promising New Uploads', 'upcoming'));
+features.add(new Feature('Fresh Today', 'Latest from the Community', 'fresh_today'));
 
 function pulse(arg) {
 	if (arg instanceof Observable) {
@@ -39,19 +40,17 @@ function pulse(arg) {
 	}
 }
 
-var selectedFeature = features.value;
-var selectedFeatureName = Observable(selectedFeature.name);
+var selectedFeature = Observable(features.value);
 
 function selectFeature(feature) {
 	pulse(toggleSidebar);
 	if (loading.value === true) return;
 	var featureName = (feature.data ? feature.data.name : feature.name);
-	if (!selectedFeature || (featureName !== selectedFeature.name)) {
+	if (featureName !== selectedFeature.value.name) {
 		setTimeout(function() {
-			if (selectedFeature) selectedFeature.selected.value = false;
-			selectedFeature = (feature.data ? feature.data : feature);
-			selectedFeature.selected.value = true;
-			selectedFeatureName.value = featureName;
+			selectedFeature.value.selected.value = false;
+			selectedFeature.value = (feature.data ? feature.data : feature);
+			selectedFeature.value.selected.value = true;
 			feed.clear();
 			reload({scrollToUrl: ""}); // reset scroll position
 		}, 500);
@@ -126,7 +125,7 @@ function reload(opts) {
 			isTimedout = true;
 			reject(new Error('Request timed out'));
 		}, FETCH_TIMEOUT);
-		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.query + '&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
+		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.value.query + '&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
 		.then(function(response) {
 			clearTimeout(timeout);
 			if (isTimedout) return reject(new Error('Request timed out'));
@@ -238,7 +237,7 @@ module.exports = {
 	errorMessage: errorMessage,
 	features: features,
 	selectFeature: selectFeature,
-	selectedFeatureName: selectedFeatureName,
+	selectedFeature: selectedFeature,
 	sidebarVisible: sidebarVisible,
 	showSidebar: showSidebar,
 	hideSidebar: hideSidebar,

@@ -19,7 +19,7 @@
 			</WhileTrue>
 		</Image>
 	</Panel>
-	<Text Value="{selectedFeatureName}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">
+	<Text Value="{selectedFeature.name}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 		<Clicked>
 			<Callback Handler="{scrollToTop}" />
