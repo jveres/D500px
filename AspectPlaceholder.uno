@@ -20,8 +20,8 @@ public class AspectPlaceholder: Placeholder
 	static float GetAspectRatio(AspectPlaceholder s) { return s._aspectratio; }
 	static void OnAspectRatioChanged(AspectPlaceholder s) { s.InvalidateLayout(); }
     
-    public override float2 GetMarginSize(float2 fillSize, SizeFlags fillSet)
+    public override float2 GetMarginSize(LayoutParams lp)
     {
-        return float2(fillSize.X, fillSize.X * AspectRatio);
+        return float2(lp.X, lp.X * AspectRatio);
     }
 }

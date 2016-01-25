@@ -74,9 +74,9 @@
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->
-			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
+			<Panel ux:Name="insetPanel" Height="45" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
-			<Panel Y="50" Padding="0,0,5,5">
+			<Panel Y="45" Padding="0,0,5,5">
 				<ColumnLayout ColumnCount="2" />
 				<Each Items="{feed}">
 					<!-- Lo-res images -->

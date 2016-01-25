@@ -5,7 +5,7 @@
 		<GradientStop Offset="1" Color="#00000000" />
 	</LinearGradient-->
 	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
-		<Image File="Assets/Icons/Reload.png" Height="22" Opacity="1" Color="#eee">
+		<Image File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
 			<Rotation ux:Name="reloadRotation" Degrees="0" />
 			<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 			<WhileTrue ux:Name="loadingTrigger">
