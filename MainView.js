@@ -35,8 +35,11 @@ features.add(new Feature('Fresh Today', 'Latest from the Community', 'fresh_toda
 
 function pulse(arg) {
 	if (arg instanceof Observable) {
+		if (arg.value === true) return;
 		arg.value = true;
-		arg.value = false;
+		setTimeout(function() {
+			arg.value = false;
+		}, 1);
 	}
 }
 
@@ -52,24 +55,8 @@ function selectFeature(feature) {
 			selectedFeature.value = (feature.data ? feature.data : feature);
 			selectedFeature.value.selected.value = true;
 			feed.clear();
-			reload({scrollToUrl: ""}); // reset scroll position
+			reload(""); // reset scroll position
 		}, 500);
-	}
-}
-
-var _spinner = null;
-function startSpinning() {
-	if (_spinner !== null) clearInterval(_spinner);
-	_spinner = setInterval(function() {
-		pulse(spinning);
-	}, 1000);
-}
-
-function stopSpinning() {
-	if (_spinner !== null) {
-		clearInterval(_spinner);
-		_spinner = null;
-		spinning.value = false;
 	}
 }
 
@@ -114,12 +101,40 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-function reload(opts) {
+var newItems = [];
+var toUrl;
+
+function startLoading() {
+	setTimeout(function() {
+		loading.value = true;
+		checkLoading();
+	}, 1);
+}
+
+function checkLoading() {
+	setTimeout(function() {
+		if (loading.value === true) pulse(spinning);
+		else {
+			setTimeout(function() {
+				for(var i=0; i<newItems.length; i++) if (!isPhoto(newItems[i])) feed.insertAt(0, newItems[i]);
+				while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
+				if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
+				delete newItems;
+				delete toUrl;
+			}, 1);
+		}
+	}, 1);
+}
+
+function stopLoading() {
+	setTimeout(function() {
+		loading.value = false;
+	}, 1);
+}
+
+function reload(url) {
 	if (loading.value === true) return;
-	opts = opts || {};
-	loading.value = true;
-	startSpinning();
-	var _scrollToUrl = opts.scrollToUrl;
+	startLoading();
 	new Promise(function(resolve, reject) {
 		var isTimedout = false;
 		var timeout = setTimeout(function() {
@@ -135,6 +150,7 @@ function reload(opts) {
 		})
 		.then(function(responseObject) {
 			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
+			newItems = [];
 			for (var i=responseObject.photos.length-1; i>=0; i--) {
 				var responsePhoto = responseObject.photos[i];
 				var image_url, photo_url;
@@ -146,13 +162,9 @@ function reload(opts) {
 			    	var image_size = placeholderSize(responsePhoto.width, responsePhoto.height, 256);
 					var photo_size = placeholderSize(responsePhoto.width, responsePhoto.height, 1080);
 			    	var galleryPhoto = new GalleryPhoto(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height);
-			    	if (!isPhoto(galleryPhoto)) {
-			    		//if (typeof _scrollToUrl === "undefined") _scrollToUrl = galleryPhoto.image_url;
-			    		feed.insertAt(0, galleryPhoto);
-			    	}
+			    	newItems.splice(0, 0, galleryPhoto);
 			    }
 			}
-			while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
 			resolve();
 		})
 		.catch(function(err) {
@@ -160,13 +172,11 @@ function reload(opts) {
 		});
 	})
 	.then(function() {
-		stopSpinning();
-		loading.value = false;
-		scrollToUrl.value = _scrollToUrl;
+		toUrl = url;
+		stopLoading();
 	})
 	.catch(function(err) {
-		stopSpinning();
-		loading.value = false;	
+		stopLoading();
 		displayError(err);
 		if (DEBUG) debug_log(JSON.stringify(err));
 	});
@@ -222,7 +232,9 @@ function showImageLoadingError()
 
 function scrollToTop()
 {
-	scrollToUrl.value = "";
+	setTimeout(function() {
+		scrollToUrl.value = '';
+	}, 1);
 }
 
 function refresh()
@@ -239,6 +251,7 @@ module.exports = {
 	longPressed: longPressed,
 	loading: loading,
 	spinning: spinning,
+	checkLoading: checkLoading,
 	errorMessage: errorMessage,
 	features: features,
 	selectFeature: selectFeature,
