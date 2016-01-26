@@ -22,11 +22,6 @@ public class ImageView: Element
                 set { if (_source.Policy != value) _source.Policy = value; }
         }
 
-        public ImageView()
-        {
-                CachingMode = CachingMode.Optimized;
-        }
-
         protected override void OnRooted()
         {
                 base.OnRooted();

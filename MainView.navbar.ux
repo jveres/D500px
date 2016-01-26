@@ -15,7 +15,7 @@
 			<Rotation ux:Name="bottomMenuRotation" />
 		</Rectangle>
 	</Panel>
-	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
+	<Panel ux:Name="reloadButton" Clicked="{refresh}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
 		<Image File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
 			<Rotation ux:Name="reloadRotation" Degrees="0" />
 			<WhileTrue ux:Name="loadingTrigger">

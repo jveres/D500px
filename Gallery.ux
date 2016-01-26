@@ -21,10 +21,10 @@
 				<ColumnLayout ColumnCount="2" />
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
-					<Panel Padding="5,5,0,0" Background="#000">
-						<AspectPlaceholder AspectRatio="{image_ratio}">
+					<Panel Padding="5,5,0,0" Background="#000" Aspect="{image_aspect}" BoxSizing="FillAspect">
+						<Placeholder>
 							<SolidColor ux:Name="backgroundColor" Color="#222" />
-							<ImageView ux:Name="image" LayoutRole="Independent" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
+							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
 								<LayoutAnimation>
 									<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="BackIn" />
 									<Resize X="1" Y="1" Duration="0.3" RelativeTo="SizeChange" Easing="BackIn" />
@@ -33,7 +33,7 @@
 									<Set backgroundColor.Color="#1f0000" />
 								</WhileFailed>
 							</ImageView>
-						</AspectPlaceholder>
+						</Placeholder>
 						<LayoutAnimation>
 							<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
 						</LayoutAnimation>

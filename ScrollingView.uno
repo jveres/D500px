@@ -14,7 +14,7 @@ public class ScrollingView : ScrollView
         {
                 get { return ""; }
                 set
-                { 
+                {
                         if (value != null)
                         {
                                 _done = false; 
@@ -30,12 +30,14 @@ public class ScrollingView : ScrollView
                 if (n is ImageView)
                 {
                         var imageView = n as ImageView;
-                        if (imageView.ImageUrl == _url || _url == "") // empty Url means the first ImageView
+                        if (_url == "" || imageView.ImageUrl == _url) // empty Url means the first ImageView
                         {
                                 imageView.BringIntoView();
                                 _done = true;
                                 return;
                         }
                 }
-        }        
+        }
+
+        
 }

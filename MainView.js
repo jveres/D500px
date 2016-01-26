@@ -79,7 +79,7 @@ function GalleryPhoto(url, image_url, image_width, image_height, photo_url, phot
 	this.image_url = image_url;
 	this.image_width = image_width;
 	this.image_height = image_height;
-	this.image_ratio = image_height / image_width;
+	this.image_aspect = image_width / image_height;
 	this.photo_url = photo_url;
 	this.photo_width = photo_width;
 	this.photo_height = photo_height;
@@ -119,6 +119,7 @@ function reload(opts) {
 	opts = opts || {};
 	loading.value = true;
 	startSpinning();
+	var _scrollToUrl = opts.scrollToUrl;
 	new Promise(function(resolve, reject) {
 		var isTimedout = false;
 		var timeout = setTimeout(function() {
@@ -134,7 +135,6 @@ function reload(opts) {
 		})
 		.then(function(responseObject) {
 			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
-			var new_items = 0;
 			for (var i=responseObject.photos.length-1; i>=0; i--) {
 				var responsePhoto = responseObject.photos[i];
 				var image_url, photo_url;
@@ -147,7 +147,7 @@ function reload(opts) {
 					var photo_size = placeholderSize(responsePhoto.width, responsePhoto.height, 1080);
 			    	var galleryPhoto = new GalleryPhoto(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height);
 			    	if (!isPhoto(galleryPhoto)) {
-			    		new_items++;
+			    		//if (typeof _scrollToUrl === "undefined") _scrollToUrl = galleryPhoto.image_url;
 			    		feed.insertAt(0, galleryPhoto);
 			    	}
 			    }
@@ -162,7 +162,7 @@ function reload(opts) {
 	.then(function() {
 		stopSpinning();
 		loading.value = false;
-		if (typeof opts.scrollToUrl == "string") scrollToUrl.value = opts.scrollToUrl;
+		scrollToUrl.value = _scrollToUrl;
 	})
 	.catch(function(err) {
 		stopSpinning();
@@ -225,12 +225,17 @@ function scrollToTop()
 	scrollToUrl.value = "";
 }
 
+function refresh()
+{
+	reload();
+}
+
 // main
 reload();
 
 module.exports = {
 	feed: feed,
-	reload: reload,
+	refresh: refresh,
 	longPressed: longPressed,
 	loading: loading,
 	spinning: spinning,
