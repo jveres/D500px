@@ -35,10 +35,10 @@
 							</ImageView>
 						</Placeholder>
 						<LayoutAnimation>
-							<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+							<Move X="1" Y="1" Duration="0.2" RelativeTo="WorldPositionChange" Easing="CircularInOut" DelayBack="0" DurationBack="0" />
 						</LayoutAnimation>
 						<WhilePressed>
-                			<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut"/>
+                			<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
             			</WhilePressed>
 						<LongPressed>
 							<Change image.Opacity="0.5" Duration="0.2" />

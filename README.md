@@ -7,12 +7,15 @@
 
 #### Nifty gallery app built with [Fusetools](https://www.fusetools.com/)
 
+## fetch() on Android is currently broken:(
+
 <a href="https://github.com/jveres/D500px/blob/master/D500px-debug.apk?raw=true">APK Download</a>
 
 ## Features
 
 * Gallery thumbnails are downloaded as they reveal in the scrollview
 * Click on a thumbnail to view hi-res photo
+* Displays spinner during hi-res image loading
 * Swipe down the photo to dismiss details
 * Loading spinner for hi-res images
 * Long pressing an image opens its 500px page in the browser
@@ -32,7 +35,7 @@
 
 *Note1: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
 
-*Note2: Currently there are some known performance issues, especially on iOS. Fix coming soon.*
+*Note2: Currently there are no atomic updates in Fuse yet so populating the gallery is something jerky.*
 
 *Note3: This is still a work in progress.*
 
