@@ -1,51 +1,7 @@
 <!-- Scrollable picture gallery -->
 <Panel ux:Class="Gallery" ux:Name="galleryPanel">
 	<MultiLayoutPanel ux:Name="multiLayoutPanel" LayoutElement="galleryItems">
-		<!--Detail view -->
-		<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed">
-			<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
-				<Panel>
-					<!-- Hi-res image -->
-					<Panel ux:Name="photo" Visibility="Collapsed">
-						<!-- Loading spinner -->
-						<Circle ux:Name="loadingSpinner" Width="50" Height="50" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
-							<Stroke Width="2" Brush="#eee" />
-						</Circle>
-						<WhileTrue ux:Name="showSpinner">
-							<Change loadingSpinner.Opacity="1" Duration="0.1" Delay="0.1" DelayBack="0" DurationBack="0"/>
-							<Spin Target="loadingSpinner" Frequency="2" />
-							<Cycle Target="loadingSpinner.LengthAngleDegrees" Low="30" High="300" Frequency="0.7" />
-						</WhileTrue>
-						<ImageView HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused">
-							<WhileLoading>
-								<Change showSpinner.Value="true" DelayBack="0" DurationBack="0" />
-							</WhileLoading>
-							<WhileFailed>
-								<Callback Handler="{showImageLoadingError}" />
-							</WhileFailed>
-						</ImageView>
-					</Panel>
-					<AspectPlaceholder ux:Name="detailsPlaceholder" AspectRatio="{image_ratio}" />
-				</Panel>
-				<ScrollingAnimation From="0" To="-150">
-					<Scale Target="detailsView" Factor="0.9" />
-					<Change detailsView.Opacity="0.85" />
-				</ScrollingAnimation>
-				<ScrollingAnimation From="-105" To="-106">
-					<Pulse Target="closeDetails" />
-				</ScrollingAnimation>
-			</ScrollView>
-			<Clicked>
-				<Pulse Target="closeDetails" />
-			</Clicked>
-			<!-- Closing trugger -->
-			<WhileTrue ux:Name="closeDetails">
-				<Callback Handler="{deselectImage}" />
-				<Callback Handler="{showNavbar}" />
-				<Callback Handler="{enableNavigation}" />
-				<Set detailsMode.Value="false" />
-			</WhileTrue>
-		</Panel>
+		<ux:Include File="Gallery.detailsView.ux" />
 		<!-- Details mode trigger -->
 		<WhileTrue ux:Name="detailsMode">
 			<Change backgroundPanel.Opacity="1" Duration="0.2" Delay="0" />
@@ -56,21 +12,6 @@
 		</WhileTrue>
 		<!-- Background divider -->
 		<Panel ux:Name="backgroundPanel" Opacity="0" Background="#000000a0" HitTestMode="None" IsEnabled="false" />
-		<!-- Feature description -->
-		<StackPanel ux:Name="descriptionPanel" Opacity="0" HitTestMode="None" IsEnabled="false" Alignment="Center">
-			<Text Alignment="Center" Value="Loading Feature:" TextColor="#212831" FontSize="20" Font="Light">
-				<Translation ux:Name="descriptionTranslation1" X="-20" />
-			</Text>
-			<Text Alignment="Center" Value="{selectedFeature.desc}" TextColor="#444" FontSize="20" Font="Regular">
-				<Translation ux:Name="descriptionTranslation2" X="20" />
-			</Text>
-		</StackPanel>
-		<WhileEmpty Items="{feed}">
-			<Change descriptionPanel.Opacity="1" Duration="0.1" DurationBack="0" />
-			<Change descriptionTranslation1.X="0" Duration="0.3" Easing="QuadraticInOut" />
-			<Change descriptionTranslation2.X="0" Duration="0.5" Easing="QuadraticInOut" />
-			<Change galleryItems.Opacity="0" Duration="0.2" DelayBack="0.2"/>
-		</WhileEmpty>
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->

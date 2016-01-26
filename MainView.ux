@@ -3,7 +3,9 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
+	<iOS.StatusBarConfig Style="Light" />
 	<EdgeNavigator ux:Name="navigator">
+		<Toast />
 		<WhileTrue Value="{sidebarVisible}">
 			<Set coverPanel.IsEnabled="true" />
 		</WhileTrue>
@@ -17,43 +19,22 @@
 			<Pulse Target="toggleSidebarTrigger" />
 		</WhileTrue>
 		<DockPanel ux:Name="mainView">
-			<Panel ux:Name="coverPanel" IsEnabled="false" Opacity="0" HitTestMode="LocalBounds">
-				<Clicked>
-					<Set navigator.Active="mainView" />
-				</Clicked>
-			</Panel>
-			<!-- Navigation and bars -->
-			<Translation ux:Name="mainViewTranslation" />
-			<Panel Dock="Top">
-				<iOS.StatusBarConfig Style="Light" />
-				<StatusBarBackground />
+			<StatusBarBackground Dock="Top" />
+			<Panel Dock="Fill" Background="#000">
+				<!-- Main -->
+				<Translation ux:Name="mainViewTranslation" />
+				<Panel ux:Name="coverPanel" IsEnabled="false" Opacity="0" HitTestMode="LocalBounds">
+					<Clicked>
+						<Set navigator.Active="mainView" />
+					</Clicked>
+				</Panel>
+				<Panel>
+					<ux:Include File="MainView.navbar.ux" />
+					<Gallery />
+					<ux:Include File="MainView.featureDesc.ux" />
+				</Panel>
 			</Panel>
 			<BottomBarBackground Dock="Bottom" />
-			<!-- Main -->
-			<Panel Dock="Fill" Background="#000">
-				<Navbar IsEnabled="{navigationEnabled}">
-					<Panel ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
-						<Translation ux:Name="hamburgerIconTranslation" />
-						<Clicked>
-							<NavigateToggle Target="sidebar" />
-						</Clicked>
-						<Rectangle ux:Name="topRectangle" Height="2" Width="20" Fill="#eee">
-							<Translation Y="-9" ux:Name="topMenuTranslation" />
-							<Rotation ux:Name="topMenuRotation" />
-						</Rectangle>
-						<Rectangle ux:Name="middleRectangle" Height="2" Width="20" Fill="#eee" />
-						<Rectangle ux:Name="bottomRectangle" Height="2" Width="20" Fill="#eee">
-							<Translation Y="9" ux:Name="bottomMenuTranslation" />
-							<Rotation ux:Name="bottomMenuRotation" />
-						</Rectangle>
-						<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-					</Panel>
-				</Navbar>
-				<Toast />
-				<Gallery />
-				<!--DropShadow Color="#000f" Size="15" Spread="0.005" Angle="90" Distance="1" /--> <!-- This makes the whole UI slooow -->
-			</Panel>
-			<Panel ux:Name="dummyPanel" />
 		</DockPanel>
 		<Sidebar Width="180" ux:Name="sidebar" Edge="Left">
 			<ActivatingAnimation>
