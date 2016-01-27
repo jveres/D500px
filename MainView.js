@@ -33,13 +33,13 @@ features.add(new Feature('Editor\'s Choice', 'Picked by Top Photographers', 'edi
 features.add(new Feature('Upcoming', 'Promising New Uploads', 'upcoming'));
 features.add(new Feature('Fresh Today', 'Latest from the Community', 'fresh_today'));
 
+function RAF(f) { setTimeout(f, 1); }
+
 function pulse(arg) {
 	if (arg instanceof Observable) {
 		if (arg.value === true) return;
 		arg.value = true;
-		setTimeout(function() {
-			arg.value = false;
-		}, 1);
+		RAF(function() { arg.value = false; });
 	}
 }
 
@@ -70,6 +70,8 @@ function GalleryPhoto(url, image_url, image_width, image_height, photo_url, phot
 	this.photo_url = photo_url;
 	this.photo_width = photo_width;
 	this.photo_height = photo_height;
+
+	this.image_updating = Observable(true);
 }
 
 function isPhoto(photo)
@@ -105,31 +107,31 @@ var newItems = [];
 var toUrl;
 
 function startLoading() {
-	setTimeout(function() {
+	RAF(function() {
+		newItems = [];
+		toUrl = undefined;
 		loading.value = true;
 		checkLoading();
-	}, 1);
+	});
 }
 
 function checkLoading() {
 	setTimeout(function() {
 		if (loading.value === true) pulse(spinning);
 		else {
-			setTimeout(function() {
+			RAF(function() {
 				for(var i=0; i<newItems.length; i++) if (!isPhoto(newItems[i])) feed.insertAt(0, newItems[i]);
 				while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
 				if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
-				delete newItems;
-				delete toUrl;
-			}, 1);
+			});
 		}
 	}, 1);
 }
 
 function stopLoading() {
-	setTimeout(function() {
+	RAF(function() {
 		loading.value = false;
-	}, 1);
+	});
 }
 
 function reload(url) {
@@ -232,9 +234,7 @@ function showImageLoadingError()
 
 function scrollToTop()
 {
-	setTimeout(function() {
-		scrollToUrl.value = '';
-	}, 1);
+	RAF(function() { scrollToUrl.value = ''; });
 }
 
 function refresh()
