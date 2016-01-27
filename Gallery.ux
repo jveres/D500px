@@ -20,8 +20,8 @@
 			<Panel Y="45" Padding="0,0,5,5">
 				<ColumnLayout ux:Name="columnLayout" ColumnCount="2" />
 				<WhileWindowLandscape>
-						<Change columnLayout.ColumnCount="3" Duration="0" Delay="0" />
-					</WhileWindowLandscape>
+					<Change columnLayout.ColumnCount="3" Duration="0" Delay="0" />
+				</WhileWindowLandscape>
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
 					<PlaceholderView Padding="5,5,0,0" Background="#000" AspectRatio="{image_aspect}" BoxSizing="FillAspect">

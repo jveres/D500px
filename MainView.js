@@ -1,6 +1,7 @@
 var Observable = require('FuseJS/Observable');
 var interApp = require('FuseJS/InterApp');
 var vibration = require('FuseJS/Vibration');
+var app = require('FuseJS/Lifecycle');
 
 var DEBUG = false;
 
@@ -38,8 +39,7 @@ function RAF(f) { setTimeout(f, 1); }
 function pulse(arg) {
 	if (arg instanceof Observable) {
 		if (arg.value === true) return;
-		arg.value = true;
-		RAF(function() { arg.value = false; });
+		RAF(function() { arg.value = true; arg.value = false; });
 	}
 }
 
@@ -60,7 +60,7 @@ function selectFeature(feature) {
 	}
 }
 
-function GalleryPhoto(url, image_url, image_width, image_height, photo_url, photo_width, photo_height)
+function Photo(url, image_url, image_width, image_height, photo_url, photo_width, photo_height)
 {
 	this.url = url;
 	this.image_url = image_url;
@@ -104,35 +104,33 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-var newItems = [];
-var toUrl;
+var newItems, toUrl;
+var fetching = false;
 
 function startLoading() {
-	RAF(function() {
-		newItems = [];
-		toUrl = undefined;
+	newItems = [];
+	toUrl = undefined;
+	fetching = true;
+	RAF(function() { 
 		loading.value = true;
-		checkLoading();
 	});
+	pulse(spinning);
 }
 
 function checkLoading() {
-	setTimeout(function() {
-		if (loading.value === true) pulse(spinning);
+	RAF(function() {
+		if (fetching) pulse(spinning);
 		else {
-			RAF(function() {
-				for(var i=0; i<newItems.length; i++) if (!isPhoto(newItems[i])) feed.insertAt(0, newItems[i]);
-				while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-				if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
-			});
+			for(var i=0; i<newItems.length; i++) if (!isPhoto(newItems[i])) feed.insertAt(0, newItems[i]);
+			while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
+			loading.value = false;
+			if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
 		}
-	}, 1);
+	});
 }
 
 function stopLoading() {
-	RAF(function() {
-		loading.value = false;
-	});
+	fetching = false;
 }
 
 function reload(url) {
@@ -164,8 +162,7 @@ function reload(url) {
 		    	if (image_url && photo_url) {
 			    	var image_size = placeholderSize(responsePhoto.width, responsePhoto.height, 256);
 					var photo_size = placeholderSize(responsePhoto.width, responsePhoto.height, 1080);
-			    	var galleryPhoto = new GalleryPhoto(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height);
-			    	newItems.splice(0, 0, galleryPhoto);
+			    	newItems.splice(0, 0, new Photo(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height));
 			    }
 			}
 			resolve();
@@ -235,16 +232,16 @@ function showImageLoadingError()
 
 function scrollToTop()
 {
-	RAF(function() { scrollToUrl.value = ''; });
+	RAF(function() { scrollToUrl.value = ""; });
 }
 
 function refresh()
 {
-	reload();
+	RAF(reload);
 }
 
 // main
-reload();
+refresh();
 
 module.exports = {
 	feed: feed,
