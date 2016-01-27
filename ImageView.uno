@@ -13,7 +13,7 @@ public class ImageView: Element
         public String ImageUrl
         {
                 get { return _source.Url; }
-                set { if (_source.Url != value) _source.Url = value; }
+                set { _source.Url = value; }
         }
 
         public MemoryPolicy ImageMemoryPolicy

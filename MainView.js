@@ -66,7 +66,8 @@ function GalleryPhoto(url, image_url, image_width, image_height, photo_url, phot
 	this.image_url = image_url;
 	this.image_width = image_width;
 	this.image_height = image_height;
-	this.image_aspect = image_width / image_height;
+	var ratio = image_width / image_height;
+	this.image_aspect = ratio === 1 ? 1.0001 : ratio; // Fuse bug workaround here
 	this.photo_url = photo_url;
 	this.photo_width = photo_width;
 	this.photo_height = photo_height;
