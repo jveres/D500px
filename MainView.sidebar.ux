@@ -24,7 +24,7 @@
 		<GradientStop Offset="1" Color="#000" />
 	</LinearGradient>
 	<ActivatingAnimation>
-		<Callback Handler="{showSidebar}" AtProgress="1" />
+		<Set coverPanel.IsEnabled="true" AtProgress="1" />
 		<Change mainViewTranslation.X="180" />
 		<Change hamburgerIconTranslation.X="-180" />
 		<!-- Change to cross out -->
@@ -37,6 +37,6 @@
 		<Change bottomRectangle.Width="24" />
 	</ActivatingAnimation>
 	<DeactivatingAnimation>
-		<Callback Handler="{hideSidebar}" AtProgress="1" />
+		<Set coverPanel.IsEnabled="false" AtProgress="1" />
 	</DeactivatingAnimation>
 </Panel>

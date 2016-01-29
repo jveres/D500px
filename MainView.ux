@@ -6,24 +6,12 @@
 	<iOS.StatusBarConfig Style="Light" />
 	<EdgeNavigator ux:Name="navigator">
 		<Toast />
-		<WhileTrue Value="{sidebarVisible}">
-			<Set coverPanel.IsEnabled="true" />
-		</WhileTrue>
-		<WhileFalse Value="{sidebarVisible}">
-			<Set coverPanel.IsEnabled="false" />
-		</WhileFalse>
-		<WhileTrue ux:Name="toggleSidebarTrigger">
-			<NavigateToggle Target="sidebar" />
-		</WhileTrue>
-		<WhileTrue Value="{toggleSidebar}">
-			<Pulse Target="toggleSidebarTrigger" />
-		</WhileTrue>
 		<DockPanel ux:Name="mainView">
 			<StatusBarBackground Dock="Top" />
 			<Panel Dock="Fill" Background="#000">
 				<!-- Main -->
 				<Translation ux:Name="mainViewTranslation" />
-				<Panel ux:Name="coverPanel" IsEnabled="false" Opacity="0" HitTestMode="LocalBounds">
+				<Panel ux:Name="coverPanel" IsEnabled="false" HitTestMode="LocalBounds" Opacity="0">
 					<Clicked>
 						<Set navigator.Active="mainView" />
 					</Clicked>

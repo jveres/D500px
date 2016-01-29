@@ -3,10 +3,11 @@ using Fuse;
 using Fuse.Elements;
 using Fuse.Controls;
 
-public class PlaceholderView: Panel
+public class AspectView: Panel
 {
-        public PlaceholderView()
+        public AspectView()
         {
+                BoxSizing = BoxSizingMode.FillAspect;
                 Visibility = Visibility.Collapsed;
         }
 

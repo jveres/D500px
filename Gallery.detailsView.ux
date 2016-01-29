@@ -24,7 +24,7 @@
 					</WhileFailed>
 				</ImageView>
 			</Panel>
-			<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" />
+			<Placeholder ux:Name="detailsPlaceholder" Aspect="{currentImage.image_aspect}" BoxSizing="FillAspect" />
 		</Panel>
 		<ScrollingAnimation From="0" To="-150">
 			<Scale Target="detailsView" Factor="0.9" />
