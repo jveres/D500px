@@ -86,17 +86,12 @@ function startLoading() {
 function checkLoading() {
 	spinning.value = false;
 	spinning.value = fetching;
-	if (!fetching) 
+	if (fetching === false) 
 	{
-		//new Promise(function(resolve) {
-			for (var i=0; i<newItems.length; i++) feed.insertAt(0, newItems[i]);
-			while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-		//	return resolve();
-		//})
-		//.then(function() {
-			if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
-			loading.value = false;
-		//});
+		for (var i=0; i<newItems.length; i++) feed.insertAt(i, newItems[i]);
+		while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
+		if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
+		loading.value = false;
 	}
 }
 
@@ -132,7 +127,7 @@ function reload(url) {
 		    	}
 		    	if (!isImage(image_url, feed._values) && !isImage(image_url, newItems) && image_url && photo_url) {
 			    	var image_aspect = responsePhoto.width / responsePhoto.height;
-			    	newItems.splice(0, 0, new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url));
+			    	newItems.push(new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url));
 			    }
 			}
 			resolve();
