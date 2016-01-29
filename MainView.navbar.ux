@@ -15,18 +15,15 @@
 			<Rotation ux:Name="bottomMenuRotation" />
 		</Rectangle>
 	</Panel>
-	<Panel ux:Name="reloadButton" Clicked="{refresh}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
+	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
 		<Image File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
 			<Rotation ux:Name="reloadRotation" />
-			<WhileTrue ux:Name="loadingTrigger">
+			<WhileTrue Value="{spinning}">
 				<Change Target="reloadRotation.Degrees" Value="360" Duration="0.9" DurationBack="0" DelayBack="0" Easing="CircularInOut" />
 				<Callback AtProgress="1" Handler="{checkLoading}" />
 			</WhileTrue>
 			<WhileTrue Value="{loading}">
 				<Change reloadButton.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
-			</WhileTrue>
-			<WhileTrue Value="{spinning}">
-				<Pulse Target="loadingTrigger" />
 			</WhileTrue>
 		</Image>
 	</Panel>

@@ -36,24 +36,7 @@
 			</Panel>
 			<BottomBarBackground Dock="Bottom" />
 		</DockPanel>
-		<Sidebar Width="180" ux:Name="sidebar" Edge="Left">
-			<ActivatingAnimation>
-				<Callback Handler="{showSidebar}" AtProgress="1" />
-				<Change mainViewTranslation.X="180" />
-				<Change hamburgerIconTranslation.X="-180" />
-				<!-- Change to cross out -->
-				<Change topMenuTranslation.Y="0" />
-				<Change bottomMenuTranslation.Y="0" />
-				<Change middleRectangle.Opacity="0" Easing="CircularOut"/>
-				<Change topMenuRotation.Degrees="45" Easing="ExponentialIn" />
-				<Change bottomMenuRotation.Degrees="-45" Easing="ExponentialIn" />
-				<Change topRectangle.Width="24" />
-				<Change bottomRectangle.Width="24" />
-			</ActivatingAnimation>
-			<DeactivatingAnimation>
-				<Callback Handler="{hideSidebar}" AtProgress="1" />
-			</DeactivatingAnimation>
-		</Sidebar>
+		<ux:Include File="MainView.sidebar.ux" />
 		<OnKeyPress Key="BackButton">
 			<Set navigator.Active="mainView" />
  		</OnKeyPress>

@@ -34,19 +34,9 @@ features.add(new Feature('Editor\'s Choice', 'Picked by Top Photographers', 'edi
 features.add(new Feature('Upcoming', 'Promising New Uploads', 'upcoming'));
 features.add(new Feature('Fresh Today', 'Latest from the Community', 'fresh_today'));
 
-function RAF(f) { setTimeout(f, 1); }
-
-function pulse(arg) {
-	if (arg instanceof Observable) {
-		if (arg.value === true) return;
-		RAF(function() { arg.value = true; arg.value = false; });
-	}
-}
-
 var selectedFeature = Observable(features.value);
 
 function selectFeature(feature) {
-	pulse(toggleSidebar);
 	if (loading.value === true) return;
 	var featureName = (feature.data ? feature.data.name : feature.name);
 	if (featureName !== selectedFeature.value.name) {
@@ -60,39 +50,19 @@ function selectFeature(feature) {
 	}
 }
 
-function Photo(url, image_url, image_width, image_height, photo_url, photo_width, photo_height)
+function Photo(url, image_aspect, image_url, photo_url)
 {
 	this.url = url;
 	this.image_url = image_url;
-	this.image_width = image_width;
-	this.image_height = image_height;
-	var ratio = image_width / image_height;
-	this.image_aspect = ratio === 1 ? 1.0001 : ratio; // Fuse bug workaround here
+	this.image_aspect = image_aspect;
 	this.photo_url = photo_url;
-	this.photo_width = photo_width;
-	this.photo_height = photo_height;
-
-	this.image_updating = Observable(true);
 }
 
-function isPhoto(photo)
+function isImage(image_url, items)
 {
-	for (var i=0; i<feed.length; i++)
-		if (photo.url === feed.getAt(i).url) return true;
+	for (var i=0; i<items.length; i++)
+		if (items[i].image_url == image_url) return true;
 	return false;
-}
-
-function placeholderSize(width, height, max_edge)
-{
-	var ratio = width / height;
-	if (width > height) {
-		width = max_edge;
-		height = width / ratio;
-	} else {
-		height = max_edge;
-		width = height * ratio;
-	}
-	return {width: Math.ceil(width), height: Math.ceil(height)};
 }
 
 var _errorTimeout;
@@ -104,29 +74,30 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-var newItems, toUrl;
-var fetching = false;
+var newItems = [], toUrl = undefined, fetching = false;
 
 function startLoading() {
-	newItems = [];
 	toUrl = undefined;
 	fetching = true;
-	RAF(function() { 
-		loading.value = true;
-	});
-	pulse(spinning);
+	loading.value = true;
+	checkLoading();
 }
 
 function checkLoading() {
-	RAF(function() {
-		if (fetching) pulse(spinning);
-		else {
-			for(var i=0; i<newItems.length; i++) if (!isPhoto(newItems[i])) feed.insertAt(0, newItems[i]);
-			while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-			loading.value = false;
+	spinning.value = false;
+	spinning.value = fetching;
+	if (!fetching) 
+	{
+		new Promise(function(resolve) {
+			for (var i=0; i<newItems.length; i++) feed.insertAt(0, newItems[i]);
+			while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
+			return resolve();
+		})
+		.then(function() {
 			if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
-		}
-	});
+			loading.value = false;
+		});
+	}
 }
 
 function stopLoading() {
@@ -152,17 +123,16 @@ function reload(url) {
 		.then(function(responseObject) {
 			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
 			newItems = [];
-			for (var i=responseObject.photos.length-1; i>=0; i--) {
+			for (var i=0; i<responseObject.photos.length; i++) {
 				var responsePhoto = responseObject.photos[i];
 				var image_url, photo_url;
 		    	for (var j=0; j<responsePhoto.images.length; j++) {
 		    		if (responsePhoto.images[j].size === 30) image_url = responsePhoto.images[j].https_url;
 		    		else if (responsePhoto.images[j].size === 1080) photo_url = responsePhoto.images[j].https_url;
 		    	}
-		    	if (image_url && photo_url) {
-			    	var image_size = placeholderSize(responsePhoto.width, responsePhoto.height, 256);
-					var photo_size = placeholderSize(responsePhoto.width, responsePhoto.height, 1080);
-			    	newItems.splice(0, 0, new Photo(responsePhoto.url, image_url, image_size.width, image_size.height, photo_url, photo_size.width, photo_size.height));
+		    	if (!isImage(image_url, feed._values) && !isImage(image_url, newItems) && image_url && photo_url) {
+			    	var image_aspect = responsePhoto.width / responsePhoto.height;
+			    	newItems.splice(0, 0, new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url));
 			    }
 			}
 			resolve();
@@ -185,18 +155,6 @@ function reload(url) {
 function longPressed(args) {
 	vibration.vibrate(0.02);
 	interApp.launchUri('https://500px.com' + args.data.url);
-}
-
-var sidebarVisible = Observable(false);
-var toggleSidebar = Observable(false);
-
-
-function showSidebar() {
-	sidebarVisible.value = true;
-}
-
-function hideSidebar() {
-	sidebarVisible.value = false;
 }
 
 function hideNavbar() {
@@ -232,20 +190,14 @@ function showImageLoadingError()
 
 function scrollToTop()
 {
-	RAF(function() { scrollToUrl.value = ""; });
+	scrollToUrl.value = "";
 }
 
-function refresh()
-{
-	RAF(reload);
-}
-
-// main
-refresh();
+reload();
 
 module.exports = {
 	feed: feed,
-	refresh: refresh,
+	reload: reload,
 	longPressed: longPressed,
 	loading: loading,
 	spinning: spinning,
@@ -254,10 +206,6 @@ module.exports = {
 	features: features,
 	selectFeature: selectFeature,
 	selectedFeature: selectedFeature,
-	sidebarVisible: sidebarVisible,
-	showSidebar: showSidebar,
-	hideSidebar: hideSidebar,
-	toggleSidebar: toggleSidebar,
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,
