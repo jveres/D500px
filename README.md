@@ -7,7 +7,7 @@
 
 #### Nifty gallery app built with [Fusetools](https://www.fusetools.com/)
 
-## fetch() on Android is currently broken:(
+## There's an issue with JSON.parse() in V8 which brokes the Android build:(
 
 <a href="https://github.com/jveres/D500px/blob/master/D500px-debug.apk?raw=true">APK Download</a>
 

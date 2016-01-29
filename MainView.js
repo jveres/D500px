@@ -88,15 +88,15 @@ function checkLoading() {
 	spinning.value = fetching;
 	if (!fetching) 
 	{
-		new Promise(function(resolve) {
+		//new Promise(function(resolve) {
 			for (var i=0; i<newItems.length; i++) feed.insertAt(0, newItems[i]);
 			while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-			return resolve();
-		})
-		.then(function() {
+		//	return resolve();
+		//})
+		//.then(function() {
 			if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
 			loading.value = false;
-		});
+		//});
 	}
 }
 
