@@ -112,9 +112,18 @@ function reload() {
 	startLoading();
     var req_url = "https://api.500px.com/v1/photos?feature=" + selectedFeature.value.query + "&image_size=30,1080&rpp=" + MAX_PHOTOS + "&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg";
 	req = new HttpClient().createRequest("GET", req_url);
-	req.onstatechanged = function(state) {
+	req.onerror = function(err) {
+		stopLoading();
+		displayError(err);	
+	};
+	req.ontimeout = function() {
+		stopLoading();
+		displayError("Request timed out");
+	};
+	req.ondone = function() {
 		try {
-			if (state === 5) { // done
+			var status = req.getResponseStatus();
+			if (status === 200) { // OK
 				var response = req.getResponseContentString();
 				var responseObject = JSON.parse(response);
 				for (var i=0; i<responseObject.photos.length; i++) {
@@ -126,26 +135,19 @@ function reload() {
 			    	}
 			    	if (!isImage(image_url, feed._values) && !isImage(image_url, newItems) && image_url && photo_url) {
 				    	var image_aspect = responsePhoto.width / responsePhoto.height;
-				    	newItems.push(new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url));
+				    	newItems.push(new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url)); // Aspect bug workaround
 				    }
 				}
 				stopLoading();
-			} else if (state === 6) {
-				// aborted
-			} else if (state === 7) { // errored
-				stopLoading();
-				displayError("Network error (" + req.getResponseReasonPhrase() + ")");
-			} else if (state === 8) { // timeout
-				stopLoading();
-				displayError("Request timed out");
+			} else {
+				throw new Error("Server error (" + status + ")");
 			}
 		} catch(err) {
 			stopLoading();
 			displayError(err);
 		}
 	}
-	req.enableCache(false);
-	req.setTimeout = FETCH_TIMEOUT;
+	req.setTimeout(FETCH_TIMEOUT);
 	req.sendAsync();
 }
 
