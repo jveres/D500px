@@ -23,6 +23,7 @@
 				<Callback AtProgress="1" Handler="{checkLoading}" />
 			</WhileTrue>
 			<WhileTrue Value="{loading}">
+				<Change reloadButton.HitTestMode="None" />
 				<Change reloadButton.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
 			</WhileTrue>
 		</Image>

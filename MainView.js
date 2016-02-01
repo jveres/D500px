@@ -37,14 +37,13 @@ features.add(new Feature('Fresh Today', 'Latest from the Community', 'fresh_toda
 var selectedFeature = Observable(features.value);
 
 function selectFeature(feature) {
-	if (loading.value === true) return;
 	var featureName = (feature.data ? feature.data.name : feature.name);
 	if (featureName !== selectedFeature.value.name) {
 		setTimeout(function() {
 			selectedFeature.value.selected.value = false;
 			selectedFeature.value = (feature.data ? feature.data : feature);
 			selectedFeature.value.selected.value = true;
-			feed.clear();
+			resetFeed = true;
 			toUrl = ""; // reset scroll position
 			reload();
 		}, 500);
@@ -75,9 +74,16 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-var newItems = [], toUrl = null, fetching = false;
+var newItems = [], resetFeed = false, toUrl = null, fetching = false, req = null;
 
 function startLoading() {
+	if (req !== null) req.abort();
+	req = null;
+	if (resetFeed) {
+		feed.clear();
+		resetFeed = false;
+	}
+	newItems = [];
 	fetching = true;
 	loading.value = true;
 	checkLoading();
@@ -88,7 +94,6 @@ function checkLoading() {
 	spinning.value = fetching;
 	if (fetching === false) 
 	{
-		if (DEBUG) debug_log(newItems);
 		for (var i=0; i<newItems.length; i++) feed.insertAt(i, newItems[i]);
 		while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
 		if (toUrl !== null) {
@@ -103,11 +108,7 @@ function stopLoading() {
 	fetching = false;
 }
 
-var req = null;
-
 function reload() {
-	if (req !== null) req.abort();
-	newItems = [];
 	startLoading();
     var req_url = "https://api.500px.com/v1/photos?feature=" + selectedFeature.value.query + "&image_size=30,1080&rpp=" + MAX_PHOTOS + "&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg";
 	req = new HttpClient().createRequest("GET", req_url);
