@@ -17,6 +17,8 @@ var MAX_FEED_LENGHT = 120;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
+var navigationEnabled = Observable(true);
+
 var EMPTY_PHOTO = {photo_url: "", image_aspect: 1};
 var currentImage = Observable(EMPTY_PHOTO);
 
@@ -163,8 +165,6 @@ function hideNavbar() {
 function showNavbar() {
 	navbarVisible.value = true;
 }
-
-var navigationEnabled = Observable(true);
 
 function enableNavigation() {
 	navigationEnabled.value = true;

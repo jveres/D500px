@@ -6,6 +6,7 @@
 		<WhileTrue ux:Name="detailsMode">
 			<Change backgroundPanel.Opacity="1" Duration="0.2" Delay="0" />
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3" DelayBack="0"/>
+			<Change detailsView.LayoutRole="Standard" />
 			<Change detailsView.Visibility="Visible" Delay="0" />
 			<Change photo.Visibility="Visible" Delay="0.4" DelayBack="0" DurationBack="0" />
 			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />

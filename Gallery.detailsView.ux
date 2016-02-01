@@ -1,5 +1,5 @@
 <!--Detail view -->
-<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed">
+<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
 	<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
 		<StackPanel>
 			<Panel ux:Name="scrollTopPanel" HitTestMode="None" IsEnabled="false" Opacity="0" />

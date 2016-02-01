@@ -1,4 +1,4 @@
-<Panel ux:Name="sidebar" Width="180" Background="#000" Edge="Left">
+<Panel ux:Name="sidebar" Background="#000" Edge="Left" Alignment="Left" Padding="30,0,0,0">
 	<ScrollView>
 		<StackPanel Alignment="Center">
 			<Each Items="{features}">
@@ -23,11 +23,14 @@
 		<GradientStop Offset="0.7" Color="#212831" />
 		<GradientStop Offset="1" Color="#000" />
 	</LinearGradient>
+	<EnteringAnimation>
+		<Move X="-1" RelativeTo="Size" />
+	</EnteringAnimation>
 	<ActivatingAnimation>
 		<Set coverPanel.IsEnabled="true" AtProgress="1" />
-		<Change mainViewTranslation.X="180" />
-		<Change hamburgerIconTranslation.X="-180" />
-		<!-- Change to cross out -->
+		<Move Target="mainView" X="1" RelativeTo="Size" RelativeNode="sidebar" />
+		<Move Target="hamburgerIcon" X="-1" RelativeTo="Size" RelativeNode="sidebar" />
+		<!-- Change hamburgerIcon to cross out -->
 		<Change topMenuTranslation.Y="0" />
 		<Change bottomMenuTranslation.Y="0" />
 		<Change middleRectangle.Opacity="0" Easing="CircularOut"/>

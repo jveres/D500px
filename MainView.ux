@@ -4,13 +4,11 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
 	<iOS.StatusBarConfig Style="Light" />
-	<EdgeNavigator ux:Name="navigator">
+	<Panel>
 		<Toast />
-		<DockPanel ux:Name="mainView">
-			<StatusBarBackground Dock="Top" />
-			<Panel Dock="Fill" Background="#000">
-				<!-- Main -->
-				<Translation ux:Name="mainViewTranslation" />
+		<ClientPanel>
+			<!-- Main -->
+			<Panel ux:Name="mainView" Dock="Fill" Background="#000">
 				<Panel ux:Name="coverPanel" IsEnabled="false" HitTestMode="LocalBounds" Opacity="0">
 					<Clicked>
 						<Set navigator.Active="mainView" />
@@ -22,14 +20,16 @@
 					<ux:Include File="MainView.featureDesc.ux" />
 				</Panel>
 			</Panel>
-			<BottomBarBackground Dock="Bottom" />
-		</DockPanel>
-		<ux:Include File="MainView.sidebar.ux" />
-		<OnKeyPress Key="BackButton">
-			<Set navigator.Active="mainView" />
- 		</OnKeyPress>
- 		<OnKeyPress Key="MenuButton">
- 			<NavigateToggle Target="sidebar" />
- 		</OnKeyPress>
-	</EdgeNavigator>
+			<ux:Include File="MainView.sidebar.ux" />
+			<WhileTrue Value="{navigationEnabled}">
+				<EdgeNavigation ux:Name="navigator" />
+				<OnKeyPress Key="BackButton">
+					<Set navigator.Active="mainView" />
+		 		</OnKeyPress>
+		 		<OnKeyPress Key="MenuButton">
+		 			<NavigateToggle Target="sidebar" />
+		 		</OnKeyPress>
+	 		</WhileTrue>
+		</ClientPanel>
+	</Panel>
 </App>
