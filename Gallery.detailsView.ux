@@ -1,38 +1,41 @@
 <!--Detail view -->
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed">
 	<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
-		<Panel>
-			<!-- Hi-res image -->
-			<Panel ux:Name="photo" Visibility="Collapsed">
-				<!-- Loading spinner -->
-				<Circle ux:Name="loadingSpinner" Width="50" Height="50" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
-					<Stroke Width="2" Brush="#eee" />
-				</Circle>
-				<WhileVisible>
-					<Spin Target="loadingSpinner" Frequency="2" />
-					<Cycle Target="loadingSpinner.LengthAngleDegrees" Low="30" High="300" Frequency="0.5" />
-				</WhileVisible>
-				<WhileTrue ux:Name="showSpinner">
-					<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
-				</WhileTrue>
-				<ImageView HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused">
-					<WhileLoading>
-						<Change showSpinner.Value="true" Duration="0" Delay="0" />
-					</WhileLoading>
-					<WhileFailed>
-						<Callback Handler="{showImageLoadingError}" />
-					</WhileFailed>
-				</ImageView>
+		<StackPanel>
+			<Panel ux:Name="scrollTopPanel" HitTestMode="None" IsEnabled="false" Opacity="0" />
+			<Panel>
+				<!-- Hi-res image -->
+				<Panel ux:Name="photo" Visibility="Collapsed">
+					<!-- Loading spinner -->
+					<Circle ux:Name="loadingSpinner" Width="50" Height="50" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
+						<Stroke Width="2" Brush="#eee" />
+					</Circle>
+					<WhileVisible>
+						<Spin Target="loadingSpinner" Frequency="2" />
+						<Cycle Target="loadingSpinner.LengthAngleDegrees" Low="30" High="300" Frequency="0.5" />
+					</WhileVisible>
+					<WhileTrue ux:Name="showSpinner">
+						<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
+					</WhileTrue>
+					<ImageView HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused">
+						<WhileLoading>
+							<Change showSpinner.Value="true" Duration="0" Delay="0" />
+						</WhileLoading>
+						<WhileFailed>
+							<Callback Handler="{showImageLoadingError}" />
+						</WhileFailed>
+					</ImageView>
+				</Panel>
+				<Placeholder ux:Name="detailsPlaceholder" Aspect="{currentImage.image_aspect}" BoxSizing="FillAspect" />
 			</Panel>
-			<Placeholder ux:Name="detailsPlaceholder" Aspect="{currentImage.image_aspect}" BoxSizing="FillAspect" />
-		</Panel>
-		<ScrollingAnimation From="0" To="-150">
-			<Scale Target="detailsView" Factor="0.9" />
-			<Change detailsView.Opacity="0.85" />
-		</ScrollingAnimation>
-		<ScrollingAnimation From="-105" To="-106">
-			<Pulse Target="closeDetails" />
-		</ScrollingAnimation>
+			<ScrollingAnimation From="0" To="-150">
+				<Scale Target="detailsView" Factor="0.9" />
+				<Change detailsView.Opacity="0.85" />
+			</ScrollingAnimation>
+			<ScrollingAnimation From="-105" To="-106">
+				<Pulse Target="closeDetails" />
+			</ScrollingAnimation>
+		</StackPanel>
 	</ScrollView>
 	<Clicked>
 		<Pulse Target="closeDetails" />
@@ -44,4 +47,7 @@
 		<Callback Handler="{enableNavigation}" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
+	<WhileVisible>
+		<BringIntoView TargetNode="scrollTopPanel"/>
+	</WhileVisible>
 </Panel>

@@ -17,7 +17,7 @@ var MAX_FEED_LENGHT = 120;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
 var navbarVisible = Observable(true);
-var EMPTY_PHOTO = {photo_url: ""}
+var EMPTY_PHOTO = {photo_url: "", image_aspect: 1};
 var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, desc, query, selected) {
@@ -173,7 +173,8 @@ function disableNavigation() {
 }
 
 function selectImage(args) {
-	currentImage.value = args.data;
+	var image = args.data;
+	currentImage.value = {photo_url: image.photo_url, image_aspect: image.image_aspect};
 }
 
 function deselectImage(args) {
