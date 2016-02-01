@@ -45,7 +45,8 @@ function selectFeature(feature) {
 			selectedFeature.value = (feature.data ? feature.data : feature);
 			selectedFeature.value.selected.value = true;
 			feed.clear();
-			reload(""); // reset scroll position
+			toUrl = ""; // reset scroll position
+			reload();
 		}, 500);
 	}
 }
@@ -74,10 +75,9 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-var newItems = [], toUrl = undefined, fetching = false;
+var newItems = [], toUrl = null, fetching = false;
 
 function startLoading() {
-	toUrl = undefined;
 	fetching = true;
 	loading.value = true;
 	checkLoading();
@@ -88,9 +88,13 @@ function checkLoading() {
 	spinning.value = fetching;
 	if (fetching === false) 
 	{
+		if (DEBUG) debug_log(newItems);
 		for (var i=0; i<newItems.length; i++) feed.insertAt(i, newItems[i]);
 		while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-		if (typeof toUrl !== 'undefined') scrollToUrl.value = toUrl;
+		if (toUrl !== null) {
+			scrollToUrl.value = toUrl;
+			toUrl = null;
+		}
 		loading.value = false;
 	}
 }
@@ -99,52 +103,49 @@ function stopLoading() {
 	fetching = false;
 }
 
-function reload(url) {
-	if (loading.value === true) return;
+var req = null;
+
+function reload() {
+	if (req !== null) req.abort();
+	newItems = [];
 	startLoading();
-	new Promise(function(resolve, reject) {
-		var isTimedout = false;
-		var timeout = setTimeout(function() {
-			isTimedout = true;
-			reject(new Error('Request timed out'));
-		}, FETCH_TIMEOUT);
-		fetch('https://api.500px.com/v1/photos?feature=' + selectedFeature.value.query + '&image_size=30,1080&rpp=' + MAX_PHOTOS + '&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg')
-		.then(function(response) {
-			clearTimeout(timeout);
-			if (isTimedout) return reject(new Error('Request timed out'));
-			if (response && response.status == 200) return response.json();
-			else reject(new Error(response ? 'Response error (' + response.status + ')' : 'No response from server'));
-		})
-		.then(function(responseObject) {
-			if (DEBUG) debug_log(JSON.stringify(responseObject.photos[0]));
-			newItems = [];
-			for (var i=0; i<responseObject.photos.length; i++) {
-				var responsePhoto = responseObject.photos[i];
-				var image_url, photo_url;
-		    	for (var j=0; j<responsePhoto.images.length; j++) {
-		    		if (responsePhoto.images[j].size === 30) image_url = responsePhoto.images[j].https_url;
-		    		else if (responsePhoto.images[j].size === 1080) photo_url = responsePhoto.images[j].https_url;
-		    	}
-		    	if (!isImage(image_url, feed._values) && !isImage(image_url, newItems) && image_url && photo_url) {
-			    	var image_aspect = responsePhoto.width / responsePhoto.height;
-			    	newItems.push(new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url));
-			    }
+    var req_url = "https://api.500px.com/v1/photos?feature=" + selectedFeature.value.query + "&image_size=30,1080&rpp=" + MAX_PHOTOS + "&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg";
+	req = new HttpClient().createRequest("GET", req_url);
+	req.onstatechanged = function(state) {
+		try {
+			if (state === 5) { // done
+				var response = req.getResponseContentString();
+				var responseObject = JSON.parse(response);
+				for (var i=0; i<responseObject.photos.length; i++) {
+					var responsePhoto = responseObject.photos[i];
+					var image_url, photo_url;
+			    	for (var j=0; j<responsePhoto.images.length; j++) {
+			    		if (responsePhoto.images[j].size === 30) image_url = responsePhoto.images[j].https_url;
+			    		else if (responsePhoto.images[j].size === 1080) photo_url = responsePhoto.images[j].https_url;
+			    	}
+			    	if (!isImage(image_url, feed._values) && !isImage(image_url, newItems) && image_url && photo_url) {
+				    	var image_aspect = responsePhoto.width / responsePhoto.height;
+				    	newItems.push(new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url));
+				    }
+				}
+				stopLoading();
+			} else if (state === 6) {
+				// aborted
+			} else if (state === 7) { // errored
+				stopLoading();
+				displayError("Network error (" + req.getResponseReasonPhrase() + ")");
+			} else if (state === 8) { // timeout
+				stopLoading();
+				displayError("Request timed out");
 			}
-			resolve();
-		})
-		.catch(function(err) {
-			reject(err);
-		});
-	})
-	.then(function() {
-		toUrl = url;
-		stopLoading();
-	})
-	.catch(function(err) {
-		stopLoading();
-		displayError(err);
-		if (DEBUG) debug_log(JSON.stringify(err));
-	});
+		} catch(err) {
+			stopLoading();
+			displayError(err);
+		}
+	}
+	req.enableCache(false);
+	req.setTimeout = FETCH_TIMEOUT;
+	req.sendAsync();
 }
 
 function longPressed(args) {
