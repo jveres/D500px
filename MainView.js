@@ -17,7 +17,7 @@ var ERROR_DISMISS_TIMEOUT = 5*1000;
 var navbarVisible = Observable(true);
 var navigationEnabled = Observable(true);
 
-var EMPTY_PHOTO = {photo_url: "", image_aspect: 1, name: "", avatar_url: "", username: "", user_url: ""};
+var EMPTY_PHOTO = new Photo("", 1, "", "", "", "", "", 0);
 var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, desc, query, selected) {
@@ -50,7 +50,7 @@ function selectFeature(feature) {
 	}
 }
 
-function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, username)
+function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, username, votes_count)
 {
 	this.url = "https://500px.com" + url;
 	this.image_url = image_url;
@@ -60,6 +60,7 @@ function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, userna
 	this.avatar_url = /*avatar_url*/""; // Fuse issue: https://www.fusetools.com/community/forums/bug_reports/httpimagesource_runtime_exception_2
 	this.username = "@" + username;
 	this.user_url = "https://500px.com/" + username;
+	this.votes_count = votes_count;
 }
 
 function isImage(image_url, items)
@@ -147,7 +148,8 @@ function reload() {
 				    			photo_url,
 				    			responsePhoto.name,
 				    			responsePhoto.user.avatars.small.https,
-				    			responsePhoto.user.username
+				    			responsePhoto.user.username,
+				    			responsePhoto.votes_count
 				    		)
 				    	);
 				    }
