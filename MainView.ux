@@ -4,32 +4,34 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
 	<iOS.StatusBarConfig Style="Light" IsVisible="false" Animation="Fade" />
-	<Panel>
-		<Toast />
-		<ClientPanel>
-			<!-- Main -->
-			<Panel ux:Name="mainView" Dock="Fill" Background="#000">
-				<Panel ux:Name="coverPanel" IsEnabled="false" HitTestMode="LocalBounds" Opacity="0">
-					<Clicked>
+	<Viewport Perspective="200" CullFace="Back">
+		<Panel>
+			<Toast />
+			<ClientPanel>
+				<!-- Main -->
+				<Panel ux:Name="mainView" Dock="Fill" Background="#000">
+					<Panel ux:Name="coverPanel" IsEnabled="false" HitTestMode="LocalBounds" Opacity="0">
+						<Clicked>
+							<Set navigator.Active="mainView" />
+						</Clicked>
+					</Panel>
+					<Panel>
+						<ux:Include File="MainView.navbar.ux" />
+						<Gallery />
+						<ux:Include File="MainView.featureDesc.ux" />
+					</Panel>
+				</Panel>
+				<ux:Include File="MainView.sidebar.ux" />
+				<WhileTrue Value="{navigationEnabled}">
+					<EdgeNavigation ux:Name="navigator" />
+					<OnKeyPress Key="BackButton">
 						<Set navigator.Active="mainView" />
-					</Clicked>
-				</Panel>
-				<Panel>
-					<ux:Include File="MainView.navbar.ux" />
-					<Gallery />
-					<ux:Include File="MainView.featureDesc.ux" />
-				</Panel>
-			</Panel>
-			<ux:Include File="MainView.sidebar.ux" />
-			<WhileTrue Value="{navigationEnabled}">
-				<EdgeNavigation ux:Name="navigator" />
-				<OnKeyPress Key="BackButton">
-					<Set navigator.Active="mainView" />
-		 		</OnKeyPress>
-		 		<OnKeyPress Key="MenuButton">
-		 			<NavigateToggle Target="sidebar" />
-		 		</OnKeyPress>
-	 		</WhileTrue>
-		</ClientPanel>
-	</Panel>
+			 		</OnKeyPress>
+			 		<OnKeyPress Key="MenuButton">
+			 			<NavigateToggle Target="sidebar" />
+			 		</OnKeyPress>
+		 		</WhileTrue>
+			</ClientPanel>
+		</Panel>
+	</Viewport>
 </App>

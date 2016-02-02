@@ -15,7 +15,7 @@
 			<Grid Columns="1*,auto">
 				<Text Column="0" Value="{currentImage.username}" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
 				<StackPanel Column="1" Orientation="Horizontal">
-					<Image File="Assets/Icons/Likes.png" Width="18" Height="18" Opacity="1" Color="#ff0000" />
+					<Image File="Assets/Icons/Likes.png" Width="18" Height="18" Opacity="1" Color="#ff3333" />
 					<Text Value="{currentImage.votes_count}" Padding="5,0,0,0" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
 				</StackPanel>
 			</Grid>
@@ -53,7 +53,7 @@
 			</Panel>
 			<ScrollingAnimation From="0" To="-150">
 				<Scale Target="detailsView" Factor="0.9" />
-				<!--Change detailsView.Opacity="0.85" /-->
+				<Rotate Target="detailsView" DegreesX="7" />
 			</ScrollingAnimation>
 			<ScrollingAnimation From="-105" To="-106">
 				<Pulse Target="closeDetails" />

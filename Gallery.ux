@@ -13,7 +13,7 @@
 			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 		</WhileTrue>
 		<!-- Background divider -->
-		<Panel ux:Name="backgroundPanel" Opacity="0" Background="#00000090" HitTestMode="None" IsEnabled="false" />
+		<Panel ux:Name="backgroundPanel" Opacity="0" Background="#000000b0" HitTestMode="None" IsEnabled="false" />
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->
