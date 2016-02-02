@@ -1,8 +1,21 @@
 <!--Detail view -->
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
+	<!-- Title class -->
+	<Grid ux:Class="Title" Margin="10" Columns="auto,1*">
+		<Circle Column="0" Width="50" Height="50">
+			<SolidColor Color="#393E45" />
+			<ImageFill Url="{currentImage.avatar_url}" />
+		</Circle>
+		<StackPanel Column="1" Alignment="VerticalCenter" Padding="5,0,0,0">
+			<Text Value="{currentImage.name}" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap"/>
+			<Text Value="{currentImage.username}" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap"/>
+		</StackPanel>
+		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
+	</Grid>
 	<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
 		<StackPanel>
 			<Panel ux:Name="scrollTopPanel" HitTestMode="None" IsEnabled="false" Opacity="0" />
+			<Title ux:Name="titlePanel" Opacity="0" />
 			<Panel>
 				<!-- Hi-res image -->
 				<Panel ux:Name="photo" Visibility="Collapsed">
@@ -30,7 +43,7 @@
 			</Panel>
 			<ScrollingAnimation From="0" To="-150">
 				<Scale Target="detailsView" Factor="0.9" />
-				<Change detailsView.Opacity="0.85" />
+				<!--Change detailsView.Opacity="0.85" /-->
 			</ScrollingAnimation>
 			<ScrollingAnimation From="-105" To="-106">
 				<Pulse Target="closeDetails" />

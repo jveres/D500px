@@ -19,7 +19,7 @@ var ERROR_DISMISS_TIMEOUT = 5*1000;
 var navbarVisible = Observable(true);
 var navigationEnabled = Observable(true);
 
-var EMPTY_PHOTO = {photo_url: "", image_aspect: 1};
+var EMPTY_PHOTO = {photo_url: "", image_aspect: 1, name: "", avatar_url: "", username: ""};
 var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, desc, query, selected) {
@@ -52,12 +52,15 @@ function selectFeature(feature) {
 	}
 }
 
-function Photo(url, image_aspect, image_url, photo_url)
+function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, username)
 {
 	this.url = url;
 	this.image_url = image_url;
 	this.image_aspect = image_aspect;
 	this.photo_url = photo_url;
+	this.name = name;
+	this.avatar_url = /*avatar_url*/""; // Fuse issue: https://www.fusetools.com/community/forums/bug_reports/httpimagesource_runtime_exception_2
+	this.username = "@" + username;
 }
 
 function isImage(image_url, items)
@@ -137,7 +140,17 @@ function reload() {
 			    	}
 			    	if (!isImage(image_url, feed._values) && !isImage(image_url, newItems) && image_url && photo_url) {
 				    	var image_aspect = responsePhoto.width / responsePhoto.height;
-				    	newItems.push(new Photo(responsePhoto.url, image_aspect === 1 ? 1.0001 : image_aspect, image_url, photo_url)); // Aspect bug workaround
+				    	newItems.push(
+				    		new Photo(
+				    			responsePhoto.url,
+				    			image_aspect === 1 ? 1.0001 : image_aspect, // Aspect bug workaround
+				    			image_url,
+				    			photo_url,
+				    			responsePhoto.name,
+				    			responsePhoto.user.avatars.small.https,
+				    			responsePhoto.user.username
+				    		)
+				    	);
 				    }
 				}
 				stopLoading();
@@ -175,8 +188,7 @@ function disableNavigation() {
 }
 
 function selectImage(args) {
-	var image = args.data;
-	currentImage.value = {photo_url: image.photo_url, image_aspect: image.image_aspect};
+	currentImage.value = args.data;
 }
 
 function deselectImage(args) {

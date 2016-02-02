@@ -3,7 +3,7 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
-	<iOS.StatusBarConfig Style="Light" />
+	<iOS.StatusBarConfig Style="Light" IsVisible="false" Animation="Fade" />
 	<Panel>
 		<Toast />
 		<ClientPanel>
