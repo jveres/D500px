@@ -54,15 +54,15 @@
 	            		</WhilePressed>
 						<LongPressed>
 							<Change image.Opacity="0.5" Duration="0.2" />
-							<Callback Handler="{longPressed}" Delay="0.4" />
+							<LaunchUri Uri="{url}" Delay="0.2" />
 						</LongPressed>
-						<Clicked>
+						<Tapped>
 							<Callback Handler="{selectImage}" />
 							<Callback Handler="{disableNavigation}" />
 							<Callback Handler="{hideNavbar}" />
 							<Set detailsPlaceholder.Target="image" />
 							<Set detailsMode.Value="true" />
-						</Clicked>
+						</Tapped>
 					</AspectView>
 				</Each>
 			</Panel>

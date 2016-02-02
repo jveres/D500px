@@ -23,6 +23,7 @@
     "Fuse.Themes",
     "Fuse.Triggers",
     "Fuse.Vibration",
+    "Fuse.Launcher",
     "FuseCore",
     "Uno.Collections",
     "Uno.Geometry"

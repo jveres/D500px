@@ -2,9 +2,13 @@
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
 	<!-- Title class -->
 	<Grid ux:Class="Title" Margin="10" Columns="auto,1*">
-		<Circle Column="0" Width="50" Height="50">
+		<Circle ux:Name="avatarCircle" Column="0" Width="50" Height="50">
 			<SolidColor Color="#393E45" />
 			<ImageFill Url="{currentImage.avatar_url}" />
+			<LongPressed>
+				<Change avatarCircle.Opacity="0.5" Duration="0.2" />
+				<LaunchUri Uri="{currentImage.user_url}" Delay="0.2" />
+			</LongPressed>
 		</Circle>
 		<StackPanel Column="1" Alignment="VerticalCenter" Padding="5,0,0,0">
 			<Text Value="{currentImage.name}" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap"/>
@@ -50,9 +54,9 @@
 			</ScrollingAnimation>
 		</StackPanel>
 	</ScrollView>
-	<Clicked>
+	<Tapped>
 		<Pulse Target="closeDetails" />
-	</Clicked>
+	</Tapped>
 	<!-- Closing trugger -->
 	<WhileTrue ux:Name="closeDetails">
 		<Callback Handler="{deselectImage}" />
