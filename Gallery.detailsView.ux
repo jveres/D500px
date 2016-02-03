@@ -45,7 +45,9 @@
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
 						<WhileFailed>
-							<Callback Handler="{showImageLoadingError}" />
+							<RaiseUserEvent Name="Error">
+							    <UserEventArg Name="message" StringValue="Image loading error" />
+							</RaiseUserEvent>
 						</WhileFailed>
 					</ImageView>
 				</Panel>

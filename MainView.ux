@@ -4,9 +4,10 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
 	<iOS.StatusBarConfig Style="Light" IsVisible="false" Animation="Fade" />
+	<UserEvent Name="Error" />
 	<Viewport Perspective="200" CullFace="Back">
 		<Panel>
-			<Toast />
+			<ux:Include File="MainView.toast.ux" />
 			<ClientPanel>
 				<!-- Main -->
 				<Panel ux:Name="mainView" Dock="Fill" Background="#000">

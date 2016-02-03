@@ -1,5 +1,6 @@
-<Panel ux:Class="Toast" ux:Name="toast" Alignment="BottomCenter" Margin="0,0,0,30" Padding="20,10,20,10" Opacity="0" HitTestMode="None">
-	<Text Value="{errorMessage}" TextColor="#fff" Font="Light" FontSize="18">
+<Panel ux:Name="toast" Alignment="BottomCenter" Margin="0,0,0,30" Padding="20,10,20,10" Opacity="0" HitTestMode="None">
+	<OnUserEvent Name="Error" Handler="{onError}" Filter="Global" />
+	<Text Value="{toast}" TextColor="#fff" Font="Light" FontSize="18">
 		<WhileContainsText>
 			<Change toast.Opacity="0.8" Easing="CircularInOut" Duration="0.5" DurationBack="0"/>
 			<Change scaleAnimation.Factor="1" Easing="CircularInOut" Duration="0.5" DurationBack="0"/>	

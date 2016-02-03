@@ -24,6 +24,7 @@
     "Fuse.Triggers",
     "Fuse.Vibration",
     "Fuse.Launcher",
+    "Fuse.UserEvents",
     "FuseCore",
     "Uno.Collections",
     "Uno.Geometry"

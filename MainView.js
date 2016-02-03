@@ -6,7 +6,7 @@ var DEBUG = false;
 var feed = Observable();
 var loading = Observable(false);
 var spinning = Observable(false);
-var errorMessage = Observable('');
+var toast = Observable('');
 var scrollToUrl = Observable("");
 
 var FETCH_TIMEOUT = 15*1000;
@@ -72,10 +72,10 @@ function isImage(image_url, items)
 
 var _errorTimeout;
 function displayError(err) {
-	errorMessage.value = (err.message || err);
+	toast.value = (err.message || err);
 	clearTimeout(_errorTimeout);
 	_errorTimeout = setTimeout(function() {
-		errorMessage.value = "";
+		toast.value = "";
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
@@ -191,14 +191,14 @@ function deselectImage(args) {
 	currentImage.value = EMPTY_PHOTO; // aborts current download
 }
 
-function showImageLoadingError()
-{
-	displayError("Image loading error");
-}
-
 function scrollToTop()
 {
 	scrollToUrl.value = "";
+}
+
+function onError(args)
+{
+	displayError(args.message);
 }
 
 reload();
@@ -206,23 +206,31 @@ reload();
 module.exports = {
 	feed: feed,
 	reload: reload,
+	
 	loading: loading,
 	spinning: spinning,
+	
+	toast: toast,
+	onError: onError,
+	
 	checkLoading: checkLoading,
-	errorMessage: errorMessage,
+	
 	features: features,
 	selectFeature: selectFeature,
 	selectedFeature: selectedFeature,
+	
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,
+	
 	disableNavigation: disableNavigation,
 	enableNavigation: enableNavigation,
 	navigationEnabled: navigationEnabled,
+	
 	selectImage: selectImage,
 	deselectImage: deselectImage,
 	currentImage: currentImage,
-	showImageLoadingError: showImageLoadingError,
+	
 	scrollToUrl: scrollToUrl,
 	scrollToTop: scrollToTop
 };
