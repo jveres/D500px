@@ -22,7 +22,7 @@
 		</StackPanel>
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 	</Grid>
-	<ScrollView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
+	<ScrollingView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
 		<StackPanel>
 			<Panel ux:Name="scrollTopPanel" HitTestMode="None" IsEnabled="false" Opacity="0" />
 			<Title ux:Name="titlePanel" Opacity="0" />
@@ -53,6 +53,8 @@
 				</Panel>
 				<Placeholder ux:Name="detailsPlaceholder" Aspect="{currentImage.image_aspect}" BoxSizing="FillAspect" />
 			</Panel>
+		</StackPanel>
+		<WhileTrue ux:Name="rebounced" >
 			<ScrollingAnimation From="0" To="-150">
 				<Scale Target="detailsView" Factor="0.9" />
 				<Rotate Target="detailsView" DegreesX="7" />
@@ -60,8 +62,11 @@
 			<ScrollingAnimation From="-105" To="-106">
 				<Pulse Target="closeDetails" />
 			</ScrollingAnimation>
-		</StackPanel>
-	</ScrollView>
+		</WhileTrue>
+		<WhileRebounced>
+			<Change rebounced.Value="true" />
+		</WhileRebounced>
+	</ScrollingView>
 	<Tapped>
 		<Pulse Target="closeDetails" />
 	</Tapped>
