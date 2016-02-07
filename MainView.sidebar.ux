@@ -1,12 +1,12 @@
-<Panel ux:Name="sidebar" Background="#000" Edge="Left" Alignment="Left" Padding="30,0,0,0">
-	<ScrollView>
+<Panel ux:Name="sidebar" Background="#000" Edge="Left" Alignment="Left">
+	<ScrollView Padding="30,0,0,0">
 		<StackPanel Alignment="Center">
 			<Each Items="{features}">
 				<Panel>
 					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="20" HitTestMode="LocalBounds">
 						<Clicked>
-							<NavigateToggle Target="sidebar" />
 							<Callback Handler="{selectFeature}" />
+							<NavigateToggle Target="sidebar" />
 						</Clicked>
 						<WhileTrue Value="{selected}">
 							<Change featureText.TextColor="#fff" Duration="0.1"/>
@@ -41,5 +41,6 @@
 	</ActivatingAnimation>
 	<DeactivatingAnimation>
 		<Set coverPanel.IsEnabled="false" AtProgress="1" />
+		<Callback Handler="{isFeatureChanged}" AtProgress="1" />
 	</DeactivatingAnimation>
 </Panel>

@@ -14,6 +14,7 @@ var MAX_PHOTOS = 40;
 var MAX_FEED_LENGHT = 120;
 var ERROR_DISMISS_TIMEOUT = 5*1000;
 
+var featureChanged = false;
 var navbarVisible = Observable(true);
 var navigationEnabled = Observable(true);
 
@@ -39,14 +40,10 @@ var selectedFeature = Observable(features.value);
 function selectFeature(feature) {
 	var featureName = (feature.data ? feature.data.name : feature.name);
 	if (featureName !== selectedFeature.value.name) {
-		setTimeout(function() {
-			selectedFeature.value.selected.value = false;
-			selectedFeature.value = (feature.data ? feature.data : feature);
-			selectedFeature.value.selected.value = true;
-			resetFeed = true;
-			toUrl = ""; // reset scroll position
-			reload();
-		}, 500);
+		selectedFeature.value.selected.value = false;
+		selectedFeature.value = (feature.data ? feature.data : feature);
+		selectedFeature.value.selected.value = true;
+		featureChanged = true;
 	}
 }
 
@@ -79,15 +76,11 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-var newItems = [], resetFeed = false, toUrl = null, fetching = false, req = null;
+var newItems = [], toUrl = null, fetching = false, req = null;
 
 function startLoading() {
 	if (req !== null) req.abort();
 	req = null;
-	if (resetFeed) {
-		feed.clear();
-		resetFeed = false;
-	}
 	newItems = [];
 	fetching = true;
 	loading.value = true;
@@ -201,6 +194,17 @@ function onError(args)
 	displayError(args.message);
 }
 
+function isFeatureChanged()
+{
+	if (featureChanged === true)
+	{
+		featureChanged = false;
+		feed.clear();
+		toUrl = ""; // reset scroll position
+		reload();
+	}
+}
+
 reload();
 
 module.exports = {
@@ -218,6 +222,7 @@ module.exports = {
 	features: features,
 	selectFeature: selectFeature,
 	selectedFeature: selectedFeature,
+	isFeatureChanged: isFeatureChanged,
 	
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
