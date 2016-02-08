@@ -3,14 +3,14 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="MainView.js" />
-	<iOS.StatusBarConfig Style="Light" IsVisible="false" Animation="Fade" />
+	<iOS.StatusBarConfig Style="Light" IsVisible="true"/>
 	<UserEvent Name="Error" />
 	<Viewport Perspective="200" CullFace="Back">
 		<Panel>
 			<ux:Include File="MainView.toast.ux" />
 			<ClientPanel>
 				<!-- Main -->
-				<Panel ux:Name="mainView" Dock="Fill" Background="#000">
+				<Panel ux:Name="mainView" Dock="Fill" Color="#000">
 					<Panel ux:Name="coverPanel" IsEnabled="false" HitTestMode="LocalBounds" Opacity="0">
 						<Clicked>
 							<Set navigator.Active="mainView" />

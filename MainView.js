@@ -18,7 +18,7 @@ var featureChanged = false;
 var navbarVisible = Observable(true);
 var navigationEnabled = Observable(true);
 
-var EMPTY_PHOTO = new Photo("", 0, "", "", "", "", "", 0);
+var EMPTY_PHOTO = new Photo("", 1, "", "", "", "", "", 0);
 var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, desc, query, selected) {
@@ -136,7 +136,7 @@ function reload() {
 				    	newItems.push(
 				    		new Photo(
 				    			responsePhoto.url,
-				    			image_aspect === 1 ? 1.0001 : image_aspect, // Aspect bug workaround
+				    			image_aspect === 1 ? 1.0001 : image_aspect, // Fuse's Aspect bug workaround
 				    			image_url,
 				    			photo_url,
 				    			responsePhoto.name,
@@ -178,10 +178,6 @@ function disableNavigation() {
 
 function selectImage(args) {
 	currentImage.value = args.data;
-}
-
-function deselectImage(args) {
-	currentImage.value = EMPTY_PHOTO; // aborts current download
 }
 
 function scrollToTop()
@@ -233,7 +229,6 @@ module.exports = {
 	navigationEnabled: navigationEnabled,
 	
 	selectImage: selectImage,
-	deselectImage: deselectImage,
 	currentImage: currentImage,
 	
 	scrollToUrl: scrollToUrl,

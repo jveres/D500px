@@ -2,8 +2,7 @@
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
 	<!-- Title class -->
 	<Grid ux:Class="Title" Margin="10" Columns="auto,1*">
-		<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50">
-			<SolidColor Color="#393E45" />
+		<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50" Color="#393E45">
 			<ImageFill Url="{currentImage.avatar_url}" />
 			<LongPressed>
 				<Change avatarCircle.Opacity="0.5" Duration="0.2" />
@@ -22,7 +21,7 @@
 		</StackPanel>
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 	</Grid>
-	<ScrollingView ux:Name="detailsScrollView" Alignment="VerticalCenter" ClipToBounds="false">
+	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false">
 		<Grid Rows="auto,1*"> <!-- StackPanel doesn't work here interestingly -->
 			<Title Row="0" ux:Name="titlePanel" Opacity="0" />
 			<Panel Row="1">
@@ -39,7 +38,7 @@
 					<WhileTrue ux:Name="showSpinner">
 						<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
 					</WhileTrue>
-					<ImageView HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused">
+					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoading>
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
@@ -50,7 +49,7 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Placeholder ux:Name="detailsPlaceholder" Aspect="{currentImage.image_aspect}" BoxSizing="FillAspect" />
+				<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" /> <!-- Can't use currentImage.image_aspect here because of UI update glitch --> 
 			</Panel>
 		</Grid>
 		<WhileTrue ux:Name="rebounced" >
@@ -59,7 +58,7 @@
 				<Rotate Target="detailsView" DegreesX="7" />
 			</ScrollingAnimation>
 			<ScrollingAnimation From="-105" To="-106">
-				<Pulse Target="closeDetails" />
+				<Set closeDetails.Value="true" />
 			</ScrollingAnimation>
 		</WhileTrue>
 		<WhileRebounced>
@@ -67,10 +66,11 @@
 		</WhileRebounced>
 	</ScrollingView>
 	<Tapped>
-		<Pulse Target="closeDetails" />
+		<Set closeDetails.Value="true" />
 	</Tapped>
 	<!-- Closing trugger -->
 	<WhileTrue ux:Name="closeDetails">
+		<Set hiresPhoto.ImageUrl="" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>

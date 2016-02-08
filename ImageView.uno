@@ -3,10 +3,11 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Resources;
 using Fuse.Elements;
+using Fuse.Controls;
 using Fuse.Triggers;
 using WhileLoaded;
 
-public class ImageView: Element
+public class ImageView: Panel
 {
         HttpImageSource _source = new HttpImageSource();
 

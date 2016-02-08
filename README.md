@@ -7,8 +7,6 @@
 
 #### Nifty gallery app built with [Fusetools](https://www.fusetools.com/)
 
-## There's an issue with JSON.parse() in V8 which brokes the Android build:(
-
 <a href="https://github.com/jveres/D500px/blob/master/D500px-debug.apk?raw=true">APK Download</a>
 
 ## Features
@@ -30,12 +28,10 @@
 - ~~Http request error handling~~
 - custom gallery layout
 - D500px account login
-- display photo details
+- ~~display photo details~~
 - interactions (likes, commenting, etc)
 
 *Note1: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
 
-*Note2: Currently there are no atomic updates in Fuse yet so populating the gallery is something jerky.*
-
-*Note3: This is still a work in progress.*
+*Note2: This is still a work in progress.*
 

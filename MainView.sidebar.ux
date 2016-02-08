@@ -1,4 +1,5 @@
-<Panel ux:Name="sidebar" Background="#000" Edge="Left" Alignment="Left">
+<Panel ux:Name="sidebar" Color="#000" Edge="Left" Alignment="Left">
+	<Translation X="-1" RelativeTo="Size" />
 	<ScrollView Padding="30,0,0,0">
 		<StackPanel Alignment="Center">
 			<Each Items="{features}">
@@ -23,7 +24,6 @@
 		<GradientStop Offset="0.7" Color="#212831" />
 		<GradientStop Offset="1" Color="#000" />
 	</LinearGradient>
-	<Translation X="-1" RelativeTo="Size" />
 	<ActivatingAnimation>
 		<Set coverPanel.IsEnabled="true" AtProgress="1" />
 		<Move X="1" RelativeTo="Size" />
