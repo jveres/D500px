@@ -18,7 +18,7 @@ var featureChanged = false;
 var navbarVisible = Observable(true);
 var navigationEnabled = Observable(true);
 
-var EMPTY_PHOTO = new Photo("", 1, "", "", "", "", "", 0);
+var EMPTY_PHOTO = new Photo("", 0, "", "", "", "", "", 0);
 var currentImage = Observable(EMPTY_PHOTO);
 
 function Feature(name, desc, query, selected) {

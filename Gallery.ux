@@ -4,6 +4,14 @@
 		<ux:Include File="Gallery.detailsView.ux" />
 		<!-- Details mode trigger -->
 		<WhileTrue ux:Name="detailsMode">
+			<!-- Hide navigation when playing forward -->
+			<Callback Handler="{hideNavbar}" Direction="Forward" />
+			<Callback Handler="{disableNavigation}" Direction="Forward" />
+			<!-- Show navigation when playing backward -->
+			<Callback Handler="{deselectImage}" Direction="Backward" AtProgress="0" />
+			<Callback Handler="{showNavbar}" Direction="Backward" />
+			<Callback Handler="{enableNavigation}" Direction="Backward" />
+			<!-- Change layout -->
 			<Change backgroundPanel.Opacity="1" Duration="0.2" Delay="0" />
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3" DelayBack="0"/>
 			<Change detailsView.LayoutRole="Standard" />
@@ -58,8 +66,6 @@
 						</LongPressed>
 						<Tapped>
 							<Callback Handler="{selectImage}" />
-							<Callback Handler="{disableNavigation}" />
-							<Callback Handler="{hideNavbar}" />
 							<Set detailsPlaceholder.Target="image" />
 							<Set detailsMode.Value="true" />
 						</Tapped>

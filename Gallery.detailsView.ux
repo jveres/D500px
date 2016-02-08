@@ -2,7 +2,7 @@
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
 	<!-- Title class -->
 	<Grid ux:Class="Title" Margin="10" Columns="auto,1*">
-		<Circle ux:Name="avatarCircle" Column="0" Width="50" Height="50">
+		<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50">
 			<SolidColor Color="#393E45" />
 			<ImageFill Url="{currentImage.avatar_url}" />
 			<LongPressed>
@@ -22,11 +22,10 @@
 		</StackPanel>
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 	</Grid>
-	<ScrollingView ux:Name="detailsScrollView" Alignment="Center" Width="100%" ClipToBounds="false">
-		<StackPanel>
-			<Panel ux:Name="scrollTopPanel" HitTestMode="None" IsEnabled="false" Opacity="0" />
-			<Title ux:Name="titlePanel" Opacity="0" />
-			<Panel>
+	<ScrollingView ux:Name="detailsScrollView" Alignment="VerticalCenter" ClipToBounds="false">
+		<Grid Rows="auto,1*"> <!-- StackPanel doesn't work here interestingly -->
+			<Title Row="0" ux:Name="titlePanel" Opacity="0" />
+			<Panel Row="1">
 				<!-- Hi-res image -->
 				<Panel ux:Name="photo" Visibility="Collapsed">
 					<!-- Loading spinner -->
@@ -53,7 +52,7 @@
 				</Panel>
 				<Placeholder ux:Name="detailsPlaceholder" Aspect="{currentImage.image_aspect}" BoxSizing="FillAspect" />
 			</Panel>
-		</StackPanel>
+		</Grid>
 		<WhileTrue ux:Name="rebounced" >
 			<ScrollingAnimation From="0" To="-150">
 				<Scale Target="detailsView" Factor="0.9" />
@@ -72,12 +71,9 @@
 	</Tapped>
 	<!-- Closing trugger -->
 	<WhileTrue ux:Name="closeDetails">
-		<Callback Handler="{deselectImage}" />
-		<Callback Handler="{showNavbar}" />
-		<Callback Handler="{enableNavigation}" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>
-		<BringIntoView TargetNode="scrollTopPanel"/>
+		<BringIntoView TargetNode="titlePanel"/>
 	</WhileVisible>
 </Panel>
