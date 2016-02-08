@@ -27,10 +27,10 @@
 			<Panel ux:Name="insetPanel" Height="45" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
 			<Panel Y="45" Padding="0,0,5,5">
-				<ColumnLayout ux:Name="columnLayout" ColumnCount="2" />
-				<WhileWindowLandscape>
+				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" />
+				<!--WhileWindowLandscape>
 					<Change columnLayout.ColumnCount="3" Duration="0" Delay="0" />
-				</WhileWindowLandscape>
+				</WhileWindowLandscape-->
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
 					<AspectView Padding="5,5,0,0" Color="#000" AspectRatio="{image_aspect}">
@@ -68,6 +68,7 @@
 							<Set closeDetails.Value="false" />
 							<Set detailsPlaceholder.Target="image" />
 							<Set detailsMode.Value="true" />
+							<BringToFront />
 						</Tapped>
 					</AspectView>
 				</Each>

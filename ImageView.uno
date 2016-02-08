@@ -3,11 +3,10 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Resources;
 using Fuse.Elements;
-using Fuse.Controls;
 using Fuse.Triggers;
 using WhileLoaded;
 
-public class ImageView: Panel
+public class ImageView: Element
 {
         HttpImageSource _source = new HttpImageSource();
 
@@ -50,16 +49,16 @@ public class ImageView: Panel
         protected override void OnDraw(DrawContext dc)
         {
                 texture2D tex = _source.GetTexture();
-                if (tex == null) return;
-                draw
-                {
-                        apply Fuse.Drawing.Planar.Image;
-                        DrawContext: dc;
-                        Node: this;
-                        Size: ActualSize;
-                        Texture: tex;
-                        BlendEnabled: false;
-                        DepthTestEnabled: false;
-                };
+                if (tex != null)
+                        draw
+                        {
+                                apply Fuse.Drawing.Planar.Image;
+                                DrawContext: dc;
+                                Node: this;
+                                Size: ActualSize;
+                                Texture: tex;
+                                BlendEnabled: false;
+                                DepthTestEnabled: false;
+                        };
         }
 }
