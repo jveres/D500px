@@ -1,10 +1,10 @@
 <Panel ux:Name="sidebar" Color="#000" Edge="Left" Alignment="Left">
 	<Translation X="-1" RelativeTo="Size" />
-	<ScrollView Padding="30,0,0,0">
+	<ScrollView>
 		<StackPanel Alignment="Center">
 			<Each Items="{features}">
 				<Panel>
-					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="20" HitTestMode="LocalBounds">
+					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,15,20,15" HitTestMode="LocalBounds">
 						<Clicked>
 							<Callback Handler="{selectFeature}" />
 							<NavigateToggle Target="sidebar" />

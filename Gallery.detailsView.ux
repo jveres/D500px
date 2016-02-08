@@ -50,9 +50,9 @@
 					</ImageView>
 				</Panel>
 				<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" /> <!-- Can't use currentImage.image_aspect here because of UI update glitch --> 
-			</Panel>
+ 			</Panel>
 		</Grid>
-		<WhileTrue ux:Name="rebounced" >
+		<WhileTrue ux:Name="rebounced">
 			<ScrollingAnimation From="0" To="-150">
 				<Scale Target="detailsView" Factor="0.8" />
 				<Rotate Target="detailsView" DegreesX="5" />

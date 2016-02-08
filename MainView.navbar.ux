@@ -1,6 +1,6 @@
 <!-- Navigation bar -->
-<Panel ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10" IsEnabled="{navigationEnabled}">	
-	<Panel ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
+<DockPanel ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10" IsEnabled="{navigationEnabled}">	
+	<Panel Dock="Left" ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
 		<Clicked>
 			<NavigateToggle Target="sidebar" />
 		</Clicked>
@@ -14,7 +14,12 @@
 			<Rotation ux:Name="bottomMenuRotation" />
 		</Rectangle>
 	</Panel>
-	<Panel ux:Name="reloadButton" Clicked="{reload}" Alignment="CenterRight" Padding="8" HitTestMode="LocalBounds">
+	<Text Dock="Fill" Value="{selectedFeature.name}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff" TextWrapping="NoWrap">
+		<Clicked>
+			<Callback Handler="{scrollToTop}" />
+		</Clicked>
+	</Text>
+	<Panel Dock="Right" ux:Name="reloadButton" Clicked="{reload}" Alignment="Center" Padding="8" HitTestMode="LocalBounds">
 		<Image File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
 			<Rotation ux:Name="reloadRotation" />
 			<WhileTrue Value="{spinning}">
@@ -27,13 +32,8 @@
 			</WhileTrue>
 		</Image>
 	</Panel>
-	<Text Value="{selectedFeature.name}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff">
-		<Clicked>
-			<Callback Handler="{scrollToTop}" />
-		</Clicked>
-	</Text>
 	<WhileFalse Value="{navbarVisible}">
 		<Change navbar.Opacity="0" Easing="CircularInOut" Duration="0.2" />
 	</WhileFalse>
 	<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-</Panel>
+</DockPanel>
