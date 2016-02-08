@@ -23,11 +23,10 @@
 		<GradientStop Offset="0.7" Color="#212831" />
 		<GradientStop Offset="1" Color="#000" />
 	</LinearGradient>
-	<EnteringAnimation>
-		<Move X="-1" RelativeTo="Size" />
-	</EnteringAnimation>
+	<Translation X="-1" RelativeTo="Size" />
 	<ActivatingAnimation>
 		<Set coverPanel.IsEnabled="true" AtProgress="1" />
+		<Move X="1" RelativeTo="Size" />
 		<Move Target="mainView" X="1" RelativeTo="Size" RelativeNode="sidebar" />
 		<Move Target="hamburgerIcon" X="-1" RelativeTo="Size" RelativeNode="sidebar" />
 		<!-- Change hamburgerIcon to cross out -->

@@ -14,7 +14,7 @@ public class WhileRebounced : WhileTrigger
                 if (_scrollable != null)
                 {
                         _scrollable.ScrollPositionChanged += OnScrollPositionChanged;
-                        BypassSetActive(true);
+                        BypassSetActive(IsOn);
                 }
         }
 
@@ -31,16 +31,25 @@ public class WhileRebounced : WhileTrigger
         bool _topBounce = true; // initial state
         bool _rebounced = false;
 
-        void OnScrollPositionChanged(object sender, Uno.EventArgs args)
+        void OnScrollPositionChanged(object sender, EventArgs args)
         {
-                float y = _scrollable.ScrollPosition.Y;
-                if (y < 0) _topBounce = true;
-                else if (y == 0 && _topBounce) _rebounced = true;
-                else
+                SetActive(IsOn);
+        }
+
+        public bool IsOn
+        {
+                get
                 {
-                        _topBounce = false;
-                        _rebounced = false;
+                        var mn = _scrollable.MinScroll;
+                        var p = _scrollable.ScrollPosition;
+                        if (p.Y < mn.Y) _topBounce = true;
+                        else if (p.Y == mn.Y && _topBounce) _rebounced = true;
+                        else
+                        {
+                                _topBounce = false;
+                                _rebounced = false;
+                        }
+                        return _rebounced;
                 }
-                SetActive(_rebounced);
         }
 }
