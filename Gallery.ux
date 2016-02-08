@@ -28,9 +28,9 @@
 			<!-- Image layout -->
 			<Panel Y="45" Padding="0,0,5,5">
 				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" />
-				<!--WhileWindowLandscape>
-					<Change columnLayout.ColumnCount="3" Duration="0" Delay="0" />
-				</WhileWindowLandscape-->
+				<WhileWindowLandscape>
+					<Change columnLayout.ColumnSize="250" />
+				</WhileWindowLandscape>
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
 					<AspectView Padding="5,5,0,0" Color="#000" AspectRatio="{image_aspect}">

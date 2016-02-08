@@ -54,8 +54,8 @@
 		</Grid>
 		<WhileTrue ux:Name="rebounced" >
 			<ScrollingAnimation From="0" To="-150">
-				<Scale Target="detailsView" Factor="0.9" />
-				<Rotate Target="detailsView" DegreesX="7" />
+				<Scale Target="detailsView" Factor="0.8" />
+				<Rotate Target="detailsView" DegreesX="5" />
 			</ScrollingAnimation>
 			<ScrollingAnimation From="-105" To="-106">
 				<Set closeDetails.Value="true" />
