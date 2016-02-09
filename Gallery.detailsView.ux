@@ -1,29 +1,9 @@
 <!--Detail view -->
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
-	<!-- Title class -->
-	<Grid ux:Class="Title" Margin="10,5,10,10" Columns="auto,1*">
-		<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50" Color="#393E45">
-			<ImageFill Url="{currentImage.avatar_url}" />
-			<LongPressed>
-				<Change avatarCircle.Opacity="0.5" Duration="0.2" />
-				<LaunchUri Uri="{currentImage.user_url}" Delay="0.2" />
-			</LongPressed>
-		</Circle>
-		<StackPanel Column="1" Alignment="VerticalCenter" Padding="5,0,0,0">
-			<Text Value="{currentImage.name}" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap" />
-			<Grid Columns="1*,auto">
-				<Text Column="0" Value="{currentImage.username}" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
-				<StackPanel Column="1" Orientation="Horizontal">
-					<Image File="Assets/Icons/Likes.png" Width="18" Height="18" Opacity="1" Color="#ff3333" />
-					<Text Value="{currentImage.votes_count}" Padding="5,0,0,0" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
-				</StackPanel>
-			</Grid>
-		</StackPanel>
-		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-	</Grid>
 	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false">
-		<Grid Rows="auto,1*"> <!-- StackPanel doesn't work here interestingly -->
-			<Title Row="0" ux:Name="titlePanel" Opacity="0" />
+		<Grid Rows="auto,1*">
+			<!-- Photo title  -->
+			<ux:Include File="Gallery.detailsView.title.ux" />
 			<Panel Row="1">
 				<!-- Hi-res image -->
 				<Panel ux:Name="photo" Visibility="Collapsed">
@@ -38,7 +18,7 @@
 					<WhileTrue ux:Name="showSpinner">
 						<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
 					</WhileTrue>
-					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageUrl="{currentImage.photo_url}" ImageMemoryPolicy="UnloadUnused">
+					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoading>
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
@@ -49,7 +29,7 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" TransformOrigin="Anchor" Offset="0%,0%" Anchor="50%,50%"/> <!-- Can't use currentImage.image_aspect here because of UI update glitch --> 
+				<Placeholder ux:Name="detailsPlaceholder" BoxSizing="FillAspect" />
  			</Panel>
 		</Grid>
 		<!-- Rebounce trigger for better swipedown closing experience -->
@@ -76,7 +56,7 @@
 		<BringToFront />
 	</WhileTrue>
 	<WhileVisible>
-		<BringIntoView TargetNode="titlePanel" Delay="0.3" />
+		<BringIntoView TargetNode="titlePanel" />
 		<!-- Android Back button handler -->
 		<OnKeyPress Key="BackButton">
 			<Set closeDetails.Value="true" />

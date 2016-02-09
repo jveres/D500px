@@ -12,9 +12,9 @@
 			<Callback Handler="{enableNavigation}" Direction="Backward" />
 			<!-- Change layout -->
 			<Change backgroundPanel.Opacity="1" Duration="0.2" />
+			<Change detailsView.LayoutRole="Standard" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
+			<Change detailsView.Visibility="Visible" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3" DelayBack="0"/>
-			<Change detailsView.LayoutRole="Standard" />
-			<Change detailsView.Visibility="Visible" Delay="0" />
 			<Change titlePanel.Opacity="1" Delay="0.2" Duration="0.2" DelayBack="0" DurationBack="0" />
 			<Change photo.Visibility="Visible" Delay="0.4" DelayBack="0" DurationBack="0" />
 			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
@@ -36,7 +36,7 @@
 					<AspectView Color="#000" AspectRatio="{image_aspect}">
 						<Placeholder>
 							<SolidColor Color="#393E45" />
-							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
+							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused" TransformOrigin="Anchor" Offset="0%,0%" Anchor="50%,50%">
 								<LayoutAnimation>
 									<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="BackIn" />
 									<Resize X="1" Y="1" Duration="0.3" RelativeTo="SizeChange" Easing="BackIn" />
@@ -65,7 +65,15 @@
 								<LaunchUri Uri="{url}" Delay="0.2" />
 							</LongPressed>
 							<Tapped>
-								<Callback Handler="{selectImage}" />
+								<!-- This way we keep the UI synced -->
+								<Set Target="nameText.Value" Value="{name}" />
+								<Set Target="avatarImage.Url" Value="{avatar_url}" />
+								<Set Target="launchUri.Uri" Value="{user_url}" />
+								<Set Target="usernameText.Value" Value="{username}" />
+								<Set Target="votesCountText.Value" Value="{votes_count}" />
+								<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
+								<Set Target="detailsPlaceholder.Aspect" Value="{image_aspect}" />
+								<!-- Trigger layout change -->
 								<Set closeDetails.Value="false" />
 								<Set detailsPlaceholder.Target="image" />
 								<Set detailsMode.Value="true" />

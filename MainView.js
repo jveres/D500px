@@ -19,9 +19,6 @@ var featureChanged = false;
 var navbarVisible = Observable(true);
 var navigationEnabled = Observable(true);
 
-var EMPTY_PHOTO = new Photo("", 1, "", "", "", "", "", 0);
-var currentImage = Observable(EMPTY_PHOTO);
-
 function Feature(name, desc, query, selected) {
 	this.name =  name;
 	this.desc =  desc;
@@ -77,7 +74,7 @@ function displayError(err) {
 	}, ERROR_DISMISS_TIMEOUT);
 }
 
-var newItems = [], toUrl = null, fetching = false, req = null;
+var newItems = [], fetching = false, req = null;
 
 function startLoading() {
 	if (req !== null) req.abort();
@@ -92,13 +89,16 @@ function checkLoading() {
 	spinning.value = fetching;
 	if (fetching === false) 
 	{
+		var len = feed.length;
 		for (var i=0; i<newItems.length; i++) feed.insertAt(i, newItems[i]);
-		while (feed.length>MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-		if (toUrl !== null) {
-			scrollToUrl.value = toUrl;
-			toUrl = null;
-		}
+		while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
 		loading.value = false;
+		if (newItems.length > 0)
+		{ 
+			/*if (len > 0) scrollToUrl.value = newItems[0].image_url; // Scroll to the first new item
+			else scrollToUrl.value = "";*/
+			if (len === 0) scrollToUrl.value = "";
+		}
 	}
 }
 
@@ -107,6 +107,7 @@ function stopLoading() {
 }
 
 function reload() {
+	if (loading.value === true) return;
 	startLoading();
     var req_url = "https://api.500px.com/v1/photos?feature=" + selectedFeature.value.query + "&image_size=30,1080&rpp=" + MAX_PHOTOS + "&consumer_key=G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg";
 	req = new HttpClient().createRequest("GET", req_url);
@@ -176,10 +177,6 @@ function disableNavigation() {
 	navigationEnabled.value = false;
 }
 
-function selectImage(args) {
-	currentImage.value = args.data;
-}
-
 function scrollToTop()
 {
 	scrollToUrl.value = "";
@@ -196,7 +193,6 @@ function isFeatureChanged()
 	{
 		featureChanged = false;
 		feed.clear();
-		toUrl = ""; // reset scroll position
 		reload();
 	}
 }
@@ -227,9 +223,6 @@ module.exports = {
 	disableNavigation: disableNavigation,
 	enableNavigation: enableNavigation,
 	navigationEnabled: navigationEnabled,
-	
-	selectImage: selectImage,
-	currentImage: currentImage,
 	
 	scrollToUrl: scrollToUrl,
 	scrollToTop: scrollToTop
