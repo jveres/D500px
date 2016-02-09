@@ -26,14 +26,14 @@
 			<!-- Scrollview inset -->
 			<Panel ux:Name="insetPanel" Height="45" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
-			<Panel Y="45" Padding="0,0,5,5">
-				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" />
+			<Panel Y="45" Padding="5">
+				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" ItemSpacing="5" ColumnSpacing="5" Sizing="Fill" />
 				<WhileWindowLandscape>
-					<Change columnLayout.ColumnSize="350" />
+					<Change columnLayout.ColumnSize="200" />
 				</WhileWindowLandscape>
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
-					<AspectView Padding="5,5,0,0" Color="#000" AspectRatio="{image_aspect}">
+					<AspectView Color="#000" AspectRatio="{image_aspect}">
 						<Placeholder>
 							<SolidColor Color="#393E45" />
 							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
@@ -69,7 +69,7 @@
 								<Set closeDetails.Value="false" />
 								<Set detailsPlaceholder.Target="image" />
 								<Set detailsMode.Value="true" />
-								<BringToFront Target="image" />
+								<BringToFront />
 							</Tapped>
 						</WhileTrue>
 					</AspectView>

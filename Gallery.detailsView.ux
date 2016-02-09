@@ -52,6 +52,7 @@
 				<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" TransformOrigin="Anchor" Offset="0%,0%" Anchor="50%,50%"/> <!-- Can't use currentImage.image_aspect here because of UI update glitch --> 
  			</Panel>
 		</Grid>
+		<!-- Rebounce trigger for better swipedown closing experience -->
 		<WhileTrue ux:Name="rebounced">
 			<ScrollingAnimation From="0" To="-150">
 				<Scale Target="detailsView" Factor="0.8" />
@@ -68,13 +69,15 @@
 	<Tapped>
 		<Set closeDetails.Value="true" />
 	</Tapped>
-	<!-- Closing trugger -->
+	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
 		<Set hiresPhoto.ImageUrl="" />
 		<Set detailsMode.Value="false" />
+		<BringToFront />
 	</WhileTrue>
 	<WhileVisible>
 		<BringIntoView TargetNode="titlePanel" Delay="0.3" />
+		<!-- Android Back button handler -->
 		<OnKeyPress Key="BackButton">
 			<Set closeDetails.Value="true" />
 		 </OnKeyPress>
