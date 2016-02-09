@@ -47,23 +47,22 @@
 			<Set navigator.Active="mainView" />
 		 </OnKeyPress>
 	</WhileActive>
-	<WhileInactive>
-		<WhileTrue ux:Name="exitApp">
-			<RaiseUserEvent Name="Error">
-		    	<UserEventArg Name="message" StringValue="Exiting..." />
-			</RaiseUserEvent>
-			<HomeScreen Delay="0.5" />
-		</WhileTrue>
-		<WhileTrue ux:Name="confirmExit">
-			<RaiseUserEvent Name="Error">
-		    	<UserEventArg Name="message" StringValue="Press again to exit" />
-			</RaiseUserEvent>
+	<WhileTrue Value="{navigationEnabled}">
+		<WhileInactive>
+			<WhileTrue ux:Name="exitApp">
+				<HomeScreen />
+			</WhileTrue>
+			<WhileTrue ux:Name="confirmExit">
+				<RaiseUserEvent Name="Error">
+			    	<UserEventArg Name="message" StringValue="Press again to exit" />
+				</RaiseUserEvent>
+				<OnKeyPress Key="BackButton">
+					<Set exitApp.Value="true" />
+				</OnKeyPress>
+			</WhileTrue>
 			<OnKeyPress Key="BackButton">
-				<Set exitApp.Value="true" />
+				<Change confirmExit.Value="true" Delay="0" Duration="0" DelayBack="2" />
 			</OnKeyPress>
-		</WhileTrue>
-		<OnKeyPress Key="BackButton">
-			<Change confirmExit.Value="true" Delay="0" Duration="0" DelayBack="2" />
-		</OnKeyPress>
-	</WhileInactive>
+		</WhileInactive>
+	</WhileTrue>
 </Panel>
