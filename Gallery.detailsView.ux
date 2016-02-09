@@ -49,7 +49,7 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" /> <!-- Can't use currentImage.image_aspect here because of UI update glitch --> 
+				<Placeholder ux:Name="detailsPlaceholder" Aspect="{image_aspect}" BoxSizing="FillAspect" TransformOrigin="Anchor" Offset="0%,0%" Anchor="50%,50%"/> <!-- Can't use currentImage.image_aspect here because of UI update glitch --> 
  			</Panel>
 		</Grid>
 		<WhileTrue ux:Name="rebounced">

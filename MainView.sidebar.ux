@@ -4,7 +4,7 @@
 		<StackPanel Alignment="Center">
 			<Each Items="{features}">
 				<Panel>
-					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,15,20,15" HitTestMode="LocalBounds">
+					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,18,25,18" HitTestMode="LocalBounds">
 						<Clicked>
 							<Callback Handler="{selectFeature}" />
 							<NavigateToggle Target="sidebar" />

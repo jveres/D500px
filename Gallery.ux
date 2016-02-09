@@ -29,7 +29,7 @@
 			<Panel Y="45" Padding="0,0,5,5">
 				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" />
 				<WhileWindowLandscape>
-					<Change columnLayout.ColumnSize="280" />
+					<Change columnLayout.ColumnSize="300" />
 				</WhileWindowLandscape>
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
