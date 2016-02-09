@@ -1,7 +1,7 @@
 <!--Detail view -->
 <Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent">
 	<!-- Title class -->
-	<Grid ux:Class="Title" Margin="10" Columns="auto,1*">
+	<Grid ux:Class="Title" Margin="10,5,10,10" Columns="auto,1*">
 		<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50" Color="#393E45">
 			<ImageFill Url="{currentImage.avatar_url}" />
 			<LongPressed>
