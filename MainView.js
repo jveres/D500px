@@ -116,7 +116,7 @@ function reload() {
 	};
 	req.ontimeout = function() {
 		stopLoading();
-		displayError("Request timed out");
+		displayError("Request Timed Out");
 	};
 	req.ondone = function() {
 		try {
@@ -149,7 +149,7 @@ function reload() {
 				}
 				stopLoading();
 			} else {
-				throw new Error("Server error (" + status + ")");
+				throw new Error("Server Error (" + status + ")");
 			}
 		} catch(err) {
 			stopLoading();

@@ -44,7 +44,7 @@
 						</WhileLoading>
 						<WhileFailed>
 							<RaiseUserEvent Name="Error">
-							    <UserEventArg Name="message" StringValue="Image loading error" />
+							    <UserEventArg Name="message" StringValue="Error Loading Image" />
 							</RaiseUserEvent>
 						</WhileFailed>
 					</ImageView>

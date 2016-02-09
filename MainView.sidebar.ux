@@ -54,7 +54,7 @@
 			</WhileTrue>
 			<WhileTrue ux:Name="confirmExit">
 				<RaiseUserEvent Name="Error">
-			    	<UserEventArg Name="message" StringValue="Press again to exit" />
+			    	<UserEventArg Name="message" StringValue="Press Again to Exit" />
 				</RaiseUserEvent>
 				<OnKeyPress Key="BackButton">
 					<Set exitApp.Value="true" />
