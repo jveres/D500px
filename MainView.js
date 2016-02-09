@@ -13,7 +13,7 @@ var scrollToUrl = Observable("");
 var FETCH_TIMEOUT = 15*1000;
 var MAX_PHOTOS = 40;
 var MAX_FEED_LENGHT = 120;
-var ERROR_DISMISS_TIMEOUT = 5*1000;
+var ERROR_DISMISS_TIMEOUT = 2*1000;
 
 var featureChanged = false;
 var navbarVisible = Observable(true);
@@ -81,7 +81,6 @@ var newItems = [], toUrl = null, fetching = false, req = null;
 
 function startLoading() {
 	if (req !== null) req.abort();
-	req = null;
 	newItems = [];
 	fetching = true;
 	loading.value = true;

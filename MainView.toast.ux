@@ -1,4 +1,4 @@
-<Panel ux:Name="toast" Alignment="BottomCenter" Margin="0,0,0,30" Padding="20,10,20,10" Opacity="0" HitTestMode="None">
+<Panel ux:Name="toast" Alignment="BottomCenter" Margin="0,0,0,30" Padding="20,10,20,10" Opacity="0" HitTestMode="None" IsEnabled="false">
 	<OnUserEvent Name="Error" Handler="{onError}" Filter="Global" />
 	<Text Value="{toast}" TextColor="#fff" Font="Light" FontSize="18">
 		<WhileContainsText>
@@ -7,5 +7,5 @@
 		</WhileContainsText>
 	</Text>
 	<Rectangle Layer="Background" Color="#4f0000" CornerRadius="12" />
-	<Scaling ux:Name="scaleAnimation" Factor="1.5" />
+	<Scaling ux:Name="scaleAnimation" Factor="1.3" />
 </Panel>

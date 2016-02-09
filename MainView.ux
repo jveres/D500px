@@ -25,9 +25,6 @@
 			<ux:Include File="MainView.sidebar.ux" />
 			<WhileTrue Value="{navigationEnabled}">
 				<EdgeNavigation ux:Name="navigator" />
-				<OnKeyPress Key="BackButton">
-					<Set navigator.Active="mainView" />
-		 		</OnKeyPress>
 		 		<OnKeyPress Key="MenuButton">
 		 			<NavigateToggle Target="sidebar" />
 		 		</OnKeyPress>

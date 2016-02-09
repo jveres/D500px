@@ -74,6 +74,9 @@
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>
-		<BringIntoView TargetNode="titlePanel"/>
+		<BringIntoView TargetNode="titlePanel" Delay="0.3" />
+		<OnKeyPress Key="BackButton">
+			<Set closeDetails.Value="true" />
+		 </OnKeyPress>
 	</WhileVisible>
 </Panel>
