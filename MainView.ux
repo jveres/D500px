@@ -18,7 +18,7 @@
 				</Panel>
 				<Panel>
 					<ux:Include File="MainView.navbar.ux" />
-					<Gallery />
+					<ux:Include File="Gallery.ux" />
 					<ux:Include File="MainView.featureDesc.ux" />
 				</Panel>
 			</Panel>

@@ -11,25 +11,25 @@
 
 ## Features
 
-* Gallery thumbnails are downloaded as they reveal in the scrollview
-* Click on a thumbnail to view hi-res photo
-* Displays spinner during hi-res image loading
-* Swipe down the photo to dismiss details
-* Loading spinner for hi-res images
-* Long pressing an image opens its 500px page in the browser
-* Automatic top scrolling between feature changes
-* Clicking on the title scrolls the gallery view to the top
 * Smooth animations
+* 500px feature selection sidebar
+* Gallery thumbnails are downloaded as they reveal in the scrollview
+* Clicking on a thumbnail displays hi-res photo and details
+* Swipe down the hi-res photo to dismiss detail view
+* Displays loading spinner during hi-res photo downloading
+* Long pressing an image opens its 500px page in the browser
+* Clicking on the title scrolls the gallery view to the top
+* Android back button handling
 
 ## Todo
 
 - ~~fast image draw/background placeholders~~
 - ~~image triggers: WhileLoaded, WhileFailed, WhileLoading~~
 - ~~Http request error handling~~
-- custom gallery layout
 - D500px account login
 - ~~display photo details~~
-- interactions (likes, commenting, etc)
+- real-time interactions (like, comment)
+- photo zoom
 
 *Note1: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
 

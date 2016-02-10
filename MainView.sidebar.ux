@@ -4,13 +4,10 @@
 		<StackPanel Alignment="Center">
 			<Each Items="{features}">
 				<Panel>
-					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,18,25,18" HitTestMode="LocalBounds">
-						<Clicked>
-							<Callback Handler="{selectFeature}" />
-							<NavigateToggle Target="sidebar" />
-						</Clicked>
+					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,18,25,18" HitTestMode="LocalBounds" Clicked="{selectFeature}">
 						<WhileTrue Value="{selected}">
-							<Change featureText.TextColor="#fff" Duration="0.1"/>
+							<Change featureText.TextColor="#fff" />
+							<Set navigator.Active="mainView" />
 						</WhileTrue>
 						<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 					</Text>

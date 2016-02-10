@@ -2,8 +2,6 @@ var Observable = require('FuseJS/Observable');
 var app = require('FuseJS/Lifecycle');
 var html = require('html');
 
-var DEBUG = false;
-
 var feed = Observable();
 var loading = Observable(false);
 var spinning = Observable(false);
@@ -90,15 +88,13 @@ function checkLoading() {
 	if (fetching === false) 
 	{
 		var len = feed.length;
-		for (var i=0; i<newItems.length; i++) feed.insertAt(i, newItems[i]);
-		while (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
-		loading.value = false;
-		if (newItems.length > 0)
-		{ 
-			/*if (len > 0) scrollToUrl.value = newItems[0].image_url; // Scroll to the first new item
-			else scrollToUrl.value = "";*/
-			if (len === 0) scrollToUrl.value = "";
+		for (var i=0; i<newItems.length; i++)
+		{
+			feed.insertAt(i, newItems[i]);
+			if (feed.length > MAX_FEED_LENGHT) feed.removeAt(feed.length-1);
 		}
+		if (len === 0) scrollToUrl.value = "";
+		loading.value = false;
 	}
 }
 

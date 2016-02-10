@@ -1,5 +1,5 @@
 <!-- Scrollable picture gallery -->
-<Panel ux:Class="Gallery" ux:Name="galleryPanel">
+<Panel ux:Name="galleryPanel">
 	<MultiLayoutPanel ux:Name="multiLayoutPanel" LayoutElement="galleryItems">
 		<ux:Include File="Gallery.detailsView.ux" />
 		<!-- Details mode trigger -->
@@ -24,19 +24,19 @@
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Scrollview inset -->
-			<Panel ux:Name="insetPanel" Height="45" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
+			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
-			<Panel Y="45" Padding="5">
-				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" ItemSpacing="5" ColumnSpacing="5" Sizing="Fill" />
+			<Panel Y="50">
+				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" />
 				<WhileWindowLandscape>
 					<Change columnLayout.ColumnSize="200" />
 				</WhileWindowLandscape>
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
-					<AspectView Color="#000" AspectRatio="{image_aspect}">
+					<AspectView Color="#000" AspectRatio="{image_aspect}" Padding="0,0,5,5">
 						<Placeholder>
 							<SolidColor Color="#393E45" />
-							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused" TransformOrigin="Anchor" Offset="0%,0%" Anchor="50%,50%">
+							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
 								<LayoutAnimation>
 									<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="BackIn" />
 									<Resize X="1" Y="1" Duration="0.3" RelativeTo="SizeChange" Easing="BackIn" />
@@ -54,8 +54,9 @@
 							</ImageView>
 						</Placeholder>
 						<LayoutAnimation>
-							<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="CircularInOut" />
+							<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="QuadraticInOut" />
 						</LayoutAnimation>
+						<!-- Interaction is only enabled when image loaded -->
 						<WhileTrue ux:Name="imageLoaded">
 							<WhilePressed>
 		                		<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
