@@ -2,7 +2,7 @@
 	<!-- Globals -->
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
-	<JavaScript File="html.js" ux:Global="html" />
+	<JavaScript File="Assets/JS/html.js" ux:Global="Html" />
 	<JavaScript File="MainView.js" />
 	<iOS.StatusBarConfig Style="Light" IsVisible="true"/>
 	<UserEvent Name="Error" />

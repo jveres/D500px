@@ -46,7 +46,7 @@
 								</WhileLoading>
 								<WhileLoaded>
 									<Set imageLoaded.Value="true" />
-									<Change image.Opacity="1" Duration="0.2" Easing="CircularIn" />
+									<Change image.Opacity="1" Duration="0.3" Easing="CircularIn" />
 								</WhileLoaded>
 								<WhileFailed>
 									<Set image.Opacity="1" />
@@ -62,7 +62,6 @@
 		                		<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
 		            		</WhilePressed>
 							<LongPressed>
-								<Change image.Opacity="0.5" Duration="0.2" />
 								<LaunchUri Uri="{url}" Delay="0.2" />
 							</LongPressed>
 							<Tapped>

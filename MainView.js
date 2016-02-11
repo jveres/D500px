@@ -1,6 +1,6 @@
 var Observable = require('FuseJS/Observable');
 var app = require('FuseJS/Lifecycle');
-var html = require('html');
+var html = require('Html');
 
 var feed = Observable();
 var loading = Observable(false);

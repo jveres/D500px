@@ -3,7 +3,7 @@
 	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false">
 		<Grid Rows="auto,1*">
 			<!-- Photo title  -->
-			<ux:Include File="Gallery.detailsView.title.ux" />
+			<ux:Include File="Gallery.detailsView.titlePanel.ux" />
 			<Panel Row="1">
 				<!-- Hi-res image -->
 				<Panel ux:Name="photo" Visibility="Collapsed">
