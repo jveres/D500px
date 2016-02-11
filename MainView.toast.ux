@@ -2,8 +2,8 @@
 	<OnUserEvent Name="Error" Handler="{onError}" Filter="Global" />
 	<Text Value="{toast}" TextColor="#fff" Font="Light" FontSize="18">
 		<WhileContainsText>
-			<Change toast.Opacity="0.8" Easing="CircularInOut" Duration="0.5" DurationBack="0"/>
-			<Change scaleAnimation.Factor="1" Easing="CircularInOut" Duration="0.5" DurationBack="0"/>	
+			<Change toast.Opacity="0.8" Easing="CircularInOut" Duration="0.5" DurationBack="0" />
+			<Change scaleAnimation.Factor="1" Easing="CircularInOut" Duration="0.5" DurationBack="0" />	
 		</WhileContainsText>
 	</Text>
 	<Rectangle Layer="Background" Color="#4f0000" CornerRadius="12" />

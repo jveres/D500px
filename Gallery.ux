@@ -49,6 +49,7 @@
 									<Change image.Opacity="1" Duration="0.3" Easing="CircularIn" />
 								</WhileLoaded>
 								<WhileFailed>
+									<Set imageFailed.Value="true" />
 									<Set image.Opacity="1" />
 								</WhileFailed>
 							</ImageView>
@@ -56,14 +57,14 @@
 						<LayoutAnimation>
 							<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="QuadraticInOut" />
 						</LayoutAnimation>
+						<WhilePressed>
+		                	<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
+		            	</WhilePressed>
+		            	<LongPressed>
+							<LaunchUri Uri="{url}" Delay="0.2" />
+						</LongPressed>
 						<!-- Interaction is only enabled when image loaded -->
 						<WhileTrue ux:Name="imageLoaded">
-							<WhilePressed>
-		                		<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
-		            		</WhilePressed>
-							<LongPressed>
-								<LaunchUri Uri="{url}" Delay="0.2" />
-							</LongPressed>
 							<Tapped>
 								<!-- This way we keep the UI synced -->
 								<Set Target="nameText.Value" Value="{name}" />
@@ -78,6 +79,13 @@
 								<Set detailsPlaceholder.Target="image" />
 								<Set detailsMode.Value="true" />
 								<BringToFront />
+							</Tapped>
+						</WhileTrue>
+						<WhileTrue ux:Name="imageFailed">
+							<Tapped>
+								<RaiseUserEvent Name="Error">
+								    <UserEventArg Name="message" StringValue="Error Loading Image" />
+								</RaiseUserEvent>
 							</Tapped>
 						</WhileTrue>
 					</AspectView>
