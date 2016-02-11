@@ -22,7 +22,7 @@
 		<!-- Background divider -->
 		<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false" />
 		<!-- Thumbnails list -->
-		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
+		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}" Padding="5,0,0,0">
 			<!-- Scrollview inset -->
 			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
