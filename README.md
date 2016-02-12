@@ -20,6 +20,7 @@
 * Long pressing an image opens its 500px page in the browser
 * Clicking on the title scrolls the gallery view to the top
 * Android back button handling
+* XAuth authentication
 
 ## Todo
 
