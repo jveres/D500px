@@ -1,6 +1,8 @@
 <!-- Navigation bar -->
 <DockPanel ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10" IsEnabled="{navigationEnabled}">
-	<ImageFill File="Assets/Images/GradientBg.png" />
+	<iOS> <!-- yeah, it slows down the scrollview everywhere but on iOS -->
+		<Image File="Assets/Images/GradientBg.png" Layer="Background" StretchMode="Fill" />
+	</iOS>
 	<Panel Dock="Left" ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 		<Clicked>

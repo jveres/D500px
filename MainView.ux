@@ -3,6 +3,10 @@
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
 	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
 	<JavaScript File="Assets/JS/html.js" ux:Global="Html" />
+	<JavaScript File="Assets/JS/sha1.js" ux:Global="Sha1" />
+	<JavaScript File="Assets/JS/fetcher.js" ux:Global="Fetcher" />
+	<JavaScript File="Assets/JS/xauth.js" ux:Global="XAuth" />
+	<JavaScript File="Assets/JS/api.js" ux:Global="Api" />
 	<JavaScript File="MainView.js" />
 	<iOS.StatusBarConfig Style="Light" IsVisible="true"/>
 	<UserEvent Name="Error" />
