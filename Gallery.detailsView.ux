@@ -32,16 +32,18 @@
 				<Placeholder ux:Name="detailsPlaceholder" BoxSizing="FillAspect" />
  			</Panel>
 		</Grid>
-		<!-- Rebounce trigger for better swipedown closing experience -->
+		<!-- Rebounce triggers for swipeup & swiptdown view dismiss -->
 		<WhileTrue ux:Name="rebounced">
-			<ScrollingAnimation From="0" To="-150">
+			<BouncingAnimation Range="SnapMin">
 				<Scale Target="detailsView" Factor="0.8" />
-			</ScrollingAnimation>
-			<ScrollingAnimation From="-105" To="-106">
-				<Set closeDetails.Value="true" />
-			</ScrollingAnimation>
+				<Set closeDetails.Value="true" AtProgress="0.75" />
+			</BouncingAnimation>
+			<BouncingAnimation Range="SnapMax">
+				<Scale Target="detailsView" Factor="0.8" />
+				<Set closeDetails.Value="true" AtProgress="0.75" />
+			</BouncingAnimation>
 		</WhileTrue>
-		<WhileRebounced>
+		<WhileRebounced ScrollDirections="Vertical">
 			<Change rebounced.Value="true" />
 		</WhileRebounced>
 	</ScrollingView>
@@ -55,7 +57,7 @@
 		<BringToFront />
 	</WhileTrue>
 	<WhileVisible>
-		<BringIntoView TargetNode="titlePanel" />
+		<Set detailsScrollView.ScrollToUrl="top" />
 		<!-- Android Back button handler -->
 		<OnKeyPress Key="BackButton">
 			<Set closeDetails.Value="true" />
