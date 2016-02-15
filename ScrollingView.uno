@@ -18,9 +18,13 @@ public class ScrollingView : ScrollView
                 {
                         if (value != null)
                         {
-                                _done = false; 
-                                _url = value;
-                                VisitSubtree(_scrollToUrlAction);
+                                if (value == "top") ScrollPosition = float2(0);
+                                else
+                                {
+                                        _done = false; 
+                                        _url = value;
+                                        VisitSubtree(_scrollToUrlAction);
+                                }
                         }
                 }
         }

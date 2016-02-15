@@ -1,5 +1,5 @@
 <!-- Feature description -->
-<Panel ux:Name="descriptionPanel" Opacity="0" HitTestMode="None" IsEnabled="false">
+<Panel ux:Name="descriptionPanel" HitTestMode="None" IsEnabled="false" Visibility="Hidden">
 	<StackPanel Alignment="Center">
 		<Text Alignment="Center" Value="Loading Feature:" TextColor="#595E65" FontSize="20" Font="Regular">
 			<Translation ux:Name="featureTranslation" X="-20" />
@@ -11,7 +11,7 @@
 		</Text>
 	</StackPanel>
 	<WhileEmpty Items="{feed}">
-		<Change descriptionPanel.Opacity="1" Duration="0.2" DurationBack="0" DelayBack="0" Easing="CircularInOut" />
+		<Change descriptionPanel.Visibility="Visible" />
 		<Change titleAttractor.Value="0" />
 		<Change descAttractor.Value="0" />
 	</WhileEmpty>

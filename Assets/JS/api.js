@@ -21,9 +21,50 @@ Response.prototype.data = function()
     return data;
 }
 
+function PhotoStream(endpoint, opts)
+{
+	if (!opts) opts = {};
+	this.method = "GET";
+	this.url = API_URL + endpoint;
+	this.data = opts;
+	this.data.formats = "jpeg";
+	this.data.image_size = "30,1080";
+	this.data.rpp = RPP;
+	this.current_page = 1;
+	this.total_pages = 1;
+
+	this.Load = function(opts)
+	{
+		if (!opts) opts = {};
+		if (!opts.page) opts.page = 1;
+		var data = this.data;
+		data.page = opts.page;
+		var self = this;
+		return xauth.xauth_request({method: self.method, url: self.url, data: data})
+			.then(function(result)
+			{
+				if (result.status === 200)
+				{
+					var response = JSON.parse(result._bodyText);
+					self.current_page = parseInt(response.current_page) || 1;
+					self.total_pages = parseInt(response.total_pages) || 1;
+					return Promise.resolve(response);
+				}
+				else throw new Error("Server Error: " + result.statusText + " (" + status + ")");
+			});
+	};
+
+	this.More = function()
+	{
+		if (this.current_page < this.total_pages) return this.Load({page: this.current_page+1});
+		else return null;
+	};
+}
+
 function API()
 {
 	this.BASE_URL = BASE_URL;
+	this.PhotoStream = null;
 
 	this.Login = function(username, password)
 	{
@@ -67,25 +108,9 @@ function API()
 		});
 	};
 
-	this.LoadFeature = function(feature)
+	this.SetFeature = function(feature)
 	{
-		if (!feature) feature = "popular";
-		return xauth.xauth_request(
-		{
-        	method: "GET",
-        	url: API_URL + "/photos",
-        	data:
-        	{
-            	feature: feature,
-            	image_size: "30,1080",
-            	rpp: RPP
-        	}
-    	})
-    	.then(function(result)
-    	{
-    		if (result.status === 200) return result.json();
-    		else throw new Error("Server Error: " + result.statusText + " (" + status + ")");
-    	});
+		this.PhotoStream = new PhotoStream("/photos", {feature: feature || "popular"});
 	}
 }
 

@@ -21,6 +21,7 @@
 * Clicking on the title scrolls the gallery view to the top
 * Android back button handling
 * XAuth authentication
+* Infinite scrolling
 
 ## Todo
 

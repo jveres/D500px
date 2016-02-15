@@ -23,6 +23,10 @@
 		<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false" />
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}" Padding="5,0,0,0">
+			<!-- Next page trigger -->
+			<WhileScrollable ScrollDirections="Down" Invert="true">
+				<Callback Handler="{more}" />
+			</WhileScrollable>
 			<!-- Scrollview inset -->
 			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
@@ -54,9 +58,9 @@
 								</WhileFailed>
 							</ImageView>
 						</Placeholder>
-						<LayoutAnimation>
+						<!--LayoutAnimation>
 							<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="QuadraticInOut" />
-						</LayoutAnimation>
+						</LayoutAnimation-->
 						<WhilePressed>
 		                	<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
 		            	</WhilePressed>
