@@ -18,7 +18,7 @@
 					<WhileTrue ux:Name="showSpinner">
 						<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
 					</WhileTrue>
-					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused" CachingMode="Never">
+					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoading>
 							<Set hiresPhoto.Opacity="0.001" />
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
@@ -27,7 +27,6 @@
 							<Change hiresPhoto.Opacity="1" Duration="0.3" DurationBack="0" Easing="CircularInOut" /> 
 						</WhileLoaded>
 						<WhileFailed>
-							<Set hiresPhoto.Opacity="1" />
 							<RaiseUserEvent Name="Error">
 							    <UserEventArg Name="message" StringValue="Error Loading Image" />
 							</RaiseUserEvent>
@@ -58,6 +57,7 @@
 	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
 		<Set hiresPhoto.ImageUrl="" />
+		<Set hiresPhoto.Opacity="1" />
 		<Set detailsMode.Value="false" />
 		<BringToFront />
 	</WhileTrue>
