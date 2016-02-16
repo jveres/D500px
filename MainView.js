@@ -8,8 +8,9 @@ var loading = Observable(false);
 var spinning = Observable(false);
 var toast = Observable("");
 var scrollToUrl = Observable("");
+var reloadErrorSign = Observable("");
 
-var ERROR_DISMISS_TIMEOUT = 2*1000;
+var ERROR_DISMISS_TIMEOUT = 3*1000;
 
 var featureChanged = false;
 var navbarVisible = Observable(true);
@@ -75,6 +76,7 @@ var new_items = [];
 
 function startLoading()
 {
+	reloadErrorSign.value = "";
 	fetching = true;
 	loading.value = true;
 	checkLoading();
@@ -140,6 +142,7 @@ function reload()
 	.catch(function(err)
 	{
 		stopLoading();
+		reloadErrorSign.value = "!";
 		displayError(err);
 	});
 }
@@ -248,6 +251,7 @@ module.exports =
 	navbarVisible: navbarVisible,
 	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,
+	reloadErrorSign: reloadErrorSign,
 	
 	disableNavigation: disableNavigation,
 	enableNavigation: enableNavigation,

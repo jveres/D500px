@@ -16,15 +16,19 @@
 			<Rotation ux:Name="bottomMenuRotation" />
 		</Rectangle>
 	</Panel>
-	<Text Dock="Fill" Value="{selectedFeature.name}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff" TextWrapping="NoWrap">
+	<Text Dock="Fill" Value="{selectedFeature.name}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" Clicked="{scrollToTop}">
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-		<Clicked>
-			<Callback Handler="{scrollToTop}" />
-		</Clicked>
 	</Text>
-	<Panel Dock="Right" ux:Name="reloadButton" Clicked="{reload}" Alignment="Center" Padding="8" HitTestMode="LocalBounds">
-		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-		<Image File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
+	<Panel Dock="Right" ux:Name="reloadButton" Clicked="{reload}" Alignment="Center" Padding="8" HitTestMode="LocalBounds" ClipToBounds="false">
+		<Text ux:Name="errorSign" Value="{reloadErrorSign}" FontSize="18" Font="Regular" TextColor="#ff0000" Alignment="TopRight" Offset="4,-6" Opacity="1">
+			<Scaling ux:Name="errorSignScale" Factor="0" />
+			<Attractor ux:Name="errorSignAttractor" Target="errorSignScale.Factor"/>
+			<WhileContainsText>
+				<Change errorSignAttractor.Value="1" />	
+			</WhileContainsText>
+		</Text>
+		<Image ux:Name="reloadIcon" File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
+			<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 			<Rotation ux:Name="reloadRotation" />
 			<WhileTrue Value="{spinning}">
 				<Change Target="reloadRotation.Degrees" Value="360" Duration="0.9" DurationBack="0" DelayBack="0" Easing="CircularInOut" />
@@ -32,7 +36,7 @@
 			</WhileTrue>
 			<WhileTrue Value="{loading}">
 				<Change reloadButton.HitTestMode="None" />
-				<Change reloadButton.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
+				<Change reloadIcon.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
 			</WhileTrue>
 		</Image>
 	</Panel>

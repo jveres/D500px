@@ -8,9 +8,10 @@
 	<JavaScript File="Assets/JS/xauth.js" ux:Global="XAuth" />
 	<JavaScript File="Assets/JS/api.js" ux:Global="Api" />
 	<JavaScript File="MainView.js" />
-	<iOS.StatusBarConfig Style="Light" IsVisible="true"/>
+	<iOS.StatusBarConfig Style="Light" IsVisible="true" Animation="Fade" />
 	<UserEvent Name="Error" />
-	<ClientPanel>
+	<DockPanel>
+		<TopFrameBackground Dock="Top" />
 		<ux:Include File="MainView.toast.ux" />
 		<!-- Main -->
 		<Panel ux:Name="mainView" Dock="Fill" Color="#000">
@@ -32,5 +33,6 @@
 	 			<NavigateToggle Target="sidebar" />
 	 		</OnKeyPress>
  		</WhileTrue>
- 	</ClientPanel>
+ 		<BottomFrameBackground Dock="Bottom" />
+ 	</DockPanel>
 </App>
