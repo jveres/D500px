@@ -18,14 +18,16 @@
 					<WhileTrue ux:Name="showSpinner">
 						<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
 					</WhileTrue>
-					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused" Opacity="0.001">
+					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused" CachingMode="Never">
 						<WhileLoading>
+							<Set hiresPhoto.Opacity="0.001" />
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
 						<WhileLoaded>
 							<Change hiresPhoto.Opacity="1" Duration="0.3" DurationBack="0" Easing="CircularInOut" /> 
 						</WhileLoaded>
 						<WhileFailed>
+							<Set hiresPhoto.Opacity="1" />
 							<RaiseUserEvent Name="Error">
 							    <UserEventArg Name="message" StringValue="Error Loading Image" />
 							</RaiseUserEvent>

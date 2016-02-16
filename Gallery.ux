@@ -16,7 +16,7 @@
 			<Change detailsView.Visibility="Visible" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3" DelayBack="0"/>
 			<Change titlePanel.Opacity="1" Delay="0.2" Duration="0.2" DelayBack="0" DurationBack="0" />
-			<Change photo.Visibility="Visible" Delay="0.4" DelayBack="0" DurationBack="0" />
+			<Change photo.Visibility="Visible" Delay="0.3" DelayBack="0" DurationBack="0" />
 			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 		</WhileTrue>
 		<!-- Background divider -->
@@ -46,7 +46,7 @@
 									<Resize X="1" Y="1" Duration="0.3" RelativeTo="SizeChange" Easing="BackIn" />
 								</LayoutAnimation>
 								<WhileLoading>
-									<Set image.Opacity="0" />
+									<Set image.Opacity="0.001" />
 								</WhileLoading>
 								<WhileLoaded>
 									<Set imageLoaded.Value="true" />
