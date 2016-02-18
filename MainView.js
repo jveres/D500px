@@ -158,9 +158,7 @@ function loadMore()
 		more.then(function(response)
 		{
 			processStream(response, more_items);
-			if (more_items.length === 0) {
-				setTimeout(loadMore, 0); // sync current page
-			}
+			if (more_items.length === 0) setTimeout(loadMore, 1); // sync current page
 			else
 			{
 				// expect probably less than RPP here but that's ok for the demo

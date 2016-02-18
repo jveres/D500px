@@ -50,7 +50,6 @@ public class WhileRebounced : WhileTrigger
                         var mn = _scrollable.MinScroll;
                         var mx = _scrollable.MaxScroll;
                         var p = _scrollable.ScrollPosition;
-                        //debug_log "p="+p+" mx="+mx+" mn="+mn;
                         if      (p.Y < mn.Y) _topBounce = true;
                         else if (p.Y - ZeroTolerance > mx.Y) _bottomBounce = true;
                         else if (ScrollDirections.HasFlag(ScrollDirections.Down) && (p.Y - mn.Y == 0) && _topBounce) _rebounced = true;

@@ -22,7 +22,7 @@
 		<!-- Background divider -->
 		<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false" />
 		<!-- Thumbnails list -->
-		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}" Padding="5,0,0,0">
+		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Next page trigger -->
 			<WhileScrollable ScrollDirections="Down" Invert="true">
 				<Callback Handler="{more}" />
@@ -31,13 +31,13 @@
 			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
 			<!-- Image layout -->
 			<Panel Y="50">
-				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" />
+				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
 				<WhileWindowLandscape>
 					<Change columnLayout.ColumnSize="200" />
 				</WhileWindowLandscape>
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
-					<AspectView Color="#000" AspectRatio="{image_aspect}" Padding="0,0,5,5">
+					<AspectView Color="#000" AspectRatio="{image_aspect}">
 						<Placeholder>
 							<SolidColor Color="#393E45" />
 							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
@@ -58,9 +58,6 @@
 								</WhileFailed>
 							</ImageView>
 						</Placeholder>
-						<!--LayoutAnimation>
-							<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="QuadraticInOut" />
-						</LayoutAnimation-->
 						<WhilePressed>
 		                	<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
 		            	</WhilePressed>
