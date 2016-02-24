@@ -19,7 +19,7 @@
 	<Panel Dock="Fill">
 		<!-- Feature mode -->
 		<WhileFalse Value="{searching}">
-			<Text Value="{selectedFeed.title}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" Clicked="{scrollToTop}">
+			<Text Value="{selectedFeed.title}" Alignment="Center" FontSize="22" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" Clicked="{scrollToTop}">
 				<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
 			</Text>
 		</WhileFalse>
@@ -30,6 +30,9 @@
 					<ReleaseFocus />
 	                <Callback Handler="{search}" Delay="0.2" />
 	            </TextInputActionTriggered>
+	            <WhileContainsText Invert="true">
+					<Change reloadButton.IsEnabled="false" />
+				</WhileContainsText>
 			</SearchInput>
 		</WhileTrue>
 	</Panel>
@@ -64,7 +67,4 @@
 	<WhileDisabled>
 		<Change navbar.Opacity="0" Easing="CircularInOut" Duration="0.2" />
 	</WhileDisabled>
-	<WhileKeyboardVisible>
-		<Change reloadButton.IsEnabled="false" />
-	</WhileKeyboardVisible>
 </DockPanel>
