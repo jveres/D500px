@@ -2,11 +2,11 @@
 	<Translation X="-1" RelativeTo="Size" />
 	<ScrollView>
 		<StackPanel Alignment="Center">
-			<Each Items="{features}">
+			<Each Items="{feeds}">
 				<Panel>
-					<Text ux:Name="featureText" Value="{name}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,18,25,18" HitTestMode="LocalBounds" Clicked="{selectFeature}">
-						<WhileTrue Value="{selected}">
-							<Change featureText.TextColor="#fff" />
+					<Text ux:Name="feedText" Value="{title}" Alignment="CenterRight" FontSize="18" Font="Regular" TextColor="#bbb" Padding="40,18,25,18" HitTestMode="LocalBounds" Clicked="{select}">
+						<WhileTrue Value="{isSelected}">
+							<Change feedText.TextColor="#fff" />
 							<Set navigator.Active="mainView" />
 						</WhileTrue>
 						<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
@@ -22,6 +22,7 @@
 		<GradientStop Offset="1" Color="#000" />
 	</LinearGradient>
 	<ActivatingAnimation>
+		<Callback Handler="{onSidebarOpening}" AtProgress="1" />
 		<Set coverPanel.IsEnabled="true" AtProgress="1" />
 		<Move X="1" RelativeTo="Size" />
 		<Move Target="mainView" X="1" RelativeTo="Size" RelativeNode="sidebar" />
@@ -37,14 +38,14 @@
 	</ActivatingAnimation>
 	<DeactivatingAnimation>
 		<Set coverPanel.IsEnabled="false" AtProgress="1" />
-		<Callback Handler="{isFeatureChanged}" AtProgress="1" />
+		<Callback Handler="{onSidebarClosed}" AtProgress="1" />
 	</DeactivatingAnimation>
 	<WhileActive>
 		<OnKeyPress Key="BackButton">
 			<Set navigator.Active="mainView" />
 		 </OnKeyPress>
 	</WhileActive>
-	<WhileTrue Value="{navigationEnabled}">
+	<WhileTrue Value="{isSidebarEnabled}">
 		<WhileInactive>
 			<WhileTrue ux:Name="exitApp">
 				<HomeScreen />

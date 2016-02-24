@@ -4,20 +4,20 @@ var BASE_URL = "https://500px.com";
 var API_URL = "https://api.500px.com/v1";
 var RPP = 40;
 
-Response.prototype.data = function()
+function formDecode(o)
 {
     var data = {};
-    if (!this._bodyText || typeof this._bodyText !== "string") return;
-    this._bodyText.trim().split('&').forEach(function(bytes)
-    {
-    	if (bytes)
-		{
-			var split = bytes.split('=')
-			var name = split.shift().replace(/\+/g, ' ')
-			var value = split.join('=').replace(/\+/g, ' ')
-			data[decodeURIComponent(name)] = decodeURIComponent(value);
-		}
-    })
+    if (o && typeof o === "string")
+	    o.trim().split('&').forEach(function(b)
+	    {
+	    	if (b)
+			{
+				var split = b.split('=')
+				var name = split.shift().replace(/\+/g, ' ')
+				var value = split.join('=').replace(/\+/g, ' ')
+				data[decodeURIComponent(name)] = decodeURIComponent(value);
+			}
+	    });
     return data;
 }
 
@@ -35,36 +35,34 @@ function PhotoStream(endpoint, opts)
 
 	this.Load = function(opts)
 	{
+		var self = this;
 		if (!opts) opts = {};
 		if (!opts.page) opts.page = 1;
-		var data = this.data;
+		var data = self.data;
 		data.page = opts.page;
-		var self = this;
 		return xauth.xauth_request({method: self.method, url: self.url, data: data})
-			.then(function(result)
+		.then(function(result)
+		{
+			if (result.status === 200)
 			{
-				if (result.status === 200)
-				{
-					var response = JSON.parse(result._bodyText);
-					self.current_page = parseInt(response.current_page) || 1;
-					self.total_pages = parseInt(response.total_pages) || 1;
-					return Promise.resolve(response);
-				}
-				else throw new Error("Server Error: " + result.statusText + " (" + status + ")");
-			});
+				var response = JSON.parse(result.responseText);
+				self.current_page = parseInt(response.current_page) || 1;
+				self.total_pages = parseInt(response.total_pages) || 1;
+				return Promise.resolve(response);
+			}
+			else throw new Error("Server Error: " + result.statusText + " (" + result.status + ")");
+		});
 	};
 
 	this.More = function()
 	{
-		if (this.current_page < this.total_pages) return this.Load({page: this.current_page+1});
-		else return null;
+		return this.Load({page: Math.min(this.current_page + 1, this.total_pages)});
 	};
 }
 
 function API()
 {
 	this.BASE_URL = BASE_URL;
-	this.PhotoStream = null;
 
 	this.Login = function(username, password)
 	{
@@ -78,7 +76,7 @@ function API()
 	    });
 	    var fetch_access_token = fetch_request_token.then(function(response)
 	    {
-	        var data = response.data();
+	        var data = formDecode(response.responseText);
 	        return xauth.xauth_request(
 	        {
 	            method: "POST",
@@ -90,8 +88,9 @@ function API()
 	        })
 	        .then(function(response)
 	        {
-	        	self.access_token = response[1].data().oauth_token;
-    			self.access_token_secret = response[1].data().oauth_token_secret;
+	        	var data = formDecode(response[1].responseText);
+	        	self.access_token = data.oauth_token;
+    			self.access_token_secret = data.oauth_token_secret;
     			if (!self.access_token || !self.access_token_secret) throw new Error(response.statusText);
 	        });
 	    });
@@ -108,9 +107,15 @@ function API()
 		});
 	};
 
-	this.SetFeature = function(feature)
+	this.SetPhotoStream = function(endpoint, opts)
 	{
-		this.PhotoStream = new PhotoStream("/photos", {feature: feature || "popular"});
+		this.PhotoStream = new PhotoStream(endpoint, opts);
+	};
+
+	this.SetSearchText = function(term)
+	{
+		if (term.trim() === "") this.PhotoStream = Promise.resolve({photos: []});
+		this.PhotoStream = new PhotoStream("/photos/search", {term: term || ""});
 	}
 }
 

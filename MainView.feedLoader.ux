@@ -1,0 +1,18 @@
+<!-- Feed loader with description -->
+<Panel ux:Name="feedLoader" HitTestMode="None" IsEnabled="false" Visibility="Hidden">
+	<StackPanel Alignment="Center">
+		<Text Alignment="Center" Value="{selectedFeed.label}" TextColor="#595E65" FontSize="20" Font="Regular">
+			<Translation ux:Name="featureTranslation" X="-20" />
+			<Attractor ux:Name="titleAttractor" Target="featureTranslation.X"/>
+		</Text>
+		<Text Alignment="Center" Value="{selectedFeed.desc}" TextColor="#555" FontSize="21" Font="Light">
+			<Translation ux:Name="descTranslation" X="20" />
+			<Attractor ux:Name="descAttractor" Target="descTranslation.X"/>
+		</Text>
+	</StackPanel>
+	<WhileEmpty Items="{feed}">
+		<Change feedLoader.Visibility="Visible" />
+		<Change titleAttractor.Value="0" />
+		<Change descAttractor.Value="0" />
+	</WhileEmpty>
+</Panel>

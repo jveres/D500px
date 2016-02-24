@@ -22,12 +22,13 @@
 * Android back button handling
 * XAuth authentication
 * Infinite scrolling
+* Photo search
 
 ## Todo
 
 - ~~fast image draw/background placeholders~~
 - ~~image triggers: WhileLoaded, WhileFailed, WhileLoading~~
-- ~~Http request error handling~~
+- ~~Http request error handling and cancelling~~
 - D500px account login
 - ~~display photo details~~
 - real-time interactions (like, comment)

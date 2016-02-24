@@ -1,0 +1,15 @@
+<TextEdit ux:Class="SearchInput" ux:Name="_textInput" Padding="8,0,0,0" TextColor="#fff" CaretColor="#ff3333" FontSize="22" Font="Light" IsMultiline="false" LineSpacing="0">
+	<WhileFalse ux:Name="_placeholderText">
+		<Text Value="Enter search text..." TextColor="#595e65" TextWrapping="NoWrap" Font="Light" FontSize="22" />
+	</WhileFalse>
+	<WhileContainsText>
+		<Change _placeholderText.Value="true" />
+		<Nothing Duration="0.05" />
+	</WhileContainsText>
+	<OnUserEvent Name="FocusSearchInput" Filter="Global">
+		<GiveFocus TargetNode="_textInput" />
+	</OnUserEvent>
+	<OnUserEvent Name="ReleaseSearchInput" Filter="Global">
+		<ReleaseFocus TargetNode="_textInput" />
+	</OnUserEvent>
+</TextEdit>

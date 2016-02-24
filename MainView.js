@@ -1,48 +1,103 @@
 var Observable = require("FuseJS/Observable");
+var event = require('FuseJS/UserEvents');
+var helpers = require("Helpers");
 var app = require("FuseJS/Lifecycle");
 var html = require("Html");
 var api = require("Api");
 
-var feed = Observable();
-var loading = Observable(false);
-var spinning = Observable(false);
+var ERROR_DISMISS_TIMEOUT = 3*1000;
+
 var toast = Observable("");
+var feed = Observable();
+
+var searching = Observable(false);
+var searchText = Observable("");
+
+var LoadingState = {
+	Loading: "loading",
+	Ready: "ready"
+};
+
+var isReloading = Observable(false);
+var loadingState = Observable(LoadingState.Ready);
+
 var scrollToUrl = Observable("");
 var reloadErrorSign = Observable("");
 
-var ERROR_DISMISS_TIMEOUT = 3*1000;
+var selectedFeed = Observable();
+var isFeedChanged = false;
 
-var featureChanged = false;
-var navbarVisible = Observable(true);
-var navigationEnabled = Observable(true);
+var isNavbarVisible = Observable(true);
+var isSidebarEnabled = Observable(true);
 
-function Feature(name, desc, query, selected)
+var _errorTimeout;
+
+function displayError(err)
 {
-	this.name =  name;
-	this.desc =  desc;
-	this.query = query;
-	this.selected = Observable(selected || false);
+	toast.value = (err.message || err);
+	clearTimeout(_errorTimeout);
+	_errorTimeout = setTimeout(function() { toast.value = ""; }, ERROR_DISMISS_TIMEOUT);
+}
+
+function Feature(title, desc, feature, clearOnReload)
+{
+	this.title = title;
+	this.label = "Loading Feature";
+	this.desc = desc;
+	if (clearOnReload === false) this.clearOnReload = false;
+	else this.clearOnReload = true;
+	this.endpoint = "/photos";
+	this.opts = {feature: feature};
+	this.isSelected = Observable(false);
+	var self = this;
+	this.select = function()
+	{
+		if (selectedFeed.value === self) return;
+		if (_loader) _loader.cancel();
+		try
+		{
+			selectedFeed.value.isSelected.value = false;
+			isFeedChanged = true;
+		}
+		catch (e)
+		{
+			isFeedChanged = false;
+		}
+		searching.value = false;
+		self.isSelected.value = true;
+		selectedFeed.value = self;
+		api.SetPhotoStream(self.endpoint, self.opts);
+	};
 };
 
-var features = Observable();
-features.add(new Feature("Most Popular", "Trending Right Now", "popular", true));
-features.add(new Feature("Highest Rated", "Photos that Have Been Popular", "highest_rated"));
-features.add(new Feature("Editor's Choice", "Picked by Top Photographers", "editors"));
-features.add(new Feature("Upcoming", "Promising New Uploads", "upcoming"));
-features.add(new Feature("Fresh Today", "Latest from the Community", "fresh_today"));
-
-function selectFeature(feature)
+function Search()
 {
-	var featureName = (feature.data ? feature.data.name : feature.name);
-	if (featureName !== selectedFeature.value.name)
+	this.title = "Search";
+	this.label = "Searching Photos";
+	this.desc = "at 500px.com";
+	this.clearOnReload = false;
+	this.isSelected = Observable(false);
+	var self = this;
+	this.select = function()
 	{
-		selectedFeature.value.selected.value = false;
-		selectedFeature.value = (feature.data ? feature.data : feature);
-		selectedFeature.value.selected.value = true;
-		api.SetFeature(selectedFeature.value.query);
-		featureChanged = true;
-	}
-}
+		if (selectedFeed.value === self) return;
+		if (_loader) _loader.cancel();
+		try { selectedFeed.value.isSelected.value = false; } catch (e) {}
+		searching.value = true;
+		isFeedChanged = true;
+		self.isSelected.value = true;
+		selectedFeed.value = self;
+		api.SetSearchText(searchText.value);
+	};
+};
+
+var feeds = Observable();
+feeds.add(new Feature("Most Popular", "Trending Right Now", "popular"));
+feeds.add(new Feature("Highest Rated", "Photos that Have Been Popular", "highest_rated"));
+feeds.add(new Feature("Editor's Choice", "Picked by Top Photographers", "editors"));
+feeds.add(new Feature("Upcoming", "Promising New Uploads", "upcoming", false));
+feeds.add(new Feature("Fresh Today", "Latest from the Community", "fresh_today", false));
+feeds.add(new Search());
 
 function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, username, votes_count)
 {
@@ -57,50 +112,15 @@ function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, userna
 	this.votes_count = votes_count;
 }
 
-function isImage(image_url)
+function hasImage(image_url)
 {
-	for (var i=0; i<feed._values.length; i++) if (feed._values[i].image_url == image_url) return true;
+	for (var i=0; i<feed._values.length; i++) if (feed._values[i].image_url === image_url) return true;
 	return false;
 }
 
-var _errorTimeout;
-function displayError(err)
+function processResponse(response)
 {
-	toast.value = (err.message || err);
-	clearTimeout(_errorTimeout);
-	_errorTimeout = setTimeout(function() { toast.value = ""; }, ERROR_DISMISS_TIMEOUT);
-}
-
-var fetching = false;
-var new_items = [];
-
-function startLoading()
-{
-	reloadErrorSign.value = "";
-	fetching = true;
-	loading.value = true;
-	checkLoading();
-}
-
-function checkLoading()
-{
-	spinning.value = false;
-	spinning.value = fetching;
-	if (fetching === false) 
-	{
-		for (var i=0; i<new_items.length; i++) feed.insertAt(i, new_items[i]);
-		scrollToUrl.value = "top";
-		loading.value = false;
-	}
-}
-
-function stopLoading()
-{
-	fetching = false;
-}
-
-function processStream(response, target)
-{
+	var result = [];
 	for (var i=0; i<response.photos.length; i++)
 	{
 		var responsePhoto = response.photos[i];
@@ -110,97 +130,149 @@ function processStream(response, target)
     		if (responsePhoto.images[j].size === 30) image_url = responsePhoto.images[j].https_url;
     		else if (responsePhoto.images[j].size === 1080) photo_url = responsePhoto.images[j].https_url;
     	}
-    	if (!isImage(image_url))
+    	if (!hasImage(image_url))
     	{
 	    	var image_aspect = responsePhoto.width / responsePhoto.height;
-	    	target.push(new Photo(
+	    	result.push(new Photo(
 	    		responsePhoto.url,
 				image_aspect === 1 ? 1.0001 : image_aspect, // Fuse's Aspect bug workaround
 				image_url,
 				photo_url,
 				responsePhoto.name,
-				responsePhoto.user.avatars.small.https,
+				responsePhoto.user.avatars.default.https,
 				responsePhoto.user.username,
 				responsePhoto.votes_count)
 	    	);
 	    }
 	}
+	return result;
 }
+
+function updateLoadingState()
+{
+	isReloading.value = false;
+	isReloading.value = loadingState.value === LoadingState.Loading;
+}
+
+var _loader;
 
 function reload()
 {
-	if (loading.value === true) return;
-	startLoading();
-	new_items = [];
-	feed.clear();
-	api.PhotoStream.Load()
-	.then(function(response)
+	if (_loader) _loader.cancel();
+	var scrollTo = isFeedChanged ? "top" : undefined;
+	_loader = helpers.Promise(function(resolve, reject)
 	{
-		processStream(response, new_items);
-		stopLoading();
-	})
-	.catch(function(err)
-	{
-		stopLoading();
-		reloadErrorSign.value = "!";
-		displayError(err);
-	});
-}
-
-var more_items = [];
-var loading_more = false;
-
-function loadMore()
-{
-	var more = api.PhotoStream.More();
-	if (more)
-	{
-		more.then(function(response)
+		loadingState.value = LoadingState.Loading;
+		reloadErrorSign.value = "";
+		isReloading.value = true;
+		if (selectedFeed.value.clearOnReload || isFeedChanged) feed.clear();
+		api.PhotoStream.Load().then(function(response)
 		{
-			processStream(response, more_items);
-			if (more_items.length === 0) setTimeout(loadMore, 1); // sync current page
-			else
-			{
-				// expect probably less than RPP here but that's ok for the demo
-				for (var i=0; i<more_items.length; i++) feed.add(more_items[i]);
-				loading_more = false;
-			}
+			resolve(response);
 		})
 		.catch(function(err)
 		{
-			loading_more = false;
-			displayError(err);
+			reject(err);
 		});
-	}
-	else loading_more = false;
+	});
+	_loader.then(function(result)
+	{
+		var items = processResponse(result);
+		for (var i=0; i<items.length; i++) feed.insertAt(i, items[i]);
+		if (scrollTo) scrollToUrl.value = scrollTo;
+		loadingState.value = LoadingState.Ready;
+	});
+	_loader.catch(function(err)
+	{
+		if (err.name !== "CancellationError")
+		{
+			displayError(err);
+			reloadErrorSign.value = "!";
+		}
+		loadingState.value = LoadingState.Ready;
+	});
+}
+
+var _loadingmore = false;
+
+function loadmore()
+{
+	_loader = helpers.Promise(function(resolve, reject)
+	{
+		api.PhotoStream.More().then(function(response)
+		{
+			resolve(response);
+		})
+		.catch(function(err)
+		{
+			reject(err);
+		});
+	});
+	_loader.then(function(result)
+	{
+		var items = processResponse(result);
+		if (items.length === 0)
+		{
+			setTimeout(loadmore, 1); // sync current page
+		}
+	    else
+	    {
+	    	for (var i=0; i<items.length; i++) feed.add(items[i]); // expect probably less than RPP here but that's ok for a demo
+			_loadingmore = false;
+		}
+	});
+	_loader.catch(function(err)
+	{
+		if (err.name !== "CancellationError") displayError("Error loading more photos");
+		_loadingmore = false;
+	});
 }
 
 function more()
 {
-	if (loading_more || loading.value === true) return;
-	loading_more = true;
-	more_items = [];
-	loadMore();
+	if (loadingState.value !== LoadingState.Ready || _loadingmore) return;
+	_loadingmore = true;
+	loadmore();
 }
 
-function hideNavbar()
+function onSidebarOpening()
 {
-	navbarVisible.value = false;
+	if (searching.value === true) event.raise("ReleaseSearchInput");
+}
+
+function onSidebarClosed()
+{
+	if (isFeedChanged)
+	{
+		if (searching.value === false) reload();
+		else
+		{
+			feed.clear();
+			scrollToUrl.value = "top";
+		} 
+		isFeedChanged = false;
+		if (searching.value === true) event.raise("FocusSearchInput");
+	}
 }
 
 function showNavbar()
 {
-	navbarVisible.value = true;
+	isNavbarVisible.value = true;
 }
 
-function enableNavigation()
+function hideNavbar()
 {
-	navigationEnabled.value = true;
+	isNavbarVisible.value = false;
 }
 
-function disableNavigation()
+function enableSidebar()
 {
-	navigationEnabled.value = false;
+	isSidebarEnabled.value = true;
+}
+
+function disableSidebar()
+{
+	isSidebarEnabled.value = false;
 }
 
 function scrollToTop()
@@ -213,48 +285,55 @@ function onError(args)
 	displayError(args.message);
 }
 
-function isFeatureChanged()
+function search()
 {
-	if (featureChanged === true)
+	var text = searchText.value.trim();
+	if (text !== "")
 	{
-		featureChanged = false;
+		feed.clear();
+		scrollToUrl.value = "top";
+		api.SetSearchText(text);
 		reload();
 	}
 }
 
 // main
-var selectedFeature = Observable(features.value);
-api.SetFeature(selectedFeature.value.query);
+feeds.getAt(0).select();
 reload();
 
 module.exports =
 {
+	toast: toast,
 	feed: feed,
 	reload: reload,
 	more: more,
+
+	feeds: feeds,
+	selectedFeed: selectedFeed,
 	
-	loading: loading,
-	spinning: spinning,
-	
-	toast: toast,
+	loadingState: loadingState,
+	updateLoadingState: updateLoadingState,
+	isReloading: isReloading,
+
 	onError: onError,
 	
-	checkLoading: checkLoading,
-	
-	features: features,
-	selectFeature: selectFeature,
-	selectedFeature: selectedFeature,
-	isFeatureChanged: isFeatureChanged,
-	
-	navbarVisible: navbarVisible,
-	hideNavbar: hideNavbar,
 	showNavbar: showNavbar,
+	hideNavbar: hideNavbar,
+	isNavbarVisible: isNavbarVisible,
+
 	reloadErrorSign: reloadErrorSign,
 	
-	disableNavigation: disableNavigation,
-	enableNavigation: enableNavigation,
-	navigationEnabled: navigationEnabled,
+	enableSidebar: enableSidebar,
+	disableSidebar: disableSidebar,
+	isSidebarEnabled: isSidebarEnabled,
+
+	onSidebarOpening: onSidebarOpening,
+	onSidebarClosed: onSidebarClosed,
 	
 	scrollToUrl: scrollToUrl,
-	scrollToTop: scrollToTop
+	scrollToTop: scrollToTop,
+
+	searching: searching,
+	searchText: searchText,
+	search: search
 };

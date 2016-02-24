@@ -1,7 +1,8 @@
 <App Theme="Basic" ClearColor="#000">
 	<!-- Globals -->
 	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
-	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
+	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />	
+	<JavaScript File="Assets/JS/promise-helpers.js" ux:Global="Helpers" />
 	<JavaScript File="Assets/JS/html.js" ux:Global="Html" />
 	<JavaScript File="Assets/JS/sha1.js" ux:Global="Sha1" />
 	<JavaScript File="Assets/JS/fetcher.js" ux:Global="Fetcher" />
@@ -23,16 +24,16 @@
 			<Panel>
 				<ux:Include File="MainView.navbar.ux" />
 				<ux:Include File="Gallery.ux" />
-				<ux:Include File="MainView.featureDesc.ux" />
+				<ux:Include File="MainView.feedLoader.ux" />
 			</Panel>
 		</Panel>
 		<ux:Include File="MainView.sidebar.ux" />
-		<WhileTrue Value="{navigationEnabled}">
+		<WhileTrue Value="{isSidebarEnabled}">
 			<EdgeNavigation ux:Name="navigator" />
 	 		<OnKeyPress Key="MenuButton">
 	 			<NavigateToggle Target="sidebar" />
 	 		</OnKeyPress>
  		</WhileTrue>
- 		<BottomFrameBackground Dock="Bottom" />
+ 		<BottomFrameBackground Dock="Bottom" IncludesKeyboard="false" />
  	</DockPanel>
 </App>

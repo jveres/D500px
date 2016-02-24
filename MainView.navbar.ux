@@ -1,5 +1,5 @@
 <!-- Navigation bar -->
-<DockPanel ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10" IsEnabled="{navigationEnabled}">
+<DockPanel ux:Name="navbar" Alignment="Top" Height="50" Padding="10,10,5,10" IsEnabled="{isNavbarVisible}">
 	<Image File="Assets/Images/GradientBg.png" Layer="Background" StretchMode="Fill" />
 	<Panel Dock="Left" ux:Name="hamburgerIcon" X="0" Width="26" Height="26" HitTestMode="LocalBounds">
 		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
@@ -16,11 +16,29 @@
 			<Rotation ux:Name="bottomMenuRotation" />
 		</Rectangle>
 	</Panel>
-	<Text Dock="Fill" Value="{selectedFeature.name}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" Clicked="{scrollToTop}">
-		<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-	</Text>
-	<Panel Dock="Right" ux:Name="reloadButton" Clicked="{reload}" Alignment="Center" Padding="8" HitTestMode="LocalBounds" ClipToBounds="false">
-		<Text ux:Name="errorSign" Value="{reloadErrorSign}" FontSize="18" Font="Regular" TextColor="#ff0000" Alignment="TopRight" Offset="4,-6" Opacity="1">
+	<Panel Dock="Fill">
+		<!-- Feature mode -->
+		<WhileFalse Value="{searching}">
+			<Text Value="{selectedFeed.title}" Alignment="Center" FontSize="23" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" Clicked="{scrollToTop}">
+				<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
+			</Text>
+		</WhileFalse>
+		<!-- Search mode -->
+		<WhileTrue Value="{searching}">
+			<SearchInput ux:Name="searchText" Value="{searchText}" ActionStyle="Search">
+				<TextInputActionTriggered>
+					<ReleaseFocus />
+	                <Callback Handler="{search}" Delay="0.2" />
+	            </TextInputActionTriggered>
+			</SearchInput>
+		</WhileTrue>
+	</Panel>
+	<Panel Dock="Right" ux:Name="reloadButton" Clicked="{reload}" Padding="8" HitTestMode="LocalBounds" ClipToBounds="false" IsEnabled="true">
+		<WhileDisabled>
+			<Change reloadButton.HitTestMode="None" Duration="0" DurationBack="0.2" />
+			<Change reloadIcon.Opacity="0.5" Duration="0.2" Easing="CircularInOut" />
+		</WhileDisabled>
+		<Text ux:Name="errorSign" Value="{reloadErrorSign}" FontSize="18" Font="Regular" TextColor="#ff0000" Alignment="TopRight" Offset="4,-10" Opacity="1" HitTestMode="None">
 			<Scaling ux:Name="errorSignScale" Factor="0" />
 			<Attractor ux:Name="errorSignAttractor" Target="errorSignScale.Factor"/>
 			<WhileContainsText>
@@ -29,18 +47,24 @@
 		</Text>
 		<Image ux:Name="reloadIcon" File="Assets/Icons/Reload.png" Width="23" Height="23" Opacity="1" Color="#eee">
 			<DropShadow Color="#000f" Size="5" Spread="0.2" Angle="90" Distance="1" />
-			<Rotation ux:Name="reloadRotation" />
-			<WhileTrue Value="{spinning}">
-				<Change Target="reloadRotation.Degrees" Value="360" Duration="0.9" DurationBack="0" DelayBack="0" Easing="CircularInOut" />
-				<Callback AtProgress="1" Handler="{checkLoading}" />
+			<Rotation ux:Name="spinnerRotation" />
+			<WhileTrue Value="{isReloading}">
+				<Change Target="spinnerRotation.Degrees" Value="359" Duration="1" DurationBack="0" Easing="CircularInOut" />
+		    	<Callback Handler="{updateLoadingState}" AtProgress="1" />
 			</WhileTrue>
-			<WhileTrue Value="{loading}">
-				<Change reloadButton.HitTestMode="None" />
-				<Change reloadIcon.Opacity="0.5" Duration="0.3" Easing="CircularInOut" />
-			</WhileTrue>
+			<StateGroup Rest="ready" Active="{loadingState}">
+				<State Name="ready">
+				</State>
+				<State Name="loading">
+					<Change reloadButton.IsEnabled="false" />
+				</State>
+			</StateGroup>
 		</Image>
 	</Panel>
-	<WhileFalse Value="{navbarVisible}">
+	<WhileDisabled>
 		<Change navbar.Opacity="0" Easing="CircularInOut" Duration="0.2" />
-	</WhileFalse>
+	</WhileDisabled>
+	<WhileKeyboardVisible>
+		<Change reloadButton.IsEnabled="false" />
+	</WhileKeyboardVisible>
 </DockPanel>

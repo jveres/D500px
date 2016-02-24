@@ -123,7 +123,6 @@ function xauth_request(opts)
         }
         else if (opts.method === "POST") opts.data = formEncode(opts.data);
     }
-    else throw new Error("Invalid type of \'opts.data\' (expected \'Object\')");
 
     var oauth_base = opts.method+'&'+ percentEncode(opts.url)+'&'+ percentEncode(formEncode(params));
     var signing_key = OAUTH_CONSUMER_SECRET+'&'+opts.token_secret;

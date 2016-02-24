@@ -6,21 +6,26 @@
 		<WhileTrue ux:Name="detailsMode">
 			<!-- Hide navigation when playing forward -->
 			<Callback Handler="{hideNavbar}" Direction="Forward" />
-			<Callback Handler="{disableNavigation}" Direction="Forward" />
+			<Callback Handler="{disableSidebar}" Direction="Forward" />
 			<!-- Show navigation when playing backward -->
 			<Callback Handler="{showNavbar}" Direction="Backward" />
-			<Callback Handler="{enableNavigation}" Direction="Backward" />
+			<Callback Handler="{enableSidebar}" Direction="Backward" />
 			<!-- Change layout -->
 			<Change backgroundPanel.Opacity="1" Duration="0.2" />
 			<Change detailsView.LayoutRole="Standard" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 			<Change detailsView.Visibility="Visible" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3" DelayBack="0"/>
 			<Change titlePanel.Opacity="1" Delay="0.2" Duration="0.2" DelayBack="0" DurationBack="0" />
-			<Change photo.Visibility="Visible" Delay="0.3" DelayBack="0" DurationBack="0" />
+			<Change photo.Visibility="Visible" Delay="0.4" DelayBack="0" DurationBack="0" />
 			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
 		</WhileTrue>
 		<!-- Background divider -->
-		<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false" />
+		<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false"/>
+		<WhileKeyboardVisible>
+			<Change backgroundPanel.IsEnabled="true" />
+			<Change backgroundPanel.HitTestMode="LocalBounds" />
+			<Change backgroundPanel.Opacity="1" Duration="0.2" />
+		</WhileKeyboardVisible>
 		<!-- Thumbnails list -->
 		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
 			<!-- Next page trigger -->
@@ -38,6 +43,9 @@
 				<Each Items="{feed}">
 					<!-- Lo-res images -->
 					<AspectView Color="#000" AspectRatio="{image_aspect}">
+						<!--LayoutAnimation>
+							<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
+						</LayoutAnimation-->
 						<Placeholder>
 							<SolidColor Color="#393E45" />
 							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
