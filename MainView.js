@@ -179,7 +179,7 @@ function reload()
 	{
 		var items = processResponse(result);
 		if (items.length > 0) for (var i=0; i<items.length; i++) feed.insertAt(i, items[i]);
-		else displayError("No photos found");
+		else if (feed.length === 0) displayError("No photos found");
 		if (scrollTo) scrollToUrl.value = scrollTo;
 		loadingState.value = LoadingState.Ready;
 	});
