@@ -88,10 +88,11 @@ function API()
 	        })
 	        .then(function(response)
 	        {
-	        	var data = formDecode(response[1].responseText);
+	        	var data = formDecode(response.responseText);
 	        	self.access_token = data.oauth_token;
     			self.access_token_secret = data.oauth_token_secret;
     			if (!self.access_token || !self.access_token_secret) throw new Error(response.statusText);
+    			return response;
 	        });
 	    });
 	    return Promise.all([fetch_request_token, fetch_access_token]);
