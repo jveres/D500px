@@ -1,5 +1,5 @@
 <!--Detail view -->
-<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Collapsed" LayoutRole="Independent" ClipToBounds="true">
+<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Hidden" LayoutRole="Independent" ClipToBounds="true">
 	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false">
 		<Grid Rows="auto,1*">
 			<!-- Photo title  -->
@@ -36,6 +36,9 @@
 				<Placeholder ux:Name="detailsPlaceholder" BoxSizing="FillAspect" />
  			</Panel>
 		</Grid>
+		<WhilePressed>
+        	<Scale Factor="0.97" Duration="0.3" Easing="QuadraticInOut" />
+        </WhilePressed>
 		<!-- Rebounce triggers for swipeup & swiptdown view dismiss -->
 		<WhileTrue ux:Name="rebounced">
 			<BouncingAnimation Range="SnapMin">
@@ -59,7 +62,6 @@
 		<Set hiresPhoto.ImageUrl="" />
 		<Set hiresPhoto.Opacity="1" />
 		<Set detailsMode.Value="false" />
-		<BringToFront />
 	</WhileTrue>
 	<WhileVisible>
 		<Set detailsScrollView.ScrollToUrl="top" />
