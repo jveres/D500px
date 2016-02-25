@@ -87,7 +87,7 @@
 								<Set closeDetails.Value="false" />
 								<Set detailsPlaceholder.Target="image" />
 								<Set detailsMode.Value="true" />
-								<BringToFront />
+								<BringToFront TargetNode="image" />
 							</Tapped>
 						</WhileTrue>
 						<WhileTrue ux:Name="imageFailed">
