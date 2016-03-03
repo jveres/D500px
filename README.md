@@ -39,3 +39,4 @@
 
 *Note2: This is still a work in progress.*
 
+*Note3: The app needs Fuse version 0.10.x*

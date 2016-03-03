@@ -131,11 +131,9 @@ function processResponse(response)
     		else if (responsePhoto.images[j].size === 1080) photo_url = responsePhoto.images[j].https_url;
     	}
     	if (!hasImage(image_url))
-    	{
-	    	var image_aspect = responsePhoto.width / responsePhoto.height;
 	    	result.push(new Photo(
 	    		responsePhoto.url,
-				image_aspect === 1 ? 1.0001 : image_aspect, // Fuse's Aspect bug workaround
+				responsePhoto.width / responsePhoto.height,
 				image_url,
 				photo_url,
 				responsePhoto.name,
@@ -143,7 +141,6 @@ function processResponse(response)
 				responsePhoto.user.username,
 				responsePhoto.votes_count)
 	    	);
-	    }
 	}
 	return result;
 }

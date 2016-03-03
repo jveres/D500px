@@ -5,6 +5,7 @@ using Fuse.Resources;
 using Fuse.Elements;
 using Fuse.Triggers;
 using WhileLoaded;
+using WhileCacheLoaded;
 
 public class ImageView: Element
 {
@@ -26,6 +27,7 @@ public class ImageView: Element
         {
                 base.OnRooted();
                 _source.Changed += OnSourceChanged;
+                WhileCacheLoaded.SetState(this, _source.State == ImageSourceState.Ready);
         }
 
         protected override void OnUnrooted()
@@ -35,15 +37,12 @@ public class ImageView: Element
                 base.OnUnrooted();
         }
 
-        ImageSourceState _state;
         void OnSourceChanged(object Source, object Args)
         {
-                if (_state == _source.State) return; // Fuse bug workaround
-                _state = _source.State;
-                if (_state == ImageSourceState.Ready) UpdateManager.AddDeferredAction(InvalidateVisual);
-                WhileLoaded.SetState(this, _state == ImageSourceState.Ready);
-                WhileFailed.SetState(this, _state == ImageSourceState.Failed, "Image loading error");
-                WhileLoading.SetState(this, _state == ImageSourceState.Loading);
+                if (_source.State == ImageSourceState.Ready) UpdateManager.AddDeferredAction(InvalidateVisual);
+                WhileLoaded.SetState(this, _source.State == ImageSourceState.Ready);
+                WhileFailed.SetState(this, _source.State == ImageSourceState.Failed, "Image loading error");
+                WhileLoading.SetState(this, _source.State == ImageSourceState.Loading);
         }
 
         protected override void OnDraw(DrawContext dc)
