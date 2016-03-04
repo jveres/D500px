@@ -62,6 +62,7 @@
 	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
 		<Set hiresPhoto.ImageUrl="" />
+		<Opacity Target="Image" Value="1" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>
