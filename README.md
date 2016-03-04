@@ -25,6 +25,11 @@
 * Infinite scrolling
 * Photo search
 
+## Known bugs
+
+- Landscape orientation breaks the layout in Android
+- Internet connection drop causes Uno runtime exception
+
 ## Todo
 
 - ~~fast image draw/background placeholders~~
@@ -34,6 +39,7 @@
 - ~~display photo details~~
 - real-time interactions (like, comment)
 - photo zoom
+- memory optimizations
 
 *Note1: The app needs 500px consumer key passed in the fetch() request. Be nice and use/register your own.*
 

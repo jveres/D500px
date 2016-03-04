@@ -1,12 +1,12 @@
 <!--Detail view -->
-<Panel ux:Name="detailsView" HitTestMode="None" Visibility="Hidden" ClipToBounds="true">
+<Panel ux:Name="detailsView" HitTestMode="LocalBoundsAndChildren" Visibility="Collapsed" ClipToBounds="true">
 	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false">
 		<Grid Rows="auto,1*">
 			<!-- Photo title  -->
 			<ux:Include File="Gallery.detailsView.titlePanel.ux" />
 			<Panel Row="1">
 				<!-- Hi-res image -->
-				<Panel ux:Name="photo" Visibility="Collapsed">
+				<Panel ux:Name="photo" Visibility="Hidden">
 					<!-- Loading spinner -->
 					<Circle ux:Name="loadingSpinner" Width="50" Height="50" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
 						<Stroke Width="2" Brush="#eee" />
@@ -24,8 +24,11 @@
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
 						<WhileLoaded>
-							<Change hiresPhoto.Opacity="1" Duration="0.3" DurationBack="0" Easing="CircularInOut" /> 
+							<Change hiresPhoto.Opacity="1" Duration="0.75" DurationBack="0" Easing="CircularInOut" /> 
 						</WhileLoaded>
+						<WhileCacheLoaded Bypass="Never">
+							<Set hiresPhoto.Opacity="1" />
+						</WhileCacheLoaded>
 						<WhileFailed>
 							<RaiseUserEvent Name="Error">
 							    <UserEventArg Name="message" StringValue="Error Loading Image" />
@@ -33,13 +36,12 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Placeholder ux:Name="detailsPlaceholder" BoxSizing="FillAspect" />
+				<Panel ux:Name="placeholderPanel" BoxSizing="FillAspect">
+					<ImageView ux:Name="placeholderImage" HitTestMode="None" ImageMemoryPolicy="UnloadUnused" />
+				</Panel>
  			</Panel>
 		</Grid>
-		<WhilePressed>
-        	<Scale Factor="0.98" Duration="0.3" Easing="QuadraticInOut" />
-        </WhilePressed>
-		<!-- Rebounce triggers for swipeup & swiptdown view dismiss -->
+		<!-- Rebounce triggers for swipeup & swipedown view dismiss -->
 		<WhileTrue ux:Name="rebounced">
 			<BouncingAnimation Range="SnapMin">
 				<Scale Target="detailsScrollView" Factor="0.8" />
@@ -60,7 +62,6 @@
 	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
 		<Set hiresPhoto.ImageUrl="" />
-		<Set hiresPhoto.Opacity="1" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>

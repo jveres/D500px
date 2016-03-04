@@ -1,109 +1,118 @@
 <!-- Scrollable picture gallery -->
 <Panel ux:Name="galleryPanel">
-	<MultiLayoutPanel ux:Name="multiLayoutPanel" LayoutElement="galleryItems">
-		<ux:Include File="Gallery.detailsView.ux" />
-		<!-- Details mode trigger -->
-		<WhileTrue ux:Name="detailsMode">
-			<!-- Disable ScrollView gestures -->
-			<Change galleryItems.IsEnabled="false" />
-			<!-- Hide navigation when playing forward -->
-			<Callback Handler="{hideNavbar}" Direction="Forward" />
-			<Callback Handler="{disableSidebar}" Direction="Forward" />
-			<!-- Show navigation when playing backward -->
-			<Callback Handler="{showNavbar}" Direction="Backward" />
-			<Callback Handler="{enableSidebar}" Direction="Backward" />
-			<!-- Change layout -->
-			<Change backgroundPanel.Opacity="1" Duration="0.2" />
-			<Change detailsView.Visibility="Visible" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
-			<Change detailsView.HitTestMode="LocalBoundsAndChildren" Delay="0.3" />
-			<Change titlePanel.Opacity="1" Delay="0.2" Duration="0.2" DelayBack="0" DurationBack="0" />
-			<Change photo.Visibility="Visible" Delay="0.35" DelayBack="0" DurationBack="0" />
-			<Change multiLayoutPanel.LayoutElement="detailsView" Delay="0" DelayBack="0" Duration="0" DurationBack="0" />
-		</WhileTrue>
-		<!-- Background divider -->
-		<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false"/>
-		<WhileKeyboardVisible>
-			<Change backgroundPanel.IsEnabled="true" />
-			<Change backgroundPanel.HitTestMode="LocalBounds" />
-			<Change backgroundPanel.Opacity="1" Duration="0.2" />
-		</WhileKeyboardVisible>
-		<!-- Thumbnails list -->
-		<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
-			<!-- Next page trigger -->
-			<WhileScrollable ScrollDirections="Down" Invert="true">
-				<Callback Handler="{more}" />
-			</WhileScrollable>
-			<!-- Scrollview inset -->
-			<Panel ux:Name="insetPanel" Height="50" Visibility="Hidden" HitTestMode="None" IsEnabled="false" />
-			<!-- Image layout -->
-			<Panel Y="50">
-				<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
-				<WhileWindowLandscape>
-					<Change columnLayout.ColumnSize="200" />
-				</WhileWindowLandscape>
-				<Each Items="{feed}">
-					<!-- Lo-res images -->
-					<Panel Color="#000" Aspect="{image_aspect}" BoxSizing="FillAspect">
-						<LayoutAnimation>
-							<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
-						</LayoutAnimation>
-						<Placeholder>
-							<SolidColor Color="#393E45" />
-							<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
-								<LayoutAnimation>
-									<Move X="1" Y="1" Duration="0.3" RelativeTo="WorldPositionChange" Easing="BackIn" />
-									<Resize X="1" Y="1" Duration="0.3" RelativeTo="SizeChange" Easing="BackIn" />
-								</LayoutAnimation>
-								<WhileLoading>
-									<Set image.Opacity="0.0001" />
-								</WhileLoading>
-								<WhileLoaded>
-									<Set imageLoaded.Value="true" />
-									<Change image.Opacity="1" Duration="0.2" Easing="CircularIn" />
-								</WhileLoaded>
-								<WhileCacheLoaded Bypass="Never">
-									<Set imageLoaded.Value="true" />
-								</WhileCacheLoaded>
-								<WhileFailed>
-									<Set imageFailed.Value="true" />
-								</WhileFailed>
-							</ImageView>
-						</Placeholder>
-						<WhilePressed>
-		                	<Scale Factor="0.98" Duration="0.3" Easing="QuadraticInOut" />
-		            	</WhilePressed>
-		            	<LongPressed>
-							<LaunchUri Uri="{url}" Delay="0.2" />
-						</LongPressed>
-						<!-- Interaction is only enabled when image loaded -->
-						<WhileTrue ux:Name="imageLoaded">
-							<Tapped>
-								<!-- This way we keep the UI synced -->
-								<Set Target="nameText.Value" Value="{name}" />
-								<Set Target="avatarImage.Url" Value="{avatar_url}" />
-								<Set Target="launchUri.Uri" Value="{user_url}" />
-								<Set Target="usernameText.Value" Value="{username}" />
-								<Set Target="votesCountText.Value" Value="{votes_count}" />
-								<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
-								<Set Target="detailsPlaceholder.Aspect" Value="{image_aspect}" />
-								<!-- Trigger layout change -->
-								<Set closeDetails.Value="false" />
-								<Set detailsPlaceholder.Target="image" />
-								<Set detailsMode.Value="true" />
-								<BringToFront />
-								<BringToFront TargetNode="image" />
-							</Tapped>
-						</WhileTrue>
-						<WhileTrue ux:Name="imageFailed">
-							<Tapped>
-								<RaiseUserEvent Name="Error">
-								    <UserEventArg Name="message" StringValue="Error Loading Image" />
-								</RaiseUserEvent>
-							</Tapped>
-						</WhileTrue>
+	<!-- Show/hide animation -->
+	<ResourceObject ux:Name="Image" Key="Image" />
+	<Timeline ux:Name="showTimeline">
+		<Move Target="placeholderImage" RelativeTo="PositionOffset" RelativeNode="{Resource Image}" Vector="1" Duration="0.3" Easing="BackIn" />
+		<Resize Target="placeholderImage" RelativeTo="Size" RelativeNode="{Resource Image}" Vector="1" Duration="0.3" Easing="BackIn" />
+	</Timeline>
+	<Timeline ux:Name="hideTimeline">
+		<Move Target="{Resource Image}" RelativeTo="PositionOffset" RelativeNode="placeholderImage" Vector="1" Duration="0.3" Easing="BackIn" />
+		<Resize Target="{Resource Image}" RelativeTo="Size" RelativeNode="placeholderImage" Vector="1" Duration="0.3" Easing="BackIn" />
+	</Timeline>
+	<!-- Details view -->
+	<ux:Include File="Gallery.detailsView.ux" />
+	<!-- Details mode trigger -->
+	<WhileTrue ux:Name="detailsMode">
+		<!-- Settings -->
+		<Set closeDetails.Value="false" Direction="Forward" />
+		<Opacity Target="Image" Value="1" Direction="Backward" />
+		<!-- Disable ScrollView gestures -->
+		<Set galleryPanel.IsEnabled="false" Delay="0" />
+		<Set galleryPanel.IsEnabled="true" Delay="0.35" />
+		<!-- Show/hide navigation -->
+		<Change navbar.IsEnabled="false" />
+		<!-- Enable/disable sidebar -->
+		<Callback Handler="{disableSidebar}" Delay="0.35" Direction="Forward" />
+		<Callback Handler="{enableSidebar}" Delay="0.35" Direction="Backward" />
+		<!-- Change layout -->
+		<Change backgroundPanel.Opacity="1" Duration="0.1" />
+		<Change detailsView.Visibility="Visible" Delay="0" Duration="0" DelayBack="0" DurationBack="0" />
+		<Change titlePanel.Opacity="1" Delay="0.25" Duration="0.1" DelayBack="0" DurationBack="0" />
+		<Change photo.Visibility="Visible" Delay="0.35" Duration="0" DelayBack="0" DurationBack="0" />
+		<!-- Show/hide animations -->
+		<PulseBackward Target="showTimeline" Direction="Forward" />
+		<PulseBackward Target="hideTimeline" Direction="Backward" />
+	</WhileTrue>
+	<!-- Background divider -->
+	<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false"/>
+	<WhileKeyboardVisible>
+		<Change backgroundPanel.IsEnabled="true" />
+		<Change backgroundPanel.HitTestMode="LocalBounds" />
+		<Change backgroundPanel.Opacity="1" Duration="0.2" />
+	</WhileKeyboardVisible>
+	<!-- Thumbnails list -->
+	<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
+		<!-- Next page trigger -->
+		<WhileScrollable ScrollDirections="Down" Invert="true">
+			<Callback Handler="{more}" />
+		</WhileScrollable>
+		<!-- Image layout -->
+		<Panel Y="50">
+			<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
+			<WhileWindowLandscape>
+				<Change columnLayout.ColumnSize="200" />
+			</WhileWindowLandscape>
+			<Each Items="{feed}">
+				<!-- Lo-res images -->
+				<Panel Color="#000" Aspect="{image_aspect}" BoxSizing="FillAspect">
+					<LayoutAnimation>
+						<Move X="1" Y="1" Duration="0.3" RelativeTo="PositionChange" Easing="CircularInOut" />
+					</LayoutAnimation>
+					<Panel Color="#393E45">						
+						<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
+							<WhileLoading>
+								<Set image.Opacity="0.0001" />
+							</WhileLoading>
+							<WhileLoaded>
+								<Set imageLoaded.Value="true" />
+								<Change image.Opacity="1" Duration="0.2" Easing="CircularIn" />
+							</WhileLoaded>
+							<WhileCacheLoaded Bypass="Never">
+								<Set imageLoaded.Value="true" />
+							</WhileCacheLoaded>
+							<WhileFailed>
+								<Set imageFailed.Value="true" />
+							</WhileFailed>
+						</ImageView>
 					</Panel>
-				</Each>
-			</Panel>
-		</ScrollingView>
-	</MultiLayoutPanel>
+					<WhilePressed>
+		                <Scale Factor="0.98" Duration="0.3" Easing="QuadraticInOut" />
+		            </WhilePressed>
+	            	<LongPressed>
+						<LaunchUri Uri="{url}" Delay="0.2" />
+					</LongPressed>
+					<!-- Interaction is only enabled when image loaded -->
+					<WhileTrue ux:Name="imageLoaded">
+						<Tapped>
+							<!-- Set current image object for animating currently causes compiler error -->
+							<!--Set Target="Image.Value" Value="image" /-->
+							<!-- Custom ResourceObject setter until compiler bug fixed -->
+							<Assign Target="Image" Value="image" />
+							<!-- This way we keep the UI synced -->
+							<Set Target="nameText.Value" Value="{name}" />
+							<Set Target="avatarImage.Url" Value="{avatar_url}" />
+							<Set Target="launchUri.Uri" Value="{user_url}" />
+							<Set Target="usernameText.Value" Value="{username}" />
+							<Set Target="votesCountText.Value" Value="{votes_count}" />
+							<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
+							<Set Target="placeholderPanel.Aspect" Value="{image_aspect}" />
+							<Set Target="placeholderImage.ImageUrl" Value="{image_url}" />
+							<!-- Trigger layout change -->
+							<BringToFront />
+							<Set image.Opacity="0" />
+							<Set detailsMode.Value="true" />
+						</Tapped>
+					</WhileTrue>
+					<WhileTrue ux:Name="imageFailed">
+						<Tapped>
+							<RaiseUserEvent Name="Error">
+							    <UserEventArg Name="message" StringValue="Error Loading Image" />
+							</RaiseUserEvent>
+						</Tapped>
+					</WhileTrue>
+				</Panel>
+			</Each>
+		</Panel>
+	</ScrollingView>
 </Panel>

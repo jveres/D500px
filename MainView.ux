@@ -27,8 +27,8 @@
 				<ux:Include File="MainView.feedLoader.ux" />
 			</Panel>
 		</Panel>
-		<ux:Include File="MainView.sidebar.ux" />
 		<WhileTrue Value="{isSidebarEnabled}">
+			<ux:Include File="MainView.sidebar.ux" />
 			<EdgeNavigation ux:Name="navigator" />
 	 		<OnKeyPress Key="MenuButton">
 	 			<NavigateToggle Target="sidebar" />

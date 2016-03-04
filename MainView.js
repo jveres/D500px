@@ -27,7 +27,6 @@ var reloadErrorSign = Observable("");
 var selectedFeed = Observable();
 var isFeedChanged = false;
 
-var isNavbarVisible = Observable(true);
 var isSidebarEnabled = Observable(true);
 
 var _errorTimeout;
@@ -156,13 +155,18 @@ var _loader;
 function reload()
 {
 	if (_loader) _loader.cancel();
-	var scrollTo = isFeedChanged ? "top" : undefined;
+	var _topscroll = isFeedChanged || selectedFeed.value.clearOnReload;
+	var scrollTo = _topscroll ? "top" : null;
 	_loader = helpers.Promise(function(resolve, reject)
 	{
 		loadingState.value = LoadingState.Loading;
 		reloadErrorSign.value = "";
 		isReloading.value = true;
-		if (selectedFeed.value.clearOnReload || isFeedChanged) feed.clear();
+		if (_topscroll)
+		{
+			feed.clear();
+			scrollToUrl.value = scrollTo;
+		}
 		api.PhotoStream.Load().then(function(response)
 		{
 			resolve(response);
@@ -177,7 +181,7 @@ function reload()
 		var items = processResponse(result);
 		if (items.length > 0) for (var i=0; i<items.length; i++) feed.insertAt(i, items[i]);
 		else if (feed.length === 0) displayError("No photos found");
-		if (scrollTo) scrollToUrl.value = scrollTo;
+		if (scrollTo !== null) scrollToUrl.value = scrollTo;
 		loadingState.value = LoadingState.Ready;
 	});
 	_loader.catch(function(err)
@@ -253,16 +257,6 @@ function onSidebarClosed()
 	}
 }
 
-function showNavbar()
-{
-	isNavbarVisible.value = true;
-}
-
-function hideNavbar()
-{
-	isNavbarVisible.value = false;
-}
-
 function enableSidebar()
 {
 	isSidebarEnabled.value = true;
@@ -314,10 +308,6 @@ module.exports =
 	isReloading: isReloading,
 
 	onError: onError,
-	
-	showNavbar: showNavbar,
-	hideNavbar: hideNavbar,
-	isNavbarVisible: isNavbarVisible,
 
 	reloadErrorSign: reloadErrorSign,
 	
