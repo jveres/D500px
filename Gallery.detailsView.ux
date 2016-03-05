@@ -44,11 +44,11 @@
 		<!-- Rebounce triggers for swipeup & swipedown view dismiss -->
 		<WhileTrue ux:Name="rebounced">
 			<BouncingAnimation Range="SnapMin">
-				<Scale Target="detailsScrollView" Factor="0.8" />
+				<Scale Target="detailsScrollView" Factor="0.9" />
 				<Set closeDetails.Value="true" AtProgress="0.75" />
 			</BouncingAnimation>
 			<BouncingAnimation Range="SnapMax">
-				<Scale Target="detailsScrollView" Factor="0.8" />
+				<Scale Target="detailsScrollView" Factor="0.9" />
 				<Set closeDetails.Value="true" AtProgress="0.75" />
 			</BouncingAnimation>
 		</WhileTrue>
@@ -61,8 +61,10 @@
 	</Tapped>
 	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
-		<Set hiresPhoto.ImageUrl="" />
+		<!-- Enable sidebar -->
 		<Callback Handler="{enableSidebar}" Delay="0.4" />
+		<!-- Abort pending download  -->
+		<Set hiresPhoto.ImageUrl="" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>
