@@ -60,11 +60,9 @@
 					</LayoutAnimation>
 					<Panel Color="#393E45">						
 						<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
-							<WhileLoading>
-								<Set image.Opacity="0.0001" />
-							</WhileLoading>
 							<WhileLoaded>
 								<Set imageLoaded.Value="true" />
+								<Set image.Opacity="0" />
 								<Change image.Opacity="1" Duration="0.2" Easing="CircularIn" />
 							</WhileLoaded>
 							<WhileCacheLoaded Bypass="Never">

@@ -20,15 +20,12 @@
 					</WhileTrue>
 					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoading>
-							<Set hiresPhoto.Opacity="0.0001" />
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
 						<WhileLoaded>
+							<Set hiresPhoto.Opacity="0" />
 							<Change hiresPhoto.Opacity="1" Duration="0.75" DurationBack="0" Easing="CircularInOut" /> 
 						</WhileLoaded>
-						<WhileCacheLoaded Bypass="Never">
-							<Set hiresPhoto.Opacity="1" />
-						</WhileCacheLoaded>
 						<WhileFailed>
 							<RaiseUserEvent Name="Error">
 							    <UserEventArg Name="message" StringValue="Error Loading Image" />
