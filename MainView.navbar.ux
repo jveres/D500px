@@ -65,6 +65,6 @@
 		</Image>
 	</Panel>
 	<WhileDisabled>
-		<Change navbar.Opacity="0" />
+		<Change navbar.Opacity="0" Delay="0" Duration="0.2" />
 	</WhileDisabled>
 </DockPanel>

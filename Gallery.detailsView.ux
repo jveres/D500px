@@ -62,7 +62,7 @@
 	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
 		<Set hiresPhoto.ImageUrl="" />
-		<Opacity Target="Image" Value="1" />
+		<Callback Handler="{enableSidebar}" Delay="0.4" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>

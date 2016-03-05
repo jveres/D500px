@@ -14,7 +14,11 @@ public class ImageView: Element
         public String ImageUrl
         {
                 get { return _source.Url; }
-                set { _source.Url = value; }
+                set
+                {
+                        _source.Url = value;
+                        WhileCacheLoaded.SetState(this, _source.State == ImageSourceState.Ready);
+                }
         }
 
         public MemoryPolicy ImageMemoryPolicy
@@ -27,7 +31,6 @@ public class ImageView: Element
         {
                 base.OnRooted();
                 _source.Changed += OnSourceChanged;
-                WhileCacheLoaded.SetState(this, _source.State == ImageSourceState.Ready);
         }
 
         protected override void OnUnrooted()
