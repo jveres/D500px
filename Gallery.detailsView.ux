@@ -18,7 +18,7 @@
 					<WhileTrue ux:Name="showSpinner">
 						<Change loadingSpinner.Opacity="1" Duration="0.5" Easing="CircularInOut" />
 					</WhileTrue>
-					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused">
+					<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoading>
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
@@ -26,6 +26,9 @@
 							<Set hiresPhoto.Opacity="0" />
 							<Change hiresPhoto.Opacity="1" Duration="0.75" DurationBack="0" Easing="CircularInOut" /> 
 						</WhileLoaded>
+						<WhileCacheLoaded Bypass="Never">
+							<Set hiresPhoto.Opacity="1" />
+						</WhileCacheLoaded>
 						<WhileFailed>
 							<RaiseUserEvent Name="Error">
 							    <UserEventArg Name="message" StringValue="Error Loading Image" />
@@ -33,23 +36,16 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Image ux:Name="placeholderImage" HitTestMode="None" MemoryPolicy="UnloadUnused" BoxSizing="FillAspect" />
+				<Image ux:Name="placeholderImage" MemoryPolicy="UnloadUnused" BoxSizing="FillAspect" />
  			</Panel>
 		</Grid>
-		<!-- Rebounce triggers for swipeup & swipedown view dismiss -->
-		<WhileTrue ux:Name="rebounced">
-			<BouncingAnimation Range="SnapMin">
-				<Scale Target="detailsScrollView" Factor="0.9" />
-				<Set closeDetails.Value="true" AtProgress="0.75" />
-			</BouncingAnimation>
-			<BouncingAnimation Range="SnapMax">
-				<Scale Target="detailsScrollView" Factor="0.9" />
-				<Set closeDetails.Value="true" AtProgress="0.75" />
-			</BouncingAnimation>
-		</WhileTrue>
-		<WhileRebounced ScrollDirections="Vertical">
-			<Change rebounced.Value="true" />
-		</WhileRebounced>
+		<!-- ScrollingAnimation triggers -->		
+		<BouncingAnimation Range="SnapMin">
+			<Set closeDetails.Value="true" AtProgress="0.75" />
+		</BouncingAnimation>
+		<BouncingAnimation Range="SnapMax">
+			<Set closeDetails.Value="true" AtProgress="0.75" />
+		</BouncingAnimation>
 	</ScrollingView>
 	<Tapped>
 		<Set closeDetails.Value="true" />
@@ -60,6 +56,7 @@
 		<Callback Handler="{enableSidebar}" Delay="0.4" />
 		<!-- Abort pending download  -->
 		<Set hiresPhoto.ImageUrl="" />
+		<Set hiresPhoto.Opacity="1" />
 		<Set detailsMode.Value="false" />
 	</WhileTrue>
 	<WhileVisible>

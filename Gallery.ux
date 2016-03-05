@@ -12,24 +12,24 @@
 	<WhileTrue ux:Name="detailsMode">
 		<!-- Settings -->
 		<Opacity Target="Image" Value="0" Direction="Forward" AtProgress="0" />
-		<Opacity Target="Image" Value="1" Direction="Backward" AtProgress="0" />
+		<Opacity Target="Image" Value="1" Direction="Backward" AtProgress="0" />		
 		<Set closeDetails.Value="false" Direction="Forward" />
 		<!-- Display background divider -->
 		<Change backgroundPanel.Opacity="1" Delay="0" Duration="0.4" />
 		<!-- Show/hide navigation -->
 		<Change navbar.IsEnabled="false" Delay="0" Duration="0" DelayBack="0.2" DurationBack="0" />
 		<!-- Change layout -->
-		<Change detailsView.Visibility="Visible" Delay="0" Duration="0" DelayBack="0.4" DurationBack="0" />
 		<Change titlePanel.Opacity="1" Delay="0.3" Duration="0.1" DelayBack="0" DurationBack="0" />
 		<Change photo.Visibility="Visible" Delay="0.4" Duration="0" DelayBack="0" DurationBack="0" />
+		<Change detailsView.Visibility="Visible" Delay="0" Duration="0" DelayBack="0.4" DurationBack="0" />
 		<!-- Animation setup -->
 		<Set moveAnimation.Easing="BackIn" Direction="Forward" />
 		<Set resizeAnimation.Easing="BackIn" Direction="Forward" />
 		<Set moveAnimation.Easing="BackOut" Direction="Backward" />
 		<Set resizeAnimation.Easing="BackOut" Direction="Backward" />
+		<!-- Show/hide animations -->
 		<Set showTimeline.Progress="1" Direction="Forward" />
 		<Set showTimeline.Progress="0" Direction="Backward" />
-		<!-- Show/hide animations -->
 		<Set showTimeline.TargetProgress="0" Direction="Forward" />
 		<Set showTimeline.TargetProgress="1" Direction="Backward" />
 	</WhileTrue>
