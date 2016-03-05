@@ -20,7 +20,7 @@
 					</WhileTrue>
 					<ImageView ux:Name="hiresPhoto" HitTestMode="None" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoading>
-							<Set hiresPhoto.Opacity="0.001" />
+							<Set hiresPhoto.Opacity="0.0001" />
 							<Change showSpinner.Value="true" Duration="0" Delay="0" />
 						</WhileLoading>
 						<WhileLoaded>
@@ -36,9 +36,7 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Panel ux:Name="placeholderPanel" BoxSizing="FillAspect">
-					<ImageView ux:Name="placeholderImage" HitTestMode="None" ImageMemoryPolicy="UnloadUnused" />
-				</Panel>
+				<Image ux:Name="placeholderImage" HitTestMode="None" MemoryPolicy="UnloadUnused" BoxSizing="FillAspect" />
  			</Panel>
 		</Grid>
 		<!-- Rebounce triggers for swipeup & swipedown view dismiss -->

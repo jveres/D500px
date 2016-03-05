@@ -91,8 +91,8 @@
 							<!-- Custom ResourceObject setter until compiler bug fixed -->
 							<Assign Target="Image" Value="image" />
 							<!-- This way we keep the UI synced -->
-							<Set Target="placeholderPanel.Aspect" Value="{image_aspect}" />
-							<Set Target="placeholderImage.ImageUrl" Value="{image_url}" />
+							<Set Target="placeholderImage.Aspect" Value="{image_aspect}" />
+							<Set Target="placeholderImage.Url" Value="{image_url}" />
 							<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
 							<Set Target="nameText.Value" Value="{name}" />
 							<Set Target="avatarImage.Url" Value="{avatar_url}" />
