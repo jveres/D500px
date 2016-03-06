@@ -57,9 +57,13 @@
 		<!-- Abort pending download  -->
 		<Set hiresPhoto.ImageUrl="" />
 		<Set hiresPhoto.Opacity="1" />
+		<!-- Layout change -->
 		<Set detailsMode.Value="false" />
+		<Set multiLayout.LayoutElement="galleryItems" />
+		<BringToFront />
 	</WhileTrue>
 	<WhileVisible>
+		<Set closeDetails.Value="false" />
 		<Set detailsScrollView.ScrollToUrl="top" />
 		<!-- Android Back button handler -->
 		<OnKeyPress Key="BackButton">

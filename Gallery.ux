@@ -6,20 +6,17 @@
 	<ux:Include File="Gallery.detailsView.ux" />
 	<!-- Details mode trigger -->
 	<WhileTrue ux:Name="detailsMode">
-		<!-- Settings -->
-		<Set closeDetails.Value="false" Direction="Forward" />
+		<!--Change multiLayout.LayoutElement="detailsView" Delay="0" Duration="0" DelayBack="0" DurationBack="0" /-->
 		<!-- Show/hide navigation -->
 		<Change navbar.IsEnabled="false" Delay="0" Duration="0" DelayBack="0.2" DurationBack="0" />
 		<!-- Change layout -->
-		<Change backgroundPanel.Opacity="1" Delay="0" Duration="0.4" />
+		<Change backgroundPanel.Opacity="1" Delay="0.2" Duration="0.2" DelayBack="0" DurationBack="0" />
 		<Change titlePanel.Opacity="1" Delay="0.3" Duration="0.1" DelayBack="0" DurationBack="0" />
 		<Change photo.Visibility="Visible" Delay="0.4" Duration="0" DelayBack="0.4" DurationBack="0" />
 		<Change detailsView.Visibility="Visible" Delay="0" Duration="0" DelayBack="0" DurationBack="0" />
-		<!-- TODO: There's a flicker caused by image reparenting which should be solved later using temporary TransitionLayout -->
-		<Change multiLayout.LayoutElement="detailsView" Delay="0" Duration="0" DelayBack="0" DurationBack="0" />
 	</WhileTrue>
 	<!-- Background divider -->
-	<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false"/>
+	<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false" />
 	<WhileKeyboardVisible>
 		<Change backgroundPanel.IsEnabled="true" />
 		<Change backgroundPanel.HitTestMode="LocalBounds" />
@@ -84,6 +81,7 @@
 							<Set Target="votesCountText.Value" Value="{votes_count}" />
 							<!-- Trigger layout change -->
 							<Set imagePlaceholder.Target="image" />
+							<Set multiLayout.LayoutElement="detailsView" />
 							<Set detailsMode.Value="true" />
 							<BringToFront />
 						</Tapped>
