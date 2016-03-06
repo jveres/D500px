@@ -4,7 +4,6 @@ using Uno.UX;
 using Fuse;
 using Fuse.Controls;
 using ImageView;
-using WhileRebounced;
 
 public class ScrollingView : ScrollView
 {

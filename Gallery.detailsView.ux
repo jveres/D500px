@@ -36,16 +36,16 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Image ux:Name="placeholderImage" MemoryPolicy="UnloadUnused" BoxSizing="FillAspect" />
+				<Placeholder ux:Name="imagePlaceholder" BoxSizing="FillAspect" />
  			</Panel>
 		</Grid>
 		<!-- ScrollingAnimation triggers -->		
-		<BouncingAnimation Range="SnapMin">
+		<ScrollingAnimation Range="SnapMin">
 			<Set closeDetails.Value="true" AtProgress="0.75" />
-		</BouncingAnimation>
-		<BouncingAnimation Range="SnapMax">
+		</ScrollingAnimation>
+		<!--ScrollingAnimation Range="SnapMax">
 			<Set closeDetails.Value="true" AtProgress="0.75" />
-		</BouncingAnimation>
+		</ScrollingAnimation-->
 	</ScrollingView>
 	<Tapped>
 		<Set closeDetails.Value="true" />
