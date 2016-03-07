@@ -57,10 +57,8 @@
 		<!-- Abort pending download  -->
 		<Set hiresPhoto.ImageUrl="" />
 		<Set hiresPhoto.Opacity="1" />
-		<!-- Layout change -->
+		<!-- Trigger layout change -->
 		<Set detailsMode.Value="false" />
-		<Set multiLayout.LayoutElement="galleryItems" />
-		<BringToFront />
 	</WhileTrue>
 	<WhileVisible>
 		<Set closeDetails.Value="false" />

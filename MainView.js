@@ -105,7 +105,7 @@ function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, userna
 	this.image_aspect = image_aspect;
 	this.photo_url = photo_url;
 	this.name = html.unescape(name);
-	this.avatar_url = /*avatar_url*/""; // Fuse issue: https://www.fusetools.com/community/forums/bug_reports/httpimagesource_runtime_exception_2
+	this.avatar_url = avatar_url;
 	this.username = "@" + username;
 	this.user_url = api.BASE_URL + "/" + username;
 	this.votes_count = votes_count;
