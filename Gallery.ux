@@ -1,8 +1,6 @@
 <!-- Scrollable picture gallery -->
 <Panel ux:Name="galleryPanel">
-	<!-- Multi layout -->
-	<ResourceObject ux:Name="Image" />
-	<MultiLayout ux:Name="multiLayout" LayoutElement="galleryItems" />
+	<ResourceObject ux:Name="Image" Key="Image" />
 	<!-- Details view -->
 	<ux:Include File="Gallery.detailsView.ux" />
 	<!-- Details mode trigger -->
@@ -13,10 +11,19 @@
 		<Change titlePanel.Opacity="1" Delay="0.3" Duration="0.1" DelayBack="0" DurationBack="0" />
 		<Change photo.Visibility="Visible" Delay="0.4" Duration="0" DelayBack="0" DurationBack="0" />
 		<Change detailsView.Visibility="Visible" Delay="0" Duration="0" DelayBack="0.4" DurationBack="0" />
-		<Change backgroundPanel.Opacity="1" Delay="0" Duration="0.4" DelayBack="0" DurationBack="0" />
-		<!-- Change layout -->
-		<Set multiLayout.LayoutElement="detailsView" Direction="Forward" />
-		<Set multiLayout.LayoutElement="galleryItems" Direction="Backward" />
+		<Change backgroundPanel.Opacity="1" Delay="0" Duration="0.4" />
+		<!-- Show/hide image -->
+		<ResourceVisibility Target="Image" Value="Hidden" Direction="Forward" AtProgress="0" />
+		<ResourceVisibility Target="Image" Value="Visible" Direction="Backward" AtProgress="0" />
+		<!-- Trigger zoom animation -->
+		<!-- BUG: using Easing="BackIn" and EasingBack="BackOut" in the timeline screws up backward transition's position & size -->
+		<!-- FIX: manually setting animation easign works -->
+		<Set zoomMove.Easing="BackIn" Direction="Forward" />
+		<Set zoomResize.Easing="BackIn" Direction="Forward" />
+		<Set zoomMove.Easing="BackOut" Direction="Backward" />
+		<Set zoomResize.Easing="BackOut" Direction="Backward" />
+		<PulseBackward Target="imageZoom" Direction="Forward" />
+		<PulseForward Target="imageZoom" Direction="Backward" />
 	</WhileTrue>
 	<!-- Background divider -->
 	<Panel ux:Name="backgroundPanel" Opacity="0" Color="#000000b0" HitTestMode="None" IsEnabled="false" />
@@ -26,14 +33,14 @@
 		<Change backgroundPanel.Opacity="1" Duration="0.2" />
 	</WhileKeyboardVisible>
 	<!-- Thumbnails list -->
-	<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}">
+	<ScrollingView ux:Name="galleryItems" ScrollToUrl="{scrollToUrl}" AllowedScrollDirections="Vertical">
 		<!-- Next page trigger -->
 		<WhileScrollable ScrollDirections="Down" Invert="true">
 			<Callback Handler="{more}" />
 		</WhileScrollable>
 		<!-- Image layout -->
 		<Panel Y="50">
-			<ColumnLayout ux:Name="columnLayout" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
+			<ColumnLayout ux:Name="columnLayout" Orientation="Vertical" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
 			<WhileWindowLandscape>
 				<Change columnLayout.ColumnSize="200" />
 			</WhileWindowLandscape>
@@ -44,12 +51,8 @@
 						<Move Vector="1" Duration="0.4" RelativeTo="PositionChange" Easing="CircularInOut" />
 					</LayoutAnimation>
 					<Placeholder>
-						<SolidColor Color="#393E45" />					
+						<SolidColor Color="#393e45" />					
 						<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
-							<LayoutAnimation>
-								<Move Vector="1" Duration="0.4" RelativeTo="WorldPositionChange" Easing="BackOut" EasingBack="BackIn" />
-								<Resize Vector="1" Duration="0.4" RelativeTo="SizeChange" Easing="BackOut" EasingBack="BackIn" />
-							</LayoutAnimation>
 							<WhileLoaded>
 								<Set imageLoaded.Value="true" />
 								<Set image.Opacity="0" />
@@ -72,10 +75,13 @@
 					<!-- Interaction is only enabled when image loaded -->
 					<WhileTrue ux:Name="imageLoaded">
 						<Tapped>
+							<!-- Current image -->
+							<ResourceAssign Target="Image" Value="image" />
 							<!-- Disable sidebar -->
 							<Callback Handler="{disableSidebar}" />
 							<!-- This way we keep the UI synced -->
-							<Set Target="imagePlaceholder.Aspect" Value="{image_aspect}" />
+							<Set Target="placeholderImage.Url" Value="{image_url}" />
+							<Set Target="placeholderImage.Aspect" Value="{image_aspect}" />
 							<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
 							<Set Target="nameText.Value" Value="{name}" />
 							<Set Target="avatarImage.Url" Value="{avatar_url}" />
@@ -83,9 +89,7 @@
 							<Set Target="usernameText.Value" Value="{username}" />
 							<Set Target="votesCountText.Value" Value="{votes_count}" />
 							<!-- Trigger layout change -->
-							<Set imagePlaceholder.Target="image" />
 							<Set detailsMode.Value="true" />
-							<BringToFront />
 						</Tapped>
 					</WhileTrue>
 					<WhileTrue ux:Name="imageFailed">

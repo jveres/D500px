@@ -36,11 +36,17 @@
 						</WhileFailed>
 					</ImageView>
 				</Panel>
-				<Placeholder ux:Name="imagePlaceholder" BoxSizing="FillAspect" />
+				<Image ux:Name="placeholderImage" BoxSizing="FillAspect">
+					<Timeline ux:Name="imageZoom">
+						<Move ux:Name="zoomMove" RelativeTo="PositionOffset" RelativeNode="{Resource Image}" Vector="1" Duration="0.4" Easing="BackIn" />
+						<Resize ux:Name="zoomResize" RelativeTo="Size" RelativeNode="{Resource Image}" Vector="1" Duration="0.4" Easing="BackIn" />
+					</Timeline>
+				</Image>
  			</Panel>
 		</Grid>
 		<!-- ScrollingAnimation triggers -->		
 		<ScrollingAnimation Range="SnapMin">
+			<CancelInteractions AtProgress="0.75" />
 			<Set closeDetails.Value="true" AtProgress="0.75" />
 		</ScrollingAnimation>
 		<!--ScrollingAnimation Range="SnapMax">
