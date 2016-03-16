@@ -75,10 +75,6 @@
 					<!-- Interaction is only enabled when image loaded -->
 					<WhileTrue ux:Name="imageLoaded">
 						<Tapped>
-							<!-- Current image -->
-							<ResourceAssign Target="Image" Value="image" />
-							<!-- Disable sidebar -->
-							<Callback Handler="{disableSidebar}" />
 							<!-- This way we keep the UI synced -->
 							<Set Target="placeholderImage.Url" Value="{image_url}" />
 							<Set Target="placeholderImage.Aspect" Value="{image_aspect}" />
@@ -88,6 +84,10 @@
 							<Set Target="launchUri.Uri" Value="{user_url}" />
 							<Set Target="usernameText.Value" Value="{username}" />
 							<Set Target="votesCountText.Value" Value="{votes_count}" />
+							<!-- Current image -->
+							<ResourceAssign Target="Image" Value="image" />
+							<!-- Disable sidebar -->
+							<Callback Handler="{disableSidebar}" />
 							<!-- Trigger layout change -->
 							<Set detailsMode.Value="true" />
 						</Tapped>

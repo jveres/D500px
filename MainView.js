@@ -233,8 +233,12 @@ function loadmore()
 function more()
 {
 	if (loadingState.value !== LoadingState.Ready || _loadingmore) return;
-	_loadingmore = true;
-	loadmore();
+	if (api.PhotoStream.current_page < api.PhotoStream.total_pages)
+	{
+		_loadingmore = true;
+		loadmore();
+	}
+	else displayError("No more photos");
 }
 
 function onSidebarOpening()

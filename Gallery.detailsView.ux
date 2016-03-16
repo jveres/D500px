@@ -1,6 +1,6 @@
 <!--Detail view -->
 <Panel ux:Name="detailsView" HitTestMode="LocalBoundsAndChildren" Visibility="Collapsed" ClipToBounds="true">
-	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false">
+	<ScrollingView ux:Name="detailsScrollView" Width="100%" Alignment="Center" ClipToBounds="false"  AllowedScrollDirections="Vertical">
 		<Grid Rows="auto,1*">
 			<!-- Photo title  -->
 			<ux:Include File="Gallery.detailsView.titlePanel.ux" />
