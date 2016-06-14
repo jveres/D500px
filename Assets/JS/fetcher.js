@@ -1,13 +1,15 @@
-var helpers = require("Helpers");
+var HttpClient = require("FuseJS/Http");
+var Helpers = require("./Helpers.js");
 
-var DEFAULT_TIMEOUT = 10000;
+var DEFAULT_TIMEOUT = 10 * 1000;
 
 function fetch(url, opts)
 {
   if (!opts) opts = {};
   if (!opts.method) opts.method = "GET";
   if (!opts.timeout) opts.timeout = DEFAULT_TIMEOUT;
-  return helpers.Promise(function(resolve, reject)
+
+  return Helpers.Promise(function(resolve, reject)
   {
     var request = new HttpClient().createRequest(opts.method, url);
     request.onerror = function(err)
@@ -24,6 +26,7 @@ function fetch(url, opts)
       resolve(response);
     };
     for (var k in opts.headers) request.setHeader(k, opts.headers[k] + "");
+    request.setTimeout(DEFAULT_TIMEOUT);
     request.sendAsync(opts.body);
   })
   .timeout(DEFAULT_TIMEOUT, "Request timed out");

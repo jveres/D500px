@@ -8,30 +8,33 @@ public class WhileLoaded : WhileTrigger
 {
         static PropertyHandle _whileLoadedProp = Properties.CreateHandle();
 
-        static bool IsLoaded(Node n)
+        static bool IsLoaded(Visual n)
         {
                 var v = n.Properties.Get(_whileLoadedProp);
                 if (!(v is bool)) return false;
                 return (bool)v;
         }
 
-        public static void SetState(Node n, bool loaded)
+        public static void SetState(Visual n, bool loaded)
         {
                 var v = IsLoaded(n);
                 if (v != loaded)
                 {
                         n.Properties.Set(_whileLoadedProp, loaded);
-                        foreach (var b in n.Behaviors)
+                        if (n.IsRootingCompleted)
                         {
-                                var wl = b as WhileLoaded;
-                                if (wl != null) wl.SetActive(loaded);
+                                for (int i=0; i < n.Children.Count; i++)
+                                {
+                                        var wl = n.Children[i] as WhileLoaded;
+                                        if (wl != null) { wl.SetActive(loaded); }
+                                }
                         }
                 }
         }
 
-        protected override void OnRooted(Node parentNode)
+        protected override void OnRooted()
         {
-                base.OnRooted(parentNode);
-                BypassSetActive(IsLoaded(ParentNode));
+                base.OnRooted();
+                SetActive(IsLoaded(Parent));
         }
 }

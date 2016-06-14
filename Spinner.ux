@@ -1,0 +1,10 @@
+<Circle ux:Class="Spinner" ux:Name="spinner" IsEnabled="false" StartAngleDegrees="0" LengthAngleDegrees="360" StrokeWidth="3">
+	<float ux:Property="StrokeWidth" />
+	<Stroke Width="{Property spinner.StrokeWidth}" LineCap="Round">
+        <ImageFill File="Assets/Images/GradientStroke.png" />
+    </Stroke>
+    <WhileEnabled>
+        <Spin Target="spinner" Frequency="1.5" />
+		<Cycle Target="spinner.LengthAngleDegrees" Low="30" High="300" Frequency="0.5" />
+	</WhileEnabled>
+</Circle>

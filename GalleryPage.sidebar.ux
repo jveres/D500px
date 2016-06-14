@@ -1,0 +1,65 @@
+<Panel ux:Name="sidebar" Color="#212831b0" Edge="Left" Alignment="Left">
+	<Translation X="-1" RelativeTo="Size" />
+	<ScrollView AllowedScrollDirections="Vertical">
+		<StackPanel Alignment="Center">
+			<StackPanel Padding="20,0,20,40">
+				<Panel ux:Name="profileImage" HitTestMode="LocalBounds">
+					<WhileCount Items="{user}" EqualTo="0">
+						<Circle Width="70" Height="70" Color="#393E45">
+							<ImageFill ux:Name="userProfileImage" File="Assets/Images/UserPic.png" />
+						</Circle>
+					</WhileCount>
+					<WhileCount Items="{user}" GreaterThan="0">
+						<Circle Width="70" Height="70" Color="#393E45">
+							<ImageFill Url="{user.userpic_https_url}" />
+						</Circle>
+					</WhileCount>
+					<ux:Include File="DropShadow.inc.ux" />
+				</Panel>
+				<Panel Margin="0,10,0,0">
+					<Text ux:Name="loginText" Value="LOGIN" Alignment="Center" FontSize="14" Font="Regular" TextColor="#c0e4f7" />
+				</Panel>
+				<WhilePressed>
+					<Change profileImage.Opacity="0.6" Duration="0.1" />
+					<Change loginText.Opacity="0.6" Duration="0.1" />
+				</WhilePressed>
+				<WhileCount Items="{user}" EqualTo="0">
+					<Clicked>
+						<Callback Handler="{Login}" />
+					</Clicked>
+				</WhileCount>
+				<WhileCount Items="{user}" GreaterThan="0">
+					<Change Target="loginText.Value" Value="{screen.username}" />
+					<Clicked>
+						<Callback Handler="{Logout}" />
+					</Clicked>
+				</WhileCount>
+			</StackPanel>
+			<Each Items="{features}">
+				<Panel Padding="30,10,30,10" HitTestMode="LocalBounds">
+					<Text ux:Name="featureText" Value="{title}" Alignment="Center" FontSize="18" Font="Regular" TextColor="#bbb" HitTestMode="LocalBounds">
+						<ux:Include File="DropShadow.inc.ux" />
+					</Text>
+					<Clicked>
+						<Callback Handler="{select}" />
+						<NavigateToggle />
+					</Clicked>
+					<WhileTrue Value="{isSelected}">
+						<Change featureText.TextColor="#fff" />
+					</WhileTrue>
+				</Panel>
+			</Each>
+		</StackPanel>
+	</ScrollView>
+	<ActivatingAnimation>
+		<Set coverPanel.IsEnabled="true" AtProgress="0" />
+		<Change coverPanel.Opacity="1" />
+		<Move X="1" RelativeTo="Size" />
+		<Change topMenuTranslation.X="-17" />
+		<Change middleMenuTranslation.X="-17" />
+		<Change bottomMenuTranslation.X="-17" />
+	</ActivatingAnimation>
+	<DeactivatingAnimation>
+		<Set coverPanel.IsEnabled="false" AtProgress="1" />
+	</DeactivatingAnimation>
+</Panel>

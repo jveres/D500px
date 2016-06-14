@@ -1,0 +1,38 @@
+<Panel ux:Class="LoadingPanel" Visibility="Hidden" Background="#000">
+    <Spinner ux:Name="loadingSpinner" Width="50" Height="50" IsEnabled="false" Opacity="1" />
+	<Rectangle ux:Name="tryAgainRect" CornerRadius="50" Width="50" Height="50" Opacity="0" HitTestMode="LocalBoundsAndChildren">
+		<Stroke Width="3" LineCap="Round">
+        	<ImageFill File="Assets/Images/GradientStroke.png" />
+    	</Stroke>
+    	<Text ux:Name="tryAgainText" Alignment="Center" FontSize="20" Font="Regular" TextColor="#bbb" TextWrapping="NoWrap" Opacity="0" />
+    	<WhilePressed>
+    		<Change this.Opacity="0.6" Duration="0.1" />
+    	</WhilePressed>
+    	<Clicked>
+    		<Set stateGroup.Active="Loading" />
+    		<Callback Handler="{LoadFeed}" />
+    	</Clicked>
+	</Rectangle>
+	<StateGroup ux:Name="stateGroup" Active="{LoadingState}" Rest="Ready" Transition="Exclusive">
+    	<State ux:Name="Ready">
+            <Change loadingSpinner.IsEnabled="false" />
+        </State>
+        <State ux:Name="Loading">
+        	<Change loadingSpinner.IsEnabled="true" />
+        </State>
+        <State ux:Name="TryAgain">
+            <Change tryAgainText.Value="Try Again" />
+            <Change loadingSpinner.Opacity="0" Duration="0" Delay="0" DurationBack="0" DelayBack="0.3"/>
+            <Change tryAgainRect.Opacity="1" Duration="0" Delay="0" DurationBack="0.2" DelayBack="0.2"/>
+            <Change tryAgainRect.Width="160" Duration="0.3" Easing="CircularInOut" />
+            <Change tryAgainText.Opacity="1" Duration="0.2" Delay="0.1" DurationBack="0.2" DelayBack="0" Easing="CircularInOut" />
+        </State>
+        <State ux:Name="NotFound">
+            <Change tryAgainText.Value="Not Found" />
+            <Change loadingSpinner.Opacity="0" Duration="0" Delay="0" DurationBack="0" DelayBack="0.3"/>
+            <Change tryAgainRect.Opacity="1" Duration="0" Delay="0" DurationBack="0.2" DelayBack="0.2"/>
+            <Change tryAgainRect.Width="160" Duration="0.3" Easing="CircularInOut" />
+            <Change tryAgainText.Opacity="1" Duration="0.2" Delay="0.1" DurationBack="0.2" DelayBack="0" Easing="CircularInOut" />
+        </State>
+    </StateGroup>
+</Panel>

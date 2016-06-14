@@ -1,0 +1,38 @@
+<Panel ux:Name="searchPanel" Height="26">
+	<Translation ux:Name="searchTranslation1" X="1" RelativeTo="ParentSize" />
+	<Translation ux:Name="searchTranslation2" X="-26" />
+	<StackPanel Orientation="Horizontal">
+		<Image ux:Name="searchIcon" File="Assets/Images/SearchIcon.png" Color="#fff" Width="26" HitTestMode="LocalBounds">
+			<WhilePressed>
+				<Change searchIcon.Opacity="0.5" Duration="0.1" />
+			</WhilePressed>
+			<Clicked>
+				<Toggle Target="isSearching" />
+			</Clicked>
+		</Image>
+		<TextInput ux:Name="searchInput" Y="-1" ActionStyle="Search" IsEnabled="false" FontSize="22" Font="Regular" Value="{searchText}" PlaceholderText="Enter search text" CaretColor="#c0e4f7" TextColor="#fff" PlaceholderColor="#888">
+			<TextInputActionTriggered>
+				<Set isSearching.Value="false" />
+	            <Callback Handler="{Search}" />
+	        </TextInputActionTriggered>
+	        <WhileNotFocused>
+	        	<Set isSearching.Value="false" />
+	        </WhileNotFocused>
+		</TextInput>
+		<ux:Include File="DropShadow.inc.ux" />
+	</StackPanel>
+	<WhileTrue ux:Name="isSearching">
+		<!-- Cover panel -->
+        <Change coverPanel.Opacity="1" Duration="0.2" />
+        <Change coverPanel.IsEnabled="true" />
+        <!-- Disable navigation -->
+        <Change isEdgeNavigationDisabled.Value="true" />
+        <!-- Animate & focus input -->
+		<Change searchTranslation1.X="0" Duration="0.6" Easing="BackOut" EasingBack="BackIn" />
+		<Change searchTranslation2.X="0" Duration="0.6" Easing="BackOut" EasingBack="BackIn" />
+		<Change navbarDock.Opacity="0" Duration="0.2" DurationBack="0.4" Easing="CircularInOut" />
+		<Change searchInput.IsEnabled="true" Duration="0" Delay="0.6" />
+		<!--GiveFocus TargetNode="searchInput" Direction="Forward" AtProgress="1" Delay="0.7" /-->
+		<!--ReleaseFocus TargetNode="searchInput" Direction="Backward" AtProgress="0" /-->
+	</WhileTrue>
+</Panel>

@@ -11,6 +11,11 @@ public class ImageView: Element
 {
         HttpImageSource _source = new HttpImageSource();
 
+        public ImageSource Source
+        {
+                get { return _source; }
+        }
+
         public String ImageUrl
         {
                 get { return _source.Url; }
@@ -40,6 +45,11 @@ public class ImageView: Element
                 base.OnUnrooted();
         }
 
+        protected override VisualBounds CalcRenderBounds()
+        {
+                return base.CalcRenderBounds().AddRect(float2(0), ActualSize);
+        }
+
         void OnSourceChanged(object Source, object Args)
         {
                 if (_source.State == ImageSourceState.Ready) UpdateManager.AddDeferredAction(InvalidateVisual);
@@ -56,7 +66,7 @@ public class ImageView: Element
                         {
                                 apply Fuse.Drawing.Planar.Image;
                                 DrawContext: dc;
-                                Node: this;
+                                Visual: this;
                                 Size: ActualSize;
                                 Texture: tex;
                                 BlendEnabled: false;

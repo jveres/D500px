@@ -1,35 +1,18 @@
 {
-  "RootNamespace": "",
+  "InternalsVisibleTo": [],
   "Packages": [
     "Android",
-    "Fuse.Android",
-    "Fuse.Animations",
-    "Fuse.BasicTheme",
-    "Fuse.Controls",
-    "Fuse.Designer",
-    "Fuse.Desktop",
-    "Fuse.Drawing",
-    "Fuse.Drawing.Planar",
-    "Fuse.Drawing.Primitives",
-    "Fuse.Effects",
-    "Fuse.Elements",
-    "Fuse.Entities",
-    "Fuse.Gestures",
-    "Fuse.iOS",
-    "Fuse.Navigation",
-    "Fuse.Reactive",
-    "Fuse.Scripting",
-    "Fuse.Shapes",
-    "Fuse.Themes",
-    "Fuse.Triggers",
-    "Fuse.Vibration",
+    "Fuse",
     "Fuse.Launcher",
-    "Fuse.UserEvents",
-    "FuseCore",
-    "Uno.Collections",
-    "Uno.Geometry",
+    "Fuse.BasicTheme",
+    "FuseJS"
   ],
+  "Projects": [],
   "Includes": [
-    "*"
-  ]
+    "*",
+    "*.js:Bundle"
+  ],
+  "Mobile": {
+    "Orientations": "Portrait"
+  }
 }

@@ -1,0 +1,40 @@
+<Page ux:Class="GalleryPage" Transition="Default" ClipToBounds="true">
+    <Router ux:Dependency="router" />
+    <JavaScript File="GalleryPage.js" />
+    <iOS.StatusBarConfig ux:Name="statusBarConfig" Style="Light" IsVisible="true" />
+    <UserEvent Name="Login" />
+    <OnUserEvent EventName="Login" Handler="{OnLogin}" Filter="Global" />
+    <UserEvent Name="Logout" />
+    <OnUserEvent EventName="Logout" Handler="{OnLogout}" Filter="Global" />
+    <DockPanel ux:Name="galleryPanel">
+    	<TopFrameBackground Dock="Top" Background="#000" />
+        <!-- Navigation bar -->
+    	<ux:Include File="GalleryPage.navbar.ux" />
+        <WhileFalse ux:Name="isEdgeNavigationDisabled">
+            <EdgeNavigation />
+        </WhileFalse>
+        <!-- Sidebar -->
+        <ux:Include File="GalleryPage.sidebar.ux" />
+        <!-- MultiLayout panel -->
+        <MultiLayoutPanel ux:Name="multiLayoutPanel" LayoutElement="scrollView">
+            <!-- Details view -->
+            <ux:Include File="GalleryPage.detailsPanel.ux" />
+            <ux:Include File="GalleryPage.coverPanel.ux" />
+            <!-- Loading panel -->
+            <LoadingPanel ux:Name="loadingPanel" />
+            <!-- Details mode trigger -->
+            <WhileTrue ux:Name="detailsMode">
+                <!-- Faded background -->
+                <Change coverPanel.Opacity="1" Duration="0.2" Delay="0.2" DurationBack="0" DelayBack="0" />
+                <!-- Layout -->
+                <Change detailsPanel.Visibility="Visible" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
+                <Change hiresPhoto.Visibility="Visible" Duration="0" Delay="0.4" DurationBack="0" DelayBack="0" />
+                <Change titleGrid.Opacity="1" Duration="0.1" Delay="0.3" DurationBack="0" DelayBack="0" />
+                <Change isNavigationDisabled.Value="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
+            </WhileTrue>
+            <!-- Scroll view -->
+    	    <ux:Include File="GalleryPage.scrollView.ux" />
+        </MultiLayoutPanel>
+	    <BottomFrameBackground Dock="Bottom" IncludesKeyboard="false" Background="#000" />
+	</DockPanel>
+</Page>

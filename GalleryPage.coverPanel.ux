@@ -1,0 +1,5 @@
+<Panel ux:Name="coverPanel" IsEnabled="false" HitTestMode="LocalBounds" Opacity="0" Color="#0008">
+	<Clicked>
+		<NavigateToggle />
+	</Clicked>
+</Panel>

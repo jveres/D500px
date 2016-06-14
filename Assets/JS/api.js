@@ -1,4 +1,4 @@
-var xauth = require("XAuth");
+var xauth = require("./XAuth.js");
 
 var BASE_URL = "https://500px.com";
 var API_URL = "https://api.500px.com/v1";
@@ -85,17 +85,30 @@ function API()
 	            token_secret: data.oauth_token_secret,
 	            username: username,
 	            password: password
-	        })
-	        .then(function(response)
-	        {
-	        	var data = formDecode(response.responseText);
-	        	self.access_token = data.oauth_token;
-    			self.access_token_secret = data.oauth_token_secret;
-    			if (!self.access_token || !self.access_token_secret) throw new Error(response.statusText);
-    			return response;
 	        });
 	    });
-	    return Promise.all([fetch_request_token, fetch_access_token]);
+	    var fetch_user = fetch_access_token.then(function(response)
+	    {
+	    	var data = formDecode(response.responseText);
+	        self.access_token = data.oauth_token;
+    		self.access_token_secret = data.oauth_token_secret;
+    		if (!self.access_token || !self.access_token_secret) throw new Error(response.statusText);
+	    	return xauth.xauth_request(
+	        {
+	            method: "GET",
+	            url: API_URL + "/users",
+	            token: self.access_token,
+	            token_secret: self.access_token_secret
+	        })
+	        .then(function(response)
+        	{
+        		return new Promise(function(resolve)
+				{
+					resolve(JSON.parse(response.responseText));
+				});
+        	});
+	    });
+	    return Promise.all([fetch_request_token, fetch_access_token, fetch_user]);
 	};
 
 	this.Logout = function()

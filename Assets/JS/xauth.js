@@ -1,5 +1,5 @@
-var sha1 = require("Sha1");
-var fetcher = require("Fetcher");
+var Sha1 = require("./Sha1.js");
+var Fetcher = require("./Fetcher.js");
 
 var OAUTH_CONSUMER_KEY = "G7ZWcGQU5W395mCb0xx3dccp6x0fvQB8G8JCSaDg";
 var OAUTH_CONSUMER_SECRET = "f28ggAXsPKBAZpEQHgXYSNBYXdeEZJgUla44pJEk";
@@ -126,7 +126,7 @@ function xauth_request(opts)
 
     var oauth_base = opts.method+'&'+ percentEncode(opts.url)+'&'+ percentEncode(formEncode(params));
     var signing_key = OAUTH_CONSUMER_SECRET+'&'+opts.token_secret;
-    var oauth_signature = sha1.b64_hmac_sha1(signing_key, oauth_base);
+    var oauth_signature = Sha1.b64_hmac_sha1(signing_key, oauth_base);
     
     if (opts.username && opts.password)
     {
@@ -156,7 +156,7 @@ function xauth_request(opts)
     };
     if (opts.data) req.body = opts.data;
 
-    return fetcher.fetch(opts.url, req);
+    return Fetcher.fetch(opts.url, req);
 }
 
 module.exports =

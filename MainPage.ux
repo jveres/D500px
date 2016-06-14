@@ -1,0 +1,16 @@
+<App ClearColor="#000">
+	<!-- Globals -->
+	<Font File="Assets/Fonts/RobotoCondensed-Regular.ttf" ux:Global="Regular" />
+	<Font File="Assets/Fonts/RobotoCondensed-Light.ttf" ux:Global="Light" />
+	<iOS.StatusBarConfig Style="Light" IsVisible="true" Animation="Fade" />
+	<Router ux:Name="router" />
+	<UserEvent Name="Error" />
+	<UserEvent Name="Info" />
+	<JavaScript File="MainPage.js" />
+	<ux:Include File="MainPage.toast.ux" />
+    <Navigator DefaultTemplate="gallery">
+        <GalleryPage ux:Template="gallery" router="router" />
+        <LoginPage ux:Template="login" router="router" />
+        <LogoutPage ux:Template="logout" router="router" />
+    </Navigator>
+</App>

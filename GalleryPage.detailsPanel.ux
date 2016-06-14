@@ -1,0 +1,58 @@
+<!--Details view -->
+<Panel ux:Name="detailsPanel" HitTestMode="LocalBoundsAndChildren" Visibility="Hidden">
+	<ScrollView ux:Name="detailsScrollView" MinWidth="100%" Alignment="VerticalCenter" AllowedScrollDirections="Vertical" ClipToBounds="false">
+		<StackPanel>
+			<ux:Include File="GalleryPage.titleGrid.ux" />
+			<!-- Placeholder -->
+			<Panel>
+				<Spinner ux:Name="hiresSpinner" Width="50" Height="50" IsEnabled="false" StrokeWidth="3" Opacity="0" />
+				<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused" Visibility="Hidden" Opacity="0.001">
+					<WhileLoading>
+						<Change hiresSpinner.Opacity="1" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
+						<Change hiresSpinner.IsEnabled="true" Duration="0" Delay="0" />
+					</WhileLoading>
+					<WhileLoaded>
+						<Change hiresPhoto.Opacity="1" Duration="0.6" DurationBack="0" Easing="CircularInOut" />
+					</WhileLoaded>
+					<WhileCacheLoaded Bypass="Never">
+						<Change hiresPhoto.Opacity="1" Duration="0" Delay="0" DurationBack="0" DelayBack="0" /> 
+					</WhileCacheLoaded>
+					<WhileFailed>
+						<RaiseUserEvent Name="Error">
+						    <UserEventArg Name="message" StringValue="Error Loading Image" />
+						</RaiseUserEvent>
+					</WhileFailed>
+				</ImageView>
+				<Placeholder ux:Name="placeholderPanel" BoxSizing="FillAspect" />
+			</Panel>
+		</StackPanel>
+		<!-- ScrollingAnimation triggers -->		
+		<ScrollingAnimation Range="SnapMin">
+			<Set closeDetails.Value="true" AtProgress="0.75" />
+		</ScrollingAnimation>
+		<ScrollingAnimation Range="SnapMax">
+			<Set closeDetails.Value="true" AtProgress="0.75" />
+		</ScrollingAnimation>
+	</ScrollView>
+	<Tapped>
+		<Set closeDetails.Value="true" />
+	</Tapped>
+	<!-- Closing trigger -->
+	<WhileTrue ux:Name="closeDetails">
+		<!-- Cleanup details view -->
+		<Set hiresSpinner.IsEnabled="false" />
+		<Set hiresSpinner.Opacity="0" />
+		<Set hiresPhoto.ImageUrl="" />
+		<!-- Trigger layout change -->		
+		<Set multiLayoutPanel.LayoutElement="scrollView" />
+		<Set detailsMode.Value="false" />
+	</WhileTrue>
+	<WhileVisible>
+		<Set closeDetails.Value="false" />
+		<Set detailsScrollView.ScrollPosition="0" />
+		<!-- Android Back button handler -->
+		<OnKeyPress Key="BackButton">
+			<Set closeDetails.Value="true" />
+		 </OnKeyPress>
+	</WhileVisible>
+</Panel>

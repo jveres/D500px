@@ -1,0 +1,92 @@
+<!-- Gallery ScrollView -->
+<ScrollView ux:Name="scrollView" AllowedScrollDirections="Vertical" SnapMinTransform="false">
+	<StackPanel Focus.IsFocusable="false" Y="50">
+		<Panel ux:Name="topPanel" Y="-10" Height="0" MinHeight="0" Padding="0,10,0,5">
+			<Image ux:Name="topDownImage" File="Assets/Images/ArrowDown.png" Color="#fff" Height="16" Opacity="0"/>
+			<Spinner ux:Name="topSpinner" Width="20" Height="20" StrokeWidth="2" Visibility="Hidden" />
+			<WhileTrue Value="{IsReloading}">
+    			<Change topPanel.MinHeight="30" Duration="0" DurationBack="0.3" Easing="CircularIn" />
+    			<Change topSpinner.Visibility="Visible" Duration="0" DurationBack="0" />
+    			<Change topSpinner.IsEnabled="true" Duration="0" DurationBack="0" />
+			</WhileTrue>
+		</Panel>
+		<Panel>
+			<ColumnLayout ux:Name="columnLayout" Orientation="Vertical" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
+			<Each Items="{feed}">
+				<Placeholder Aspect="{image_aspect}" BoxSizing="FillAspect" Background="#393e45">
+					<LayoutAnimation>
+						<Move Vector="1" Duration="0.4" RelativeTo="PositionChange" Easing="CircularInOut" />
+					</LayoutAnimation>
+					<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused" TransformOrigin="TopLeft">
+						<LayoutAnimation>
+							<Move RelativeTo="LayoutChange" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
+							<Scale RelativeTo="SizeChange" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
+						</LayoutAnimation>
+						<WhileLoaded>
+							<Set IsImageLoaded.Value="true" />
+							<Set image.Opacity="0" />
+							<Change image.Opacity="1" Duration="0.2" Easing="CircularIn" />
+						</WhileLoaded>
+						<WhileCacheLoaded Bypass="Never">
+							<Set IsImageLoaded.Value="true" />
+						</WhileCacheLoaded>
+						<WhileFailed>
+							<Set IsImageFailed.Value="true" />
+						</WhileFailed>
+					</ImageView>
+					<WhilePressed>
+		                <Scale Factor="0.98" Duration="0.4" Easing="QuadraticInOut" />
+		            </WhilePressed>
+					<WhileTrue ux:Name="IsImageLoaded">
+					</WhileTrue>
+					<WhileTrue ux:Name="IsImageFailed">
+					</WhileTrue>
+					<Clicked>
+						<!-- UI sync -->
+						<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
+						<Set Target="nameText.Value" Value="{name}" />
+						<Set Target="avatarImage.Url" Value="{avatar_url}" />
+						<Set Target="launchUri.Uri" Value="{user_url}" />
+						<Set Target="usernameText.Value" Value="{username}" />
+						<Set Target="votesCountText.Value" Value="{votes_count}" />
+						<Set Target="placeholderPanel.Aspect" Value="{image_aspect}" />
+						<!-- Change multiLayout -->
+						<Set placeholderPanel.Target="image" />
+						<Set multiLayoutPanel.LayoutElement="detailsPanel" />
+						<BringToFront />
+						<!-- Trigger layout change -->
+						<Set detailsMode.Value="true" />
+					</Clicked>
+				</Placeholder>
+			</Each>
+		</Panel>
+		<Panel ux:Name="bottomPanel" Height="40">
+			<Spinner ux:Name="bottomSpinner" Width="20" Height="20" StrokeWidth="2" Visibility="Hidden" />
+			<WhileTrue Value="{IsLoadingMore}">
+				<Change bottomSpinner.IsEnabled="true" Duration="0" DurationBack="0" />
+				<Change bottomSpinner.Visibility="Visible" Duration="0" DurationBack="0" />
+			</WhileTrue>
+		</Panel>
+	</StackPanel>
+	<!-- Reload trigger -->
+	<ScrollingAnimation Range="SnapMin">
+    	<Change topPanel.Height="150" Duration="1" />
+    	<Change topDownImage.Opacity="1" Duration="0.4" Delay="0.1" />
+	</ScrollingAnimation>
+	<PullToReload IsLoading="{IsReloading}" ReloadHandler="{Reload}">
+	    <State ux:Binding="Loading">	        
+	        <Change topDownImage.Visibility="Hidden" Duration="0" />
+	    </State>
+	</PullToReload>
+	<!-- Load more trigger -->
+	<WhileFalse Value="{IsLoadingMore}">
+		<WhileScrollable ScrollDirections="Down" Invert="true">	
+			<Callback Handler="{LoadMore}" />
+		</WhileScrollable>
+	</WhileFalse>
+	<!-- Loading/empty view -->
+	<WhileEmpty Items="{feed}">
+        <Set scrollView.ScrollPosition="0" />
+        <Change loadingPanel.Visibility="Visible" />
+    </WhileEmpty>
+</ScrollView>
