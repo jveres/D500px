@@ -4,20 +4,21 @@
 		<StackPanel Alignment="Center">
 			<StackPanel Padding="20,0,20,40">
 				<Panel ux:Name="profileImage" HitTestMode="LocalBounds">
+					<Circle ux:Class="ProfileCircle" Width="70" Height="70" Color="#393E45" />
 					<WhileCount Items="{user}" EqualTo="0">
-						<Circle Width="70" Height="70" Color="#393E45">
-							<ImageFill ux:Name="userProfileImage" File="Assets/Images/UserPic.png" />
-						</Circle>
+						<ProfileCircle>
+							<ImageFill File="Assets/Images/UserPic.png" />
+						</ProfileCircle>
 					</WhileCount>
 					<WhileCount Items="{user}" GreaterThan="0">
-						<Circle Width="70" Height="70" Color="#393E45">
+						<ProfileCircle>
 							<ImageFill Url="{user.userpic_https_url}" />
-						</Circle>
+						</ProfileCircle>
 					</WhileCount>
 					<ux:Include File="DropShadow.inc.ux" />
 				</Panel>
 				<Panel Margin="0,10,0,0">
-					<Text ux:Name="loginText" Value="LOGIN" Alignment="Center" FontSize="14" Font="Regular" TextColor="#c0e4f7" />
+					<Text ux:Name="loginText" Value="LOGIN" Alignment="Center" FontSize="14" Font="Regular" TextColor="HiColor" />
 				</Panel>
 				<WhilePressed>
 					<Change profileImage.Opacity="0.6" Duration="0.1" />

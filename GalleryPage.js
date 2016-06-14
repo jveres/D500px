@@ -229,7 +229,6 @@ function init()
 	} catch(err)
 	{
 		DeleteUser();
-		debug_log("[error] Config parser error: " + err);
 	}
 	features.add(new Feature("Most Popular", "Trending Right Now", "popular"));
 	features.add(new Feature("Highest Rated", "Photos that Have Been Popular", "highest_rated"));

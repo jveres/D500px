@@ -11,7 +11,6 @@ this.onParameterChanged(function(param)
     user.value = param;
     screen.value = {
     	username: "@" + param.username,
-    	fullname: "(" + param.fullname + ")",
     	domain: "https://" + param.domain
     };
 });
