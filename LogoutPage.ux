@@ -21,17 +21,17 @@
                     <Panel Padding="20">
                         <Rectangle CornerRadius="10" Layer="Background" Fill="#212831"/>
                         <StackPanel>
-                            <Circle Width="120" Height="120" Color="#393E45">
+                            <Circle Width="100" Height="100" Color="#393E45">
                                 <ImageFill Url="{user.userpic_https_url}" />
                                 <ux:Include File="DropShadow.inc.ux" />
                             </Circle>
                             <Text Alignment="Center" Value="{screen.username}" TextColor="#fff" FontSize="22" Font="Regular" Margin="0,10,0,0" TextWrapping="NoWrap">
                                 <ux:Include File="DropShadow.inc.ux" />
                             </Text>
-                            <Text Alignment="Center" Value="{screen.fullname}" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap">
+                            <Text Alignment="Center" Value="{user.fullname}" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap">
                                 <ux:Include File="DropShadow.inc.ux" />
                             </Text>
-                            <Text ux:Name="domainText" Alignment="Center" TextColor="#c0e4f7" FontSize="20" Font="Light" Value="{screen.domain}">
+                            <Text ux:Name="domainText" Alignment="Center" TextColor="HiColor" FontSize="16" Font="Light" Value="{screen.domain}">
                                 <WhilePressed>
                                     <Change domainText.Opacity="0.5" Duration="0.2" Easing="CircularInOut" />
                                 </WhilePressed>
@@ -39,32 +39,26 @@
                                     <LaunchUri Uri="{screen.domain}" />
                                 </Clicked>
                             </Text>
-                            <Grid Columns="2" Margin="0,20,0,0" Padding="2">
-                                <Text Column="1" Alignment="Right" Value="Photos: " TextColor="#fff" FontSize="22" Font="Light" TextWrapping="NoWrap">
+                            <Grid Columns="2" Margin="0,20,0,0">
+                                <Panel Column="1" Alignment="Right" Padding="4,0">
+                                    <Text Value="{user.photos_count}" TextColor="HiColor" FontSize="36" Font="Regular" TextWrapping="NoWrap" />
                                     <ux:Include File="DropShadow.inc.ux" />
-                                </Text>
-                                <Panel Column="2" Alignment="Left">
-                                    <Rectangle CornerRadius="5" Fill="#1f232e" Layer="Background" />
-                                    <Text Value="{user.photos_count}" TextColor="#fff" FontSize="22" Font="Light" TextWrapping="NoWrap" />
                                 </Panel>
+                                <Text Column="2" Alignment="Left" Value="photos" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap" />
                             </Grid>
                             <Grid Columns="2" Padding="2">
-                                <Text Column="1" Alignment="Right" Value="Followers: " TextColor="#fff" FontSize="22" Font="Light" TextWrapping="NoWrap">
+                                <Panel Column="1" Alignment="Right" Padding="4,0">
+                                    <Text Value="{user.followers_count}" TextColor="HiColor" FontSize="36" Font="Regular" TextWrapping="NoWrap" />
                                     <ux:Include File="DropShadow.inc.ux" />
-                                </Text>
-                                <Panel Column="2" Alignment="Left">
-                                    <Rectangle CornerRadius="5" Fill="#1f232e" Layer="Background" />
-                                    <Text Value="{user.followers_count}" TextColor="#fff" FontSize="22" Font="Light" TextWrapping="NoWrap" />
                                 </Panel>
+                                <Text Column="2" Alignment="Left" Value="followers" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap" />
                             </Grid>
                             <Grid Columns="2" Padding="2">
-                                <Text Column="1" Alignment="Right" Value="Friends: " TextColor="#fff" FontSize="22" Font="Light" TextWrapping="NoWrap">
+                                <Panel Column="1" Alignment="Right" Padding="4,0">
+                                    <Text Value="{user.friends_count}" TextColor="HiColor" FontSize="36" Font="Regular" TextWrapping="NoWrap" />
                                     <ux:Include File="DropShadow.inc.ux" />
-                                </Text>
-                                <Panel Column="2" Alignment="Left">
-                                    <Rectangle CornerRadius="5" Fill="#1f232e" Layer="Background" />
-                                    <Text Value="{user.friends_count}" TextColor="#fff" FontSize="22" Font="Light" TextWrapping="NoWrap" />
                                 </Panel>
+                                <Text Column="2" Alignment="Left" Value="friends" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap" />
                             </Grid>
                             <D500px.Button ux:Name="logoutButton" Text="Log Out" Margin="0,20,0,0" Alignment="Center">
                                 <Clicked>

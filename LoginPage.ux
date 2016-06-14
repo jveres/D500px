@@ -30,11 +30,11 @@
                         <Rectangle CornerRadius="10" Layer="Background" Fill="#212831"/>
                         <StackPanel>
                             <StackPanel Padding="0,0,0,20">
-                                <Text TextColor="#c0e4f7" FontSize="14" Font="Light">Who are you?</Text>
+                                <Text TextColor="HiColor" FontSize="14" Font="Light">Who are you?</Text>
                                 <Input ux:Name="usernameInput" ActionStyle="Next" Value="{username}" PlaceholderText="Enter email or username" />
                             </StackPanel>
                             <StackPanel Padding="0,0,0,20">
-                                <Text TextColor="#c0e4f7" FontSize="14" Font="Light">What's your password?</Text>
+                                <Text TextColor="HiColor" FontSize="14" Font="Light">What's your password?</Text>
                                 <Input ux:Name="passwordInput" ActionStyle="Go" IsPassword="true" Value="{password}" PlaceholderText="Enter password">
                                     <TextInputActionTriggered>
                                         <Callback Handler="{SignIn}" />
