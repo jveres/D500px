@@ -27,7 +27,6 @@
                 <!-- Faded background -->
                 <Change coverPanel.Opacity="1" Duration="0.2" Delay="0.2" DurationBack="0" DelayBack="0" />
                 <!-- Layout -->
-                <Change detailsPanel.Visibility="Visible" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
                 <Change hiresPhoto.Visibility="Visible" Duration="0" Delay="0.4" DurationBack="0" DelayBack="0" />
                 <Change titleGrid.Opacity="1" Duration="0.1" Delay="0.3" DurationBack="0" DelayBack="0" />
                 <Change isNavigationDisabled.Value="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />

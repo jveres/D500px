@@ -50,11 +50,12 @@
 						<Set Target="usernameText.Value" Value="{username}" />
 						<Set Target="votesCountText.Value" Value="{votes_count}" />
 						<Set Target="placeholderPanel.Aspect" Value="{image_aspect}" />
-						<!-- Change multiLayout -->
+						<!-- Change layout -->
+						<Set detailsPanel.Visibility="Visible" />
 						<Set placeholderPanel.Target="image" />
 						<Set multiLayoutPanel.LayoutElement="detailsPanel" />
 						<BringToFront />
-						<!-- Trigger layout change -->
+						<!-- Trigger mode change -->
 						<Set detailsMode.Value="true" />
 					</Clicked>
 				</Placeholder>
