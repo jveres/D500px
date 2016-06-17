@@ -1,6 +1,6 @@
 <!-- Gallery ScrollView -->
 <ScrollView ux:Name="scrollView" AllowedScrollDirections="Vertical" SnapMinTransform="false">
-	<StackPanel Focus.IsFocusable="false" Y="50">
+	<StackPanel Y="50">
 		<Panel ux:Name="topPanel" Y="-10" Height="0" MinHeight="0" Padding="0,10,0,5">
 			<Image ux:Name="topDownImage" File="Assets/Images/ArrowDown.png" Color="#fff" Height="16" Opacity="0"/>
 			<Spinner ux:Name="topSpinner" Width="20" Height="20" StrokeWidth="2" Visibility="Hidden" />

@@ -1,6 +1,6 @@
 var Observable = require("FuseJS/Observable");
 var Helpers = require("Assets/JS/Helpers.js");
-var HTML = require("Assets/JS/HTML.js");
+var HTML = require("Assets/JS/Html.js");
 var API = require("Assets/JS/API.js");
 var Event = require('FuseJS/UserEvents');
 var Storage = require("FuseJS/Storage");

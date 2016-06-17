@@ -3,6 +3,6 @@
 ## Updated to Fuse 0.20.x
 ## * Still a WIP *
 
-<img src="https://github.com/jveres/D500px/blob/master/D500px.gif?raw=true" width="250">
+![D500px.gif](http://imgur.com/KDaWOQJ.gif "D500px app")
 
 #### Built with [Fusetools](https://www.fusetools.com/)

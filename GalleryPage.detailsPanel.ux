@@ -39,7 +39,6 @@
 	</Tapped>
 	<!-- Closing trigger -->
 	<WhileTrue ux:Name="closeDetails">
-		<CancelInteractions />
 		<!-- Cleanup details view -->
 		<Set hiresSpinner.IsEnabled="false" />
 		<Set hiresSpinner.Opacity="0" />
