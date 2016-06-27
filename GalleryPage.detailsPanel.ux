@@ -1,21 +1,22 @@
 <!--Details view -->
 <Panel ux:Name="detailsPanel" HitTestMode="LocalBoundsAndChildren" Visibility="Hidden">
-	<ScrollView ux:Name="detailsScrollView" MinWidth="100%" Alignment="VerticalCenter" AllowedScrollDirections="Vertical" ClipToBounds="false">
-		<StackPanel>
+	<ScrollView ux:Name="detailsScrollView" Alignment="VerticalCenter" AllowedScrollDirections="Vertical" ClipToBounds="false">
+		<StackPanel Orientation="Vertical">
+			<!-- Top decorations -->
 			<ux:Include File="GalleryPage.titleGrid.ux" />
 			<!-- Placeholder -->
 			<Panel>
 				<Spinner ux:Name="hiresSpinner" Width="50" Height="50" IsEnabled="false" StrokeWidth="3" Opacity="0" />
 				<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused" Visibility="Hidden" Opacity="0.001">
 					<WhileLoading>
-						<Change hiresSpinner.Opacity="1" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
-						<Change hiresSpinner.IsEnabled="true" Duration="0" Delay="0" />
+						<Change hiresSpinner.Opacity="1" />
+						<Change hiresSpinner.IsEnabled="true" />
 					</WhileLoading>
 					<WhileLoaded>
 						<Change hiresPhoto.Opacity="1" Duration="0.6" DurationBack="0" Easing="CircularInOut" />
 					</WhileLoaded>
 					<WhileCacheLoaded Bypass="Never">
-						<Change hiresPhoto.Opacity="1" Duration="0" Delay="0" DurationBack="0" DelayBack="0" /> 
+						<Change hiresPhoto.Opacity="1" /> 
 					</WhileCacheLoaded>
 					<WhileFailed>
 						<RaiseUserEvent Name="Error">
@@ -23,37 +24,50 @@
 						</RaiseUserEvent>
 					</WhileFailed>
 				</ImageView>
-				<Placeholder ux:Name="placeholderPanel" BoxSizing="FillAspect" />
+				<Image ux:Name="placeholderImage" StretchMode="Fill">
+					<Timeline ux:Name="zoomTimeline">
+				    	<Move ux:Name="zoomMove" RelativeTo="PositionOffset" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
+				        <Resize ux:Name="zoomScale" RelativeTo="Size" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
+				    </Timeline>
+				</Image>
 			</Panel>
 		</StackPanel>
 		<!-- ScrollingAnimation triggers -->		
 		<ScrollingAnimation Range="SnapMin">
-			<Set closeDetails.Value="true" AtProgress="0.75" />
+			<Set detailsMode.Value="false" AtProgress="0.75" />
 		</ScrollingAnimation>
 		<ScrollingAnimation Range="SnapMax">
-			<Set closeDetails.Value="true" AtProgress="0.75" />
+			<Set detailsMode.Value="false" AtProgress="0.75" />
 		</ScrollingAnimation>
+		<!-- Details mode trigger -->
+        <WhileTrue ux:Name="detailsMode">
+        	<!-- Cancel download -->
+        	<Set hiresSpinner.IsEnabled="false" Direction="Backward" />
+			<Set hiresSpinner.Opacity="0" Direction="Backward" />
+			<Set hiresPhoto.ImageUrl="" Direction="Backward" />
+            <!-- Faded background -->
+            <Change coverPanel.Opacity="1" Duration="0.4" />
+            <!-- Layout -->
+            <Change hiresPhoto.Visibility="Visible" Delay="0.4" DelayBack="0" />
+            <Change titleGrid.Opacity="1" Delay="0.4" DelayBack="0" />
+            <Change isNavigationDisabled.Value="true" />
+            <Change detailsPanel.Visibility="Visible" />
+            <!-- Play animation -->
+            <PulseBackward Target="zoomTimeline" Direction="Forward" />
+            <PulseForward Target="zoomTimeline" Direction="Backward" />
+            <!-- Show/hide selected image -->
+			<ResourceVisibility Target="Image" Value="Hidden" Direction="Forward" AtProgress="0" />
+			<ResourceVisibility Target="Image" Value="Visible" Direction="Backward" AtProgress="0" />
+        </WhileTrue>
 	</ScrollView>
 	<Tapped>
-		<Set closeDetails.Value="true" />
-	</Tapped>
-	<!-- Closing trigger -->
-	<WhileTrue ux:Name="closeDetails">
-		<!-- Cleanup details view -->
-		<Set hiresSpinner.IsEnabled="false" />
-		<Set hiresSpinner.Opacity="0" />
-		<Set hiresPhoto.ImageUrl="" />
-		<!-- Trigger layout change -->
-		<Set multiLayoutPanel.LayoutElement="scrollView" />
-		<Set detailsPanel.Visibility="Hidden" />
 		<Set detailsMode.Value="false" />
-	</WhileTrue>
+	</Tapped>
 	<WhileVisible>
-		<Set closeDetails.Value="false" />
 		<Set detailsScrollView.ScrollPosition="0" />
 		<!-- Android Back button handler -->
 		<OnKeyPress Key="BackButton">
-			<Set closeDetails.Value="true" />
+			<Set detailsMode.Value="false" />
 		 </OnKeyPress>
 	</WhileVisible>
 </Panel>

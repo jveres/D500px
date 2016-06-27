@@ -3,9 +3,8 @@ var Helpers = require("Assets/JS/Helpers.js");
 var HTML = require("Assets/JS/Html.js");
 var API = require("Assets/JS/API.js");
 var Event = require('FuseJS/UserEvents');
-var Storage = require("FuseJS/Storage");
-
-var CONFIG_FILENAME = "config.json";
+var Moment = require('Assets/JS/moment.js');
+var User = require('User.js');
 
 var feed = Observable();
 
@@ -15,8 +14,6 @@ var IsReloading = Observable(false);
 var IsLoadingMore = Observable(false);
 var LoadingState = Observable("Loading");
 var searchText = Observable("");
-var user = Observable();
-var screen = Observable();
 
 var _loader = undefined;
 
@@ -55,7 +52,7 @@ function SearchFeature(text)
 	};
 };
 
-function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, username, votes_count)
+function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, username, votes_count, created_at)
 {
 	this.url = API.BASE_URL + url;
 	this.image_url = image_url;
@@ -63,9 +60,11 @@ function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, userna
 	this.photo_url = photo_url;
 	this.name = HTML.unescape(name);
 	this.avatar_url = avatar_url;
-	this.username = "@" + username;
+	this.username = username;
 	this.user_url = API.BASE_URL + "/" + username;
 	this.votes_count = votes_count;
+	this.created_at = created_at;
+	this.created_by = Moment(created_at).fromNow() + " by @" + username;
 }
 
 function hasImage(image_url)
@@ -95,7 +94,8 @@ function processResponse(response)
 				responsePhoto.name,
 				responsePhoto.user.avatars.default.https,
 				responsePhoto.user.username,
-				responsePhoto.votes_count)
+				responsePhoto.votes_count,
+				responsePhoto.created_at)
 	    	);
 	}
 	return result;
@@ -182,54 +182,12 @@ function Login()
 
 function Logout()
 {
-	router.push("logout", user.value);
+	router.push("logout");
 }
 
-function SetupUser(data)
-{
-	user.value = data;
-	screen.value = {username: "@" + data.username};
-}
-
-function DeleteUser()
-{
-	user.clear();
-	screen.clear();
-	API.Logout();
-	Storage.deleteSync(CONFIG_FILENAME);
-}
-
-function OnLogin(args)
-{
-	var config = {
-		user: args.user,
-		access_token: API.access_token,
-		access_token_secret: API.access_token_secret
-	};
-	SetupUser(config.user);
-	Storage.writeSync(CONFIG_FILENAME, JSON.stringify(config));
-	Event.raise("Info", {message: "Welcome, " + config.user.username + "!"});
-}
-
-function OnLogout(args)
-{
-	DeleteUser();
-	Event.raise("Info", {message: "Logged out"});
-}
 
 function init()
 {
-	var config = Storage.readSync(CONFIG_FILENAME);
-	try
-	{
-		config = JSON.parse(config);
-		API.access_token = config.access_token;
-		API.access_token_secret = config.access_token_secret;
-		SetupUser(config.user);
-	} catch(err)
-	{
-		DeleteUser();
-	}
 	features.add(new Feature("Most Popular", "Trending Right Now", "popular"));
 	features.add(new Feature("Highest Rated", "Photos that Have Been Popular", "highest_rated"));
 	features.add(new Feature("Editor's Choice", "Picked by Top Photographers", "editors"));
@@ -258,8 +216,5 @@ module.exports =
 	Search: Search,
 	Login: Login,
 	Logout: Logout,
-	OnLogin,
-	OnLogout,
-	user: user,
-	screen: screen
+	user: User.user
 };

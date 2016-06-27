@@ -13,7 +13,7 @@
     		<Callback Handler="{LoadFeed}" />
     	</Clicked>
 	</Rectangle>
-	<StateGroup ux:Name="stateGroup" Active="{LoadingState}" Rest="Ready" Transition="Exclusive">
+	<StateGroup ux:Name="stateGroup" Active="{LoadingState}" Rest="Ready">
     	<State ux:Name="Ready">
             <Change loadingSpinner.IsEnabled="false" />
         </State>

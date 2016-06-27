@@ -129,7 +129,7 @@ function API()
 	this.SetSearchText = function(term)
 	{
 		if (term.trim() === "") this.PhotoStream = Promise.resolve({photos: []});
-		this.PhotoStream = new PhotoStream("/photos/search", {term: term || ""});
+		else this.PhotoStream = new PhotoStream("/photos/search", {term: term || "", sort: "created_at"});
 	}
 }
 

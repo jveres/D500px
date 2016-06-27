@@ -6,6 +6,7 @@
 	<Router ux:Name="router" />
 	<UserEvent Name="Error" />
 	<UserEvent Name="Info" />
+	<float4 ux:Global="LoColor" ux:Value="#212831" />
 	<float4 ux:Global="HiColor" ux:Value="#c0e4f7" />
 	<JavaScript File="MainPage.js" />
 	<ux:Include File="MainPage.toast.ux" />

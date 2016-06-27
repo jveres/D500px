@@ -13,15 +13,11 @@
 		<Panel>
 			<ColumnLayout ux:Name="columnLayout" Orientation="Vertical" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
 			<Each Items="{feed}">
-				<Placeholder Aspect="{image_aspect}" BoxSizing="FillAspect" Background="#393e45">
+				<Panel Aspect="{image_aspect}" BoxSizing="FillAspect" Background="#393e45">
 					<LayoutAnimation>
 						<Move Vector="1" Duration="0.4" RelativeTo="PositionChange" Easing="CircularInOut" />
 					</LayoutAnimation>
-					<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused" TransformOrigin="TopLeft">
-						<LayoutAnimation>
-							<Move RelativeTo="LayoutChange" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
-							<Scale RelativeTo="SizeChange" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
-						</LayoutAnimation>
+					<ImageView ux:Name="image" ImageUrl="{image_url}" ImageMemoryPolicy="UnloadUnused">
 						<WhileLoaded>
 							<Set IsImageLoaded.Value="true" />
 							<Set image.Opacity="0" />
@@ -42,23 +38,22 @@
 					<WhileTrue ux:Name="IsImageFailed">
 					</WhileTrue>
 					<Clicked>
+						<!-- Current image -->
+						<Set Target="Image.Value" Value="image" />
+						<Set Target="placeholderImage.Source" Value="{Property image.Source}" />
 						<!-- UI sync -->
 						<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
 						<Set Target="nameText.Value" Value="{name}" />
 						<Set Target="avatarImage.Url" Value="{avatar_url}" />
 						<Set Target="launchUri.Uri" Value="{user_url}" />
-						<Set Target="usernameText.Value" Value="{username}" />
+						<Set Target="usernameText.Value" Value="{created_by}" />
 						<Set Target="votesCountText.Value" Value="{votes_count}" />
-						<Set Target="placeholderPanel.Aspect" Value="{image_aspect}" />
-						<!-- Change layout -->
-						<Set detailsPanel.Visibility="Visible" />
-						<Set placeholderPanel.Target="image" />
-						<Set multiLayoutPanel.LayoutElement="detailsPanel" />
-						<BringToFront />
-						<!-- Trigger mode change -->
-						<Set detailsMode.Value="true" />
+						<!-- Trigger layout change -->
+						<Set zoomMove.RelativeNode="image" />
+						<Set zoomScale.RelativeNode="image" />
+						<Set detailsMode.Value="true" Delay="0.05" />
 					</Clicked>
-				</Placeholder>
+				</Panel>
 			</Each>
 		</Panel>
 		<Panel ux:Name="bottomPanel" Height="40">

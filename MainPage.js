@@ -1,30 +1,35 @@
 var Observable = require("FuseJS/Observable");
-var Event = require('FuseJS/UserEvents');
 
 var TOAST_DISMISS_TIMEOUT = 5*1000;
+var DEFAULT_TOAST_COLOR = "#444";
+
 var toastText = Observable("");
-var toastColor = Observable("#444");
+var toastColor = Observable(DEFAULT_TOAST_COLOR);
 
 // Display toast message
 var _toastTimer = undefined;
-function OnError(args)
+
+function DisplayToast(message, color)
 {
 	clearTimeout(_toastTimer);
-	toastColor.value = "#b31b00";
-	toastText.value = args.message;
-	_toastTimer = setTimeout(function() { 
-		toastText.value = "";
-	}, TOAST_DISMISS_TIMEOUT);
+	if (message)
+	{
+		toastColor.value = color || DEFAULT_TOAST_COLOR;
+		toastText.value = message;
+		_toastTimer = setTimeout(function() { 
+			toastText.value = "";
+		}, TOAST_DISMISS_TIMEOUT);
+	}
+}
+
+function OnError(args)
+{
+	DisplayToast(args.message, "#b31b00");
 }
 
 function OnInfo(args)
 {
-	clearTimeout(_toastTimer);
-	toastColor.value = "#444";
-	toastText.value = args.message;
-	_toastTimer = setTimeout(function() { 
-		toastText.value = "";
-	}, TOAST_DISMISS_TIMEOUT);
+	DisplayToast(args.message);
 }
 
 module.exports =

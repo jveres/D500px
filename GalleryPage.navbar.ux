@@ -2,13 +2,13 @@
 <Panel ux:Name="navbar" Alignment="Top" Height="50">
 	<WhileTrue ux:Name="isNavigationDisabled">
 		<Change isEdgeNavigationDisabled.Value="true" />
-		<Change navbar.IsEnabled="false" Duration="0" Delay="0" DurationBack="0" DelayBack="0.4" />
-		<Change navbar.Opacity="0" Duration="0.2" Delay="0" DurationBack="0" DelayBack="0.2" Easing="CircularInOut" />
+		<Change navbar.IsEnabled="false" />
+		<Change navbar.Opacity="0" Easing="CircularInOut" />
 	</WhileTrue>
 	<Image File="Assets/Images/GradientBg.png" Layer="Background" StretchMode="Fill" />
 	<ux:Include File="GalleryPage.navbar.searchPanel.ux" />
 	<DockPanel ux:Name="navbarDock">
-		<Panel Dock="Left" HitTestMode="LocalBounds" Width="20">
+		<Panel ux:Name="hamburgerPanel" Dock="Left" HitTestMode="LocalBounds" Width="20">
 			<Clicked>
 				<NavigateToggle Target="sidebar" />
 			</Clicked>

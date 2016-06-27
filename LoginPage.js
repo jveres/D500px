@@ -2,6 +2,7 @@ var Observable = require("FuseJS/Observable");
 var Helpers = require("Assets/JS/Helpers.js");
 var API = require("Assets/JS/API.js");
 var Event = require('FuseJS/UserEvents');
+var User = require('User.js');
 
 var IsSigningIn = Observable(false);
 var username = Observable("");
@@ -40,8 +41,7 @@ function SignIn()
 	{
 		// Login sccessfull
 		IsSigningIn.value = false;
-		var user = result[2].user;
-		Event.raise("Login", {user: user});
+		User.Login(result[2].user);
 		GoBack();
 	})
 	.catch(function(err)
@@ -55,7 +55,7 @@ function SignIn()
 	});
 }
 
-module.exports={
+module.exports = {
 	GoBack: GoBack,
 	SignIn: SignIn,
 	IsSigningIn: IsSigningIn,

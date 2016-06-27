@@ -14,6 +14,10 @@ public class ImageView: Element
         public ImageSource Source
         {
                 get { return _source; }
+                set
+                {
+                        // {Property image.Source} needs a setter
+                }
         }
 
         public String ImageUrl

@@ -1,19 +1,19 @@
 <Grid ux:Name="titleGrid" Columns="auto,1*" Margin="10,5,10,10" Opacity="0">
-	<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50" Color="#393E45">
+	<Circle Column="0" ux:Name="avatarCircle" Width="50" Height="50" Color="LoColor">
 		<ImageFill ux:Name="avatarImage" />
 		<LongPressed>
 			<LaunchUri ux:Name="launchUri" Delay="0.2" />
 		</LongPressed>
 	</Circle>
 	<StackPanel Column="1" Alignment="VerticalCenter" Padding="5,0,0,0">
-		<Text ux:Name="nameText" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap" />
 		<Grid Columns="1*,auto">
-			<Text Column="0" ux:Name="usernameText" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
+			<Text Column="0" ux:Name="nameText" TextColor="#fff" FontSize="20" Font="Light" TextWrapping="NoWrap" />
 			<StackPanel Column="1" Orientation="Horizontal">
-				<Image File="Assets/Icons/Likes.png" Width="18" Height="18" Color="#ff3333" />
-				<Text ux:Name="votesCountText" Margin="5,0,0,0" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
+				<Image File="Assets/Images/Heart.png" Width="18" Height="18" Color="#ff3333" />
+				<Text ux:Name="votesCountText" Margin="5,0,0,0" TextColor="#eee" FontSize="20" Font="Light" TextWrapping="NoWrap" />
 			</StackPanel>
 		</Grid>
+		<Text Column="0" ux:Name="usernameText" TextColor="#eee" FontSize="16" Font="Light" TextWrapping="NoWrap" />
 	</StackPanel>
 	<ux:Include File="DropShadow.inc.ux" />
 </Grid>

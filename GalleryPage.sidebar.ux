@@ -1,10 +1,10 @@
-<Panel ux:Name="sidebar" Color="#212831b0" Edge="Left" Alignment="Left">
+<Panel ux:Name="sidebar" Edge="Left" Alignment="Left" Background="#212831b0">
 	<Translation X="-1" RelativeTo="Size" />
 	<ScrollView AllowedScrollDirections="Vertical">
 		<StackPanel Alignment="Center">
 			<StackPanel Padding="20,0,20,40">
 				<Panel ux:Name="profileImage" HitTestMode="LocalBounds">
-					<Circle ux:Class="ProfileCircle" Width="70" Height="70" Color="#393E45" />
+					<Circle ux:Class="ProfileCircle" Width="70" Height="70" Color="LoColor" />
 					<WhileCount Items="{user}" EqualTo="0">
 						<ProfileCircle>
 							<ImageFill File="Assets/Images/UserPic.png" />
@@ -30,7 +30,7 @@
 					</Clicked>
 				</WhileCount>
 				<WhileCount Items="{user}" GreaterThan="0">
-					<Change Target="loginText.Value" Value="{screen.username}" />
+					<Change Target="loginText.Value" Value="{user.screenname}" />
 					<Clicked>
 						<Callback Handler="{Logout}" />
 					</Clicked>
@@ -53,9 +53,10 @@
 		</StackPanel>
 	</ScrollView>
 	<ActivatingAnimation>
+		<Set isSearching.Value="false" />
 		<Set coverPanel.IsEnabled="true" AtProgress="0" />
 		<Change coverPanel.Opacity="1" />
-		<Move X="1" RelativeTo="Size" />
+		<Move Target="sidebar" X="1" RelativeTo="Size" RelativeNode="sidebar" />
 		<Change topMenuTranslation.X="-17" />
 		<Change middleMenuTranslation.X="-17" />
 		<Change bottomMenuTranslation.X="-17" />

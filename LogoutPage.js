@@ -1,19 +1,5 @@
 var Observable = require("FuseJS/Observable");
-var Helpers = require("Assets/JS/Helpers.js");
-var API = require("Assets/JS/API.js");
-var Event = require('FuseJS/UserEvents');
-
-var user = Observable();
-var screen = Observable();
-
-this.onParameterChanged(function(param)
-{
-    user.value = param;
-    screen.value = {
-    	username: "@" + param.username,
-    	domain: "https://" + param.domain
-    };
-});
+var User = require('User.js');
 
 function GoBack()
 {
@@ -22,13 +8,12 @@ function GoBack()
 
 function SignOut()
 {
-	Event.raise("Logout");
+	User.Logout();
 	GoBack();
 }
 
 module.exports={
 	GoBack: GoBack,
 	SignOut: SignOut,
-	user: user,
-	screen: screen
+	user: User.user,
 };
