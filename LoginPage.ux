@@ -1,7 +1,8 @@
 <Page ux:Class="LoginPage" Transition="Default">
     <Router ux:Dependency="router" />
     <JavaScript File="LoginPage.js" />
-    <TextInput ux:Class="Input" FontSize="22" Font="Regular" CaretColor="HiColor" TextColor="#fff" PlaceholderColor="#888" Padding="4" Alignment="Center" />
+    <Text ux:Class="Label" TextAlignment="Center" TextColor="HiColor" FontSize="20" Font="Light" />
+    <TextInput ux:Class="Input" FontSize="22" Font="Regular" CaretColor="HiColor" TextColor="#fff" PlaceholderColor="#888" Padding="4" TextAlignment="Center" />
     <DockPanel ux:Name="loginPanel">
     	<TopFrameBackground Dock="Top" Background="#000" />
         <DockPanel>
@@ -18,38 +19,36 @@
                 </DockPanel>
             </Panel>
             <!-- Login panel with loading indicator -->
+            <WhileTrue Value="{IsSigningIn}">
+                <Change loginScrollView.IsEnabled="false" />
+                <Change blurEffect.Radius="2" />
+                <Change loginSpinner.IsEnabled="true" />
+                <Change loginSpinner.Visibility="Visible" />
+            </WhileTrue>
             <Spinner ux:Name="loginSpinner" Width="50" Height="50" StrokeWidth="3" IsEnabled="false" Visibility="Hidden" />
             <ScrollView ux:Name="loginScrollView" Dock="Fill" AllowedScrollDirections="Vertical" ClipToBounds="false">
-                <WhileTrue Value="{IsSigningIn}">
-                    <Change loginScrollView.IsEnabled="false" Duration="0" Delay="0" />
-                    <Change blurEffect.Radius="2" Duration="0" Delay="0" />
-                    <Change loginSpinner.IsEnabled="true" Duration="0" Delay="0" />
-                    <Change loginSpinner.Visibility="Visible" Duration="0" Delay="0" />
-                </WhileTrue>
-                <Panel Padding="20">
+                <StackPanel Padding="20">
                     <Blur ux:Name="blurEffect" Radius="0" />
-                    <StackPanel>
-                        <StackPanel Padding="0,0,0,20">
-                            <Text TextAlignment="Center" TextColor="HiColor" FontSize="14" Font="Light">Who are you?</Text>
-                            <Input ux:Name="usernameInput" ActionStyle="Next" Value="{username}" PlaceholderText="Enter email or username" />
-                        </StackPanel>
-                        <StackPanel Padding="0,0,0,20">
-                            <Text TextAlignment="Center" TextColor="HiColor" FontSize="14" Font="Light">What's your password?</Text>
-                            <Input ux:Name="passwordInput" ActionStyle="Go" IsPassword="true" Value="{password}" PlaceholderText="Enter password">
-                                <TextInputActionTriggered>
-                                    <Callback Handler="{SignIn}" />
-                                </TextInputActionTriggered>
-                            </Input>
-                        </StackPanel>
-                        <D500px.Button ux:Name="loginButton" IsEnabled="{IsReadyToSignIn}" Text="Log In" Alignment="Center" Margin="0,10,0,0">
-                            <Clicked>
-                                <ReleaseFocus TargetNode="usernameInput" />
-                                <ReleaseFocus TargetNode="passwordInput" />
-                                <Callback Handler="{SignIn}" />
-                            </Clicked>
-                        </D500px.Button>
+                    <StackPanel Padding="0,0,0,20">
+                        <Label>Who are you?</Label>
+                        <Input ux:Name="usernameInput" ActionStyle="Next" Value="{username}" PlaceholderText="Enter email or username" />
                     </StackPanel>
-                </Panel>
+                    <StackPanel Padding="0,0,0,20">
+                        <Label>What's your password?</Label>
+                        <Input ux:Name="passwordInput" ActionStyle="Go" IsPassword="true" Value="{password}" PlaceholderText="Enter password">
+                            <TextInputActionTriggered>
+                                <Callback Handler="{SignIn}" />
+                            </TextInputActionTriggered>
+                        </Input>
+                    </StackPanel>
+                    <D500px.Button ux:Name="loginButton" IsEnabled="{IsReadyToSignIn}" Text="Log In" Alignment="Center" Margin="0,20,0,0">
+                        <Clicked>
+                            <ReleaseFocus TargetNode="usernameInput" />
+                            <ReleaseFocus TargetNode="passwordInput" />
+                            <Callback Handler="{SignIn}" />
+                        </Clicked>
+                    </D500px.Button>
+                </StackPanel>
             </ScrollView>
         </DockPanel>
 	    <BottomFrameBackground Dock="Bottom" IncludesKeyboard="false" Background="#000" />
