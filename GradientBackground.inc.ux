@@ -1,6 +1,6 @@
 <LinearGradient StartPoint="0,0" EndPoint="0,1">
-    <GradientStop Offset="0" Color="#000" />
-    <GradientStop Offset="0.3" Color="LoColor" />
-    <GradientStop Offset="0.7" Color="LoColor" />
-    <GradientStop Offset="1" Color="#000" />
+	<GradientStop Offset="0" Color="Black" />
+    <GradientStop Offset="0.2" Color="LoColor" />
+    <GradientStop Offset="0.8" Color="LoColor" />
+    <GradientStop Offset="1" Color="Black" />
 </LinearGradient>

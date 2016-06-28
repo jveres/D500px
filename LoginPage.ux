@@ -1,8 +1,10 @@
 <Page ux:Class="LoginPage" Transition="Default">
     <Router ux:Dependency="router" />
     <JavaScript File="LoginPage.js" />
-    <Text ux:Class="Label" TextAlignment="Center" TextColor="HiColor" FontSize="20" Font="Light" />
-    <TextInput ux:Class="Input" FontSize="22" Font="Regular" CaretColor="HiColor" TextColor="#fff" PlaceholderColor="#888" Padding="4" TextAlignment="Center" />
+    <Text ux:Class="Label" TextColor="HiColor" FontSize="18" Font="Light" />
+    <TextInput ux:Class="Input" FontSize="22" Font="Regular" CaretColor="HiColor" TextColor="#fff" PlaceholderColor="#888" Padding="4">
+        <Rectangle CornerRadius="10" Layer="Background" Fill="#00000030" />
+    </TextInput>
     <DockPanel ux:Name="loginPanel">
     	<TopFrameBackground Dock="Top" Background="#000" />
         <DockPanel>
@@ -28,7 +30,7 @@
             <Spinner ux:Name="loginSpinner" Width="50" Height="50" StrokeWidth="3" IsEnabled="false" Visibility="Hidden" />
             <ScrollView ux:Name="loginScrollView" Dock="Fill" AllowedScrollDirections="Vertical" ClipToBounds="false">
                 <StackPanel Padding="20">
-                    <Blur ux:Name="blurEffect" Radius="0" />
+                    <Fuse.PatchedEffects.Blur ux:Name="blurEffect" Radius="0" />
                     <StackPanel Padding="0,0,0,20">
                         <Label>Who are you?</Label>
                         <Input ux:Name="usernameInput" ActionStyle="Next" Value="{username}" PlaceholderText="Enter email or username" />
@@ -41,7 +43,7 @@
                             </TextInputActionTriggered>
                         </Input>
                     </StackPanel>
-                    <D500px.Button ux:Name="loginButton" IsEnabled="{IsReadyToSignIn}" Text="Log In" Alignment="Center" Margin="0,20,0,0">
+                    <D500px.Button ux:Name="loginButton" IsEnabled="{IsReadyToSignIn}" Text="Log In" Alignment="Left" Margin="0,20,0,0">
                         <Clicked>
                             <ReleaseFocus TargetNode="usernameInput" />
                             <ReleaseFocus TargetNode="passwordInput" />

@@ -1,4 +1,4 @@
-<Panel ux:Class="LoadingPanel" Visibility="Hidden" Background="#000">
+<Panel ux:Class="LoadingPanel" Visibility="Hidden">
     <Spinner ux:Name="loadingSpinner" Width="50" Height="50" IsEnabled="false" Opacity="1" />
 	<Rectangle ux:Name="tryAgainRect" CornerRadius="50" Width="50" Height="50" Opacity="0" HitTestMode="LocalBoundsAndChildren">
 		<Stroke Width="3" LineCap="Round">

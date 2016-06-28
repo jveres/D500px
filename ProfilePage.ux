@@ -4,7 +4,6 @@
     <DockPanel ux:Name="logoutPanel">
     	<TopFrameBackground Dock="Top" Background="#000" />
         <DockPanel>
-            <ux:Include File="GradientBackground.inc.ux" />
             <Panel Dock="Top" Height="50">
                 <Image File="Assets/Images/GradientBg.png" Layer="Background" StretchMode="Fill" />
                 <DockPanel ux:Name="navbarDock">
@@ -18,6 +17,7 @@
             </Panel>
             <!-- Logout panel -->
             <ScrollView ux:Name="logoutScrollView" Dock="Fill" AllowedScrollDirections="Vertical" ClipToBounds="false">
+                <ux:Include File="GradientBackground.inc.ux" />
                 <StackPanel Padding="20">
                     <Circle Width="100" Height="100" Color="LoColor">
                         <ImageFill Url="{user.userpic_https_url}" />

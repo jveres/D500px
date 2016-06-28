@@ -13,7 +13,7 @@
 		<Panel>
 			<ColumnLayout ux:Name="columnLayout" Orientation="Vertical" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
 			<Each Items="{feed}">
-				<Panel Aspect="{image_aspect}" BoxSizing="FillAspect" Background="#393e45">
+				<Panel Aspect="{image_aspect}" BoxSizing="FillAspect" Background="#212831">
 					<LayoutAnimation>
 						<Move Vector="1" Duration="0.4" RelativeTo="PositionChange" Easing="CircularInOut" />
 					</LayoutAnimation>
@@ -33,26 +33,31 @@
 					<WhilePressed>
 		                <Scale Factor="0.98" Duration="0.4" Easing="QuadraticInOut" />
 		            </WhilePressed>
-					<WhileTrue ux:Name="IsImageLoaded">
-					</WhileTrue>
 					<WhileTrue ux:Name="IsImageFailed">
+						<Clicked>
+							<RaiseUserEvent Name="Error">
+						    	<UserEventArg Name="message" StringValue="Error Loading Image" />
+							</RaiseUserEvent>
+						</Clicked>
 					</WhileTrue>
-					<Clicked>
-						<!-- Current image -->
-						<Callback Handler="{SelectPhoto}" />
-						<Set Target="Image.Value" Value="image" />
-						<Set Target="placeholderImage.Source" Value="{Property image.Source}" />
-						<!-- UI sync -->
-						<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
-						<Set Target="nameText.Value" Value="{name}" />
-						<Set Target="avatarImage.Url" Value="{avatar_url}" />
-						<Set Target="launchUri.Uri" Value="{user_url}" />
-						<Set Target="votesCountText.Value" Value="{votes_count}" />
-						<!-- Trigger layout change -->
-						<Set zoomMove.RelativeNode="image" />
-						<Set zoomScale.RelativeNode="image" />
-						<Set detailsMode.Value="true" Delay="0.05" />
-					</Clicked>
+					<WhileTrue ux:Name="IsImageLoaded">
+						<Clicked>
+							<!-- Current image -->
+							<Callback Handler="{SelectPhoto}" />
+							<Set Target="Image.Value" Value="image" />
+							<Set Target="placeholderImage.Source" Value="{Property image.Source}" />
+							<!-- UI sync -->
+							<Set Target="hiresPhoto.ImageUrl" Value="{photo_url}" />
+							<Set Target="nameText.Value" Value="{name}" />
+							<Set Target="avatarImage.Url" Value="{avatar_url}" />
+							<Set Target="launchUri.Uri" Value="{user_url}" />
+							<Set Target="votesCountText.Value" Value="{votes_count}" />
+							<!-- Trigger layout change -->
+							<Set zoomMove.RelativeNode="image" />
+							<Set zoomScale.RelativeNode="image" />
+							<Set detailsMode.Value="true" Delay="0.05" />
+						</Clicked>
+					</WhileTrue>
 				</Panel>
 			</Each>
 		</Panel>
@@ -64,16 +69,18 @@
 			</WhileTrue>
 		</Panel>
 	</StackPanel>
-	<!-- Reload trigger -->
-	<ScrollingAnimation Range="SnapMin">
-    	<Change topPanel.Height="150" Duration="1" />
-    	<Change topDownImage.Opacity="1" Duration="0.4" Delay="0.1" />
-	</ScrollingAnimation>
-	<PullToReload IsLoading="{IsReloading}" ReloadHandler="{Reload}">
-	    <State ux:Binding="Loading">	        
-	        <Change topDownImage.Visibility="Hidden" Duration="0" />
-	    </State>
-	</PullToReload>
+	<WhileCount Items="{feed}" GreaterThan="0">
+		<!-- Reload trigger -->
+		<ScrollingAnimation Range="SnapMin">
+	    	<Change topPanel.Height="150" Duration="1" />
+	    	<Change topDownImage.Opacity="1" Duration="0.4" Delay="0.1" />
+		</ScrollingAnimation>
+		<PullToReload IsLoading="{IsReloading}" ReloadHandler="{Reload}">
+		    <State ux:Binding="Loading">	        
+		        <Change topDownImage.Visibility="Hidden" Duration="0" />
+		    </State>
+		</PullToReload>
+	</WhileCount>
 	<!-- Load more trigger -->
 	<WhileFalse Value="{IsLoadingMore}">
 		<WhileScrollable ScrollDirections="Down" Invert="true">	
