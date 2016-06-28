@@ -13,6 +13,6 @@
     <Navigator DefaultTemplate="gallery">
         <GalleryPage ux:Template="gallery" router="router" />
         <LoginPage ux:Template="login" router="router" />
-        <LogoutPage ux:Template="logout" router="router" />
+        <ProfilePage ux:Template="profile" router="router" />
     </Navigator>
 </App>

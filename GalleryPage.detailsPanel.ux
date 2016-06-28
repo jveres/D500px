@@ -7,24 +7,18 @@
 			<!-- Placeholder -->
 			<Panel>
 				<Spinner ux:Name="hiresSpinner" Width="50" Height="50" IsEnabled="false" StrokeWidth="3" Opacity="0" />
-				<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused" Visibility="Hidden" Opacity="0.001">
+				<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused" Visibility="Hidden">
 					<WhileLoading>
 						<Change hiresSpinner.Opacity="1" />
 						<Change hiresSpinner.IsEnabled="true" />
 					</WhileLoading>
-					<WhileLoaded>
-						<Change hiresPhoto.Opacity="1" Duration="0.6" DurationBack="0" Easing="CircularInOut" />
-					</WhileLoaded>
-					<WhileCacheLoaded Bypass="Never">
-						<Change hiresPhoto.Opacity="1" /> 
-					</WhileCacheLoaded>
 					<WhileFailed>
 						<RaiseUserEvent Name="Error">
 						    <UserEventArg Name="message" StringValue="Error Loading Image" />
 						</RaiseUserEvent>
 					</WhileFailed>
 				</ImageView>
-				<Image ux:Name="placeholderImage" StretchMode="Fill">
+				<Image ux:Name="placeholderImage">
 					<Timeline ux:Name="zoomTimeline">
 				    	<Move ux:Name="zoomMove" RelativeTo="PositionOffset" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
 				        <Resize ux:Name="zoomScale" RelativeTo="Size" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
@@ -48,7 +42,7 @@
             <!-- Faded background -->
             <Change coverPanel.Opacity="1" Duration="0.4" />
             <!-- Layout -->
-            <Change hiresPhoto.Visibility="Visible" Delay="0.4" DelayBack="0" />
+            <Change hiresPhoto.Visibility="Visible" Delay="0.45" DelayBack="0" />
             <Change titleGrid.Opacity="1" Delay="0.4" DelayBack="0" />
             <Change isNavigationDisabled.Value="true" />
             <Change detailsPanel.Visibility="Visible" />

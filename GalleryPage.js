@@ -14,6 +14,7 @@ var IsReloading = Observable(false);
 var IsLoadingMore = Observable(false);
 var LoadingState = Observable("Loading");
 var searchText = Observable("");
+var createdBy = Observable("");
 
 var _loader = undefined;
 
@@ -64,7 +65,6 @@ function Photo(url, image_aspect, image_url, photo_url, name, avatar_url, userna
 	this.user_url = API.BASE_URL + "/" + username;
 	this.votes_count = votes_count;
 	this.created_at = created_at;
-	this.created_by = Moment(created_at).fromNow() + " by @" + username;
 }
 
 function hasImage(image_url)
@@ -182,7 +182,13 @@ function Login()
 
 function Logout()
 {
-	router.push("logout");
+	router.push("profile");
+}
+
+function SelectPhoto(args)
+{
+	var photo = args.data;
+	createdBy.value = Moment(photo.created_at).fromNow() + " by @" + photo.username;
 }
 
 
@@ -216,5 +222,7 @@ module.exports =
 	Search: Search,
 	Login: Login,
 	Logout: Logout,
-	user: User.user
+	user: User.user,
+	SelectPhoto: SelectPhoto,
+	createdBy: createdBy
 };

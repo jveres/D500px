@@ -1,3 +1,0 @@
-<TextInput ux:Class="Input" FontSize="22" Font="Regular" CaretColor="#c0e4f7" TextColor="#fff" PlaceholderColor="#888" Padding="4">
-	<Rectangle CornerRadius="5" Fill="#1f232e" Layer="Background" />
-</TextInput>

@@ -24,7 +24,7 @@
 	</StackPanel>
 	<WhileTrue ux:Name="isSearching">
 		<!-- Cover panel -->
-        <Change coverPanel.Opacity="1" Duration="0.2" />
+        <Change coverPanel.Opacity="1" Duration="0.3" />
         <Change coverPanel.IsEnabled="true" />
         <!-- Enable/disable navigation -->
         <Set isEdgeNavigationDisabled.Value="true" AtProgress="1" Direction="Forward" />

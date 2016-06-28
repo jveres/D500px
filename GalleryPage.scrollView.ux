@@ -39,6 +39,7 @@
 					</WhileTrue>
 					<Clicked>
 						<!-- Current image -->
+						<Callback Handler="{SelectPhoto}" />
 						<Set Target="Image.Value" Value="image" />
 						<Set Target="placeholderImage.Source" Value="{Property image.Source}" />
 						<!-- UI sync -->
@@ -46,7 +47,6 @@
 						<Set Target="nameText.Value" Value="{name}" />
 						<Set Target="avatarImage.Url" Value="{avatar_url}" />
 						<Set Target="launchUri.Uri" Value="{user_url}" />
-						<Set Target="usernameText.Value" Value="{created_by}" />
 						<Set Target="votesCountText.Value" Value="{votes_count}" />
 						<!-- Trigger layout change -->
 						<Set zoomMove.RelativeNode="image" />

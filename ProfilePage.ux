@@ -1,6 +1,6 @@
-<Page ux:Class="LogoutPage" Transition="Default">
+<Page ux:Class="ProfilePage" Transition="Default">
     <Router ux:Dependency="router" />
-    <JavaScript File="LogoutPage.js" />
+    <JavaScript File="ProfilePage.js" />
     <DockPanel ux:Name="logoutPanel">
     	<TopFrameBackground Dock="Top" Background="#000" />
         <DockPanel>
@@ -11,14 +11,14 @@
                     <Image File="Assets/Images/ArrowBack.png" Dock="Left" HitTestMode="LocalBounds" Width="20" Clicked="{GoBack}" />
                     <Panel Dock="Fill">
                         <ux:Include File="DropShadow.inc.ux" />
-                        <Text Value="Your Profile" Alignment="Center" FontSize="22" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" />
+                        <Text Value="Profile" Alignment="Center" FontSize="22" Font="Regular" TextColor="#fff" TextWrapping="NoWrap" />
                     </Panel>
                     <Panel Dock="Right" Width="20" />
                 </DockPanel>
             </Panel>
             <!-- Logout panel -->
-            <ScrollView ux:Name="logoutScrollView" Dock="Fill" AllowedScrollDirections="Vertical" Alignment="VerticalCenter" ClipToBounds="false">
-                <StackPanel>
+            <ScrollView ux:Name="logoutScrollView" Dock="Fill" AllowedScrollDirections="Vertical" ClipToBounds="false">
+                <StackPanel Padding="20">
                     <Circle Width="100" Height="100" Color="LoColor">
                         <ImageFill Url="{user.userpic_https_url}" />
                         <ux:Include File="DropShadow.inc.ux" />

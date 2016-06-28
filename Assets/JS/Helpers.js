@@ -39,7 +39,7 @@ function CancellablePromise(fn) {
     _reject(new CancellationError());
     promise.isCancelled = true;
     return promise;
-  }
+  };
   promise.timeout = function(ms, message)
   {
     promise._timeout = setTimeout(function()

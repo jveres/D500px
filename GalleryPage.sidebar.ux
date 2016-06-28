@@ -54,14 +54,13 @@
 	</ScrollView>
 	<ActivatingAnimation>
 		<Set isSearching.Value="false" />
-		<Set coverPanel.IsEnabled="true" AtProgress="0" />
 		<Change coverPanel.Opacity="1" />
+		<Change coverPanel.IsEnabled="true" />
 		<Move Target="sidebar" X="1" RelativeTo="Size" RelativeNode="sidebar" />
 		<Change topMenuTranslation.X="-17" />
 		<Change middleMenuTranslation.X="-17" />
 		<Change bottomMenuTranslation.X="-17" />
 	</ActivatingAnimation>
 	<DeactivatingAnimation>
-		<Set coverPanel.IsEnabled="false" AtProgress="1" />
 	</DeactivatingAnimation>
 </Panel>

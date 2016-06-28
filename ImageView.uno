@@ -16,7 +16,7 @@ public class ImageView: Element
                 get { return _source; }
                 set
                 {
-                        // {Property image.Source} needs a setter
+                        _source = value as HttpImageSource;
                 }
         }
 
