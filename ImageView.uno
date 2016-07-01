@@ -26,7 +26,18 @@ public class ImageView: Element
                 set
                 {
                         _source.Url = value;
-                        WhileCacheLoaded.SetState(this, _source.State == ImageSourceState.Ready);
+                        if (value == "" || value == null)
+                        {
+                                // Cleanup state triggers
+                                WhileLoaded.SetState(this, false);
+                                WhileFailed.SetState(this, false, "");
+                                WhileLoading.SetState(this, false);
+                        }
+                        else
+                        {
+                                // Check if image is already available
+                                WhileCacheLoaded.SetState(this, _source.State == ImageSourceState.Ready);
+                        }
                 }
         }
 

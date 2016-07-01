@@ -6,18 +6,20 @@
 			<ux:Include File="GalleryPage.titleGrid.ux" />
 			<!-- Placeholder -->
 			<Panel>
-				<Spinner ux:Name="hiresSpinner" Width="50" Height="50" IsEnabled="false" StrokeWidth="3" Opacity="0" />
-				<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused" Visibility="Hidden">
-					<WhileLoading>
-						<Change hiresSpinner.Opacity="1" />
-						<Change hiresSpinner.IsEnabled="true" />
-					</WhileLoading>
-					<WhileFailed>
-						<RaiseUserEvent Name="Error">
-						    <UserEventArg Name="message" StringValue="Error Loading Image" />
-						</RaiseUserEvent>
-					</WhileFailed>
-				</ImageView>
+				<Panel ux:Name="hiresPanel" Visibility="Hidden">
+					<Spinner ux:Name="hiresSpinner" Width="50" Height="50" IsEnabled="false" StrokeWidth="3" Opacity="0" />
+					<ImageView ux:Name="hiresPhoto" ImageMemoryPolicy="UnloadUnused">
+						<WhileLoading>
+							<Change hiresSpinner.Opacity="1" />
+							<Change hiresSpinner.IsEnabled="true" />
+						</WhileLoading>
+						<WhileFailed>
+							<RaiseUserEvent EventName="Error">
+							    <UserEventArg Name="message" StringValue="Error Loading Image" />
+							</RaiseUserEvent>
+						</WhileFailed>
+					</ImageView>
+				</Panel>
 				<Image ux:Name="placeholderImage">
 					<Timeline ux:Name="zoomTimeline">
 				    	<Move ux:Name="zoomMove" RelativeTo="PositionOffset" Vector="1" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
@@ -36,13 +38,12 @@
 		<!-- Details mode trigger -->
         <WhileTrue ux:Name="detailsMode">
         	<!-- Cancel download -->
-        	<Set hiresSpinner.IsEnabled="false" Direction="Backward" />
-			<Set hiresSpinner.Opacity="0" Direction="Backward" />
 			<Set hiresPhoto.ImageUrl="" Direction="Backward" />
             <!-- Faded background -->
             <Change coverPanel.Opacity="1" Duration="0.4" />
+            <Change desaturateEffect.Amount="1" />
             <!-- Layout -->
-            <Change hiresPhoto.Visibility="Visible" Delay="0.45" DelayBack="0" />
+            <Change hiresPanel.Visibility="Visible" Delay="0.45" DelayBack="0" />
             <Change titleGrid.Opacity="1" Delay="0.4" DelayBack="0" />
             <Change isNavigationDisabled.Value="true" />
             <Change detailsPanel.Visibility="Visible" />

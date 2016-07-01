@@ -1,5 +1,6 @@
 <!-- Gallery ScrollView -->
 <ScrollView ux:Name="scrollView" AllowedScrollDirections="Vertical" SnapMinTransform="false">
+	<Desaturate ux:Name="desaturateEffect" Amount="0" />
 	<StackPanel Y="50">
 		<Panel ux:Name="topPanel" Y="-10" Height="0" MinHeight="0" Padding="0,10,0,5">
 			<Image ux:Name="topDownImage" File="Assets/Images/ArrowDown.png" Color="#fff" Height="16" Opacity="0"/>
@@ -11,6 +12,7 @@
 			</WhileTrue>
 		</Panel>
 		<Panel>
+			<!--Desaturate ux:Name="desaturateEffect" Amount="0" /-->
 			<ColumnLayout ux:Name="columnLayout" Orientation="Vertical" ColumnSize="150" Sizing="Fill" ItemSpacing="5" ColumnSpacing="5" />
 			<Each Items="{feed}">
 				<Panel Aspect="{image_aspect}" BoxSizing="FillAspect" Background="#212831">
@@ -35,7 +37,7 @@
 		            </WhilePressed>
 					<WhileTrue ux:Name="IsImageFailed">
 						<Clicked>
-							<RaiseUserEvent Name="Error">
+							<RaiseUserEvent EventName="Error">
 						    	<UserEventArg Name="message" StringValue="Error Loading Image" />
 							</RaiseUserEvent>
 						</Clicked>
