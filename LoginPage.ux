@@ -30,7 +30,7 @@
             <Spinner ux:Name="loginSpinner" Width="50" Height="50" StrokeWidth="3" IsEnabled="false" Visibility="Hidden" />
             <ScrollView ux:Name="loginScrollView" Dock="Fill" AllowedScrollDirections="Vertical" ClipToBounds="false">
                 <StackPanel Padding="20">
-                    <Fuse.PatchedEffects.Blur ux:Name="blurEffect" Radius="0" />
+                    <Blur ux:Name="blurEffect" Radius="0" />
                     <StackPanel Padding="0,0,0,20">
                         <Label>Who are you?</Label>
                         <Input ux:Name="usernameInput" ActionStyle="Next" Value="{username}" PlaceholderText="Enter email or username" />
