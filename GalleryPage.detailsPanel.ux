@@ -40,13 +40,12 @@
         	<!-- Cancel download -->
 			<Set hiresPhoto.ImageUrl="" Direction="Backward" />
             <!-- Faded background -->
-            <Change coverPanel.Opacity="1" Duration="0.4" />
-            <Change desaturateEffect.Amount="1" Duration="0" Delay="0.4" DelayBack="0" />
+            <Change IsCoverPanelVisible.Value="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
             <!-- Layout -->
             <Change hiresPanel.Visibility="Visible" Delay="0.45" DelayBack="0" />
             <Change titleGrid.Opacity="1" Delay="0.4" DelayBack="0" />
             <Change isNavigationDisabled.Value="true" />
-            <Change detailsPanel.Visibility="Visible" />
+            <Change detailsPanel.Visibility="Visible" Delay="0" Duration="0" DelayBack="0.4" DurationBack="0" />
             <!-- Play animation -->
             <PulseBackward Target="zoomTimeline" Direction="Forward" />
             <PulseForward Target="zoomTimeline" Direction="Backward" />

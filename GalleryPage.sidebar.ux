@@ -54,8 +54,8 @@
 	</ScrollView>
 	<ActivatingAnimation>
 		<Set isSearching.Value="false" />
-		<Change coverPanel.Opacity="1" />
-		<Change coverPanel.IsEnabled="true" />
+		<Change IsCoverPanelVisible.Value="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
+		<Change coverPanel.IsEnabled="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
 		<Move Target="sidebar" X="1" RelativeTo="Size" RelativeNode="sidebar" />
 		<Change topMenuTranslation.X="-17" />
 		<Change middleMenuTranslation.X="-17" />

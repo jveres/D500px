@@ -17,6 +17,10 @@
         <!-- Sidebar -->
         <ux:Include File="GalleryPage.sidebar.ux" />
         <!-- Details view -->
+        <WhileTrue ux:Name="IsCoverPanelVisible">
+            <Change coverPanel.Opacity="1" Duration="0.4" Delay="0" DurationBack="0.4" DelayBack="0" />
+            <Change desaturateEffect.Amount="1" Duration="0" Delay="0.4" DurationBack="0" DelayBack="0" />
+        </WhileTrue>
         <ux:Include File="GalleryPage.detailsPanel.ux" />
         <ux:Include File="GalleryPage.coverPanel.ux" />
         <!-- Loading panel -->

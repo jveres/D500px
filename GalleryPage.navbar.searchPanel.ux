@@ -11,7 +11,7 @@
 				<Toggle Target="isSearching" />
 			</Clicked>
 		</Image>
-		<TextInput ux:Name="searchInput" Y="-1" ActionStyle="Search" FontSize="22" Font="Regular" Value="{searchText}" PlaceholderText="Enter search text" CaretColor="#c0e4f7" TextColor="#fff" PlaceholderColor="#888">
+		<TextInput ux:Name="searchInput" Y="-1" ActionStyle="Search" FontSize="22" Font="Regular" Value="{searchText}" PlaceholderText="Enter search text" CaretColor="#ff0000" TextColor="#fff" PlaceholderColor="#888">
 			<TextInputActionTriggered>
 				<Set isSearching.Value="false" />
 	            <Callback Handler="{Search}" />
@@ -24,16 +24,16 @@
 	</StackPanel>
 	<WhileTrue ux:Name="isSearching">
 		<!-- Cover panel -->
-        <Change coverPanel.Opacity="1" Duration="0.3" />
-        <Change coverPanel.IsEnabled="true" />
+        <Change IsCoverPanelVisible.Value="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
+        <Change coverPanel.IsEnabled="true" Duration="0" Delay="0" DurationBack="0" DelayBack="0" />
         <!-- Enable/disable navigation -->
         <Set isEdgeNavigationDisabled.Value="true" AtProgress="1" Direction="Forward" />
         <Set isEdgeNavigationDisabled.Value="false" AtProgress="1" Direction="Backward" />
         <!-- Animate & focus input -->
-		<Change searchTranslation1.X="0" Duration="0.6" Easing="BackOut" EasingBack="BackIn" />
-		<Change searchTranslation2.X="0" Duration="0.6" Easing="BackOut" EasingBack="BackIn" />
+		<Change searchTranslation1.X="0" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
+		<Change searchTranslation2.X="0" Duration="0.4" Easing="BackOut" EasingBack="BackIn" />
 		<Change navbarDock.Opacity="0" Duration="0.2" DurationBack="0.4" Easing="CircularInOut" />
-		<GiveFocus TargetNode="searchInput" Direction="Forward" AtProgress="0.5" />
+		<GiveFocus TargetNode="searchInput" Direction="Forward" AtProgress="1" />
 		<ReleaseFocus TargetNode="searchInput" Direction="Backward" AtProgress="0" />
 	</WhileTrue>
 </Panel>
